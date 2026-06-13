@@ -72,28 +72,35 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
             NSLog("[ProcessedAzureAudioInputStream] voice processing unavailable: \(error.localizedDescription)")
         }
 
-        var sourceFormat = inputNode.outputFormat(forBus: 0)
-        // Enabling voice processing (AEC/VPIO) can leave the input node with an
-        // invalid format (0 Hz / 0 channels) on hosts without proper microphone
-        // routing — notably the iOS Simulator. When that happens, fall back to a
-        // plain (non-voice-processed) input node, which the Simulator supports.
-        if sourceFormat.sampleRate <= 0 || sourceFormat.channelCount <= 0, voiceProcessingEnabled {
+        // Prepare the engine BEFORE reading the input format. The input node only
+        // reports a valid hardware format once the engine has configured it; read
+        // too early (notably on the iOS Simulator) and it returns 0 Hz, which then
+        // makes installTap raise an uncatchable Objective-C NSException → SIGABRT.
+        engine.prepare()
+
+        var sourceFormat = resolveValidInputFormat(on: inputNode)
+
+        // Enabling voice processing (AEC/VPIO) can also leave the input node with
+        // an invalid sample rate on hosts without proper microphone routing. If
+        // that happened, fall back to a plain (non-voice-processed) input node,
+        // which the Simulator supports, and re-resolve the format.
+        if sourceFormat == nil, voiceProcessingEnabled {
             NSLog("[ProcessedAzureAudioInputStream] invalid input format with voice processing; retrying without it")
             try? inputNode.setVoiceProcessingEnabled(false)
             voiceProcessingEnabled = false
-            sourceFormat = inputNode.outputFormat(forBus: 0)
+            engine.prepare()
+            sourceFormat = resolveValidInputFormat(on: inputNode)
         }
 
-        // If the format is still invalid there is no usable microphone on this
-        // device. Passing a 0-format to installTap makes AVFAudio raise an
-        // Objective-C NSException, which Swift `try` cannot catch and which
-        // aborts the whole process (SIGABRT). Surface a clean Swift error
-        // instead so the coordinator can fail gracefully rather than crash.
-        guard sourceFormat.sampleRate > 0, sourceFormat.channelCount > 0 else {
+        // If the format is still invalid there is genuinely no usable microphone
+        // input. Surface a clean Swift error so the coordinator can fail
+        // gracefully instead of letting AVFAudio abort the whole process.
+        guard let sourceFormat else {
+            let reported = inputNode.outputFormat(forBus: 0)
             converter = nil
             inputFormat = nil
             throw VoiceCore.AppError.speechRecognitionFailed(
-                "No usable microphone input is available on this device (input format \(sourceFormat.sampleRate) Hz, \(sourceFormat.channelCount) ch). Microphone capture requires a real device or a Simulator with host microphone access."
+                "No usable microphone input is available on this device (input format \(reported.sampleRate) Hz, \(reported.channelCount) ch). Microphone capture requires a real device or a Simulator with host microphone access."
             )
         }
         inputFormat = sourceFormat
@@ -114,6 +121,23 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
             converter = nil
             throw VoiceCore.AppError.speechRecognitionFailed("Unable to start processed microphone input: \(error.localizedDescription)")
         }
+    }
+
+    /// Reads the input node's hardware format, briefly polling because the node
+    /// can momentarily report a 0 Hz sample rate right after (re)configuration —
+    /// especially on the iOS Simulator. Returns nil only if no valid format ever
+    /// appears, so the caller can fail cleanly instead of crashing in installTap.
+    private func resolveValidInputFormat(on inputNode: AVAudioInputNode) -> AVAudioFormat? {
+        for attempt in 0..<10 {
+            let format = inputNode.outputFormat(forBus: 0)
+            if format.sampleRate > 0, format.channelCount > 0 {
+                return format
+            }
+            if attempt < 9 {
+                Thread.sleep(forTimeInterval: 0.02)
+            }
+        }
+        return nil
     }
 
     func stop() {
