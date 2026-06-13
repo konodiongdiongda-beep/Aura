@@ -4,7 +4,7 @@ import VoiceCore
 
 @MainActor
 final class VoiceCallViewModel: ObservableObject {
-    static let defaultLocalResponsePreludes = ["好的 我来看看"]
+    static let defaultLocalResponsePreludes: [String] = []
 
     @Published private(set) var state: VoiceCallState
     @Published private(set) var elapsedSeconds: Int
@@ -259,6 +259,28 @@ final class VoiceCallViewModel: ObservableObject {
             state = .muted(previous: VoiceCallStateSnapshot(stateName: statusTitle))
         } else {
             state = coordinator?.state ?? .listening
+        }
+    }
+
+    var canInterrupt: Bool {
+        switch state {
+        case .thinking, .speaking:
+            return true
+        default:
+            return false
+        }
+    }
+
+    func interrupt() {
+        guard let coordinator else {
+            state = .interrupted
+            activeAssistantText = ""
+            return
+        }
+
+        Task {
+            await coordinator.interruptAssistant()
+            sync(from: coordinator)
         }
     }
 

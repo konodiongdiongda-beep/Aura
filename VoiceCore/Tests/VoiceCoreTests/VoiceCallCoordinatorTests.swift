@@ -62,7 +62,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatClient.sentMessages, [])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 0)
         XCTAssertEqual(harness.coordinator.state, .speaking)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "rejected echo")
+        // Voiceprint-gated: a final with no speaker evidence cannot be confirmed
+        // as the primary user, so it never interrupts the AI.
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker unverified")
     }
 
     func testSpeakerEvidenceRejectsOtherSpeakerBeforeChatSubmission() async throws {
@@ -122,7 +124,8 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatClient.sentMessages, [])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 0)
         XCTAssertEqual(harness.coordinator.state, .speaking)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "rejected echo")
+        // Voiceprint-gated: an uncertain speaker cannot interrupt the AI.
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
     }
 
     func testUnknownPlaybackActivityDoesNotPromoteAssistantEchoToInterruptedUserTurn() async throws {
@@ -178,7 +181,8 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatClient.sentMessages, [])
         let cancelCount = await harness.playback.cancelCountSnapshot()
         XCTAssertEqual(cancelCount, 0)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "waiting final")
+        // A raw partial never interrupts the AI; interruption needs voiceprint.
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "waiting voiceprint")
     }
 
     func testVerifiedVoiceActivityDuringPlaybackStartsBargeInBeforeRecognitionText() async throws {
@@ -247,7 +251,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText), ["帮我查黄金"])
     }
 
-    func testInterruptedPartialTrimsAssistantPrefixBeforeFastSubmit() async throws {
+    func testInterruptedFinalTrimsAssistantPrefixBeforeSubmit() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
             evidence: UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
@@ -272,7 +276,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         ))
         try await harness.coordinator.waitForState(.interrupted)
 
-        await harness.recognizer.emitPartial("这里是机器人自己的回答 帮我查黄金")
+        await harness.recognizer.emitFinal("这里是机器人自己的回答 帮我查黄金")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
@@ -314,7 +318,11 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "rejected echo")
     }
 
-    func testVerifiedBargeInResetsRecognizerBeforeCapturingInterruptedSpeech() async throws {
+    // Voiceprint-gated barge-in (方案四): a VAD event during playback that the
+    // speaker verifier confirms is the primary user interrupts immediately. We
+    // intentionally do NOT restart the recognizer, so the interrupting utterance
+    // stays in ONE recognition stream and commits on its final.
+    func testVerifiedBargeInKeepsRecognitionStreamWhileCapturingInterruptedSpeech() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
             evidence: UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
@@ -337,13 +345,18 @@ final class VoiceCallCoordinatorTests: XCTestCase {
             audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
         ))
         try await harness.coordinator.waitForState(.interrupted)
-        try await harness.recognizer.waitForStartCount(2)
 
+        // No recognizer reset: same stream stays live.
+        let startCount = await harness.recognizer.startCountSnapshot()
         let cancelCount = await harness.recognizer.cancelCountSnapshot()
-        XCTAssertEqual(cancelCount, 1)
+        XCTAssertEqual(startCount, 1)
+        XCTAssertEqual(cancelCount, 0)
     }
 
-    func testStaleOldRecognitionStreamAfterBargeInResetIsIgnored() async throws {
+    // Because the recognizer is never reset, the entire interrupting sentence
+    // arrives on the same stream and commits on its final (no words are dropped
+    // into a cancelled stream).
+    func testInterruptingUtteranceCommitsOnSameRecognitionStreamWithoutReset() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
             evidence: UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
@@ -356,7 +369,6 @@ final class VoiceCallCoordinatorTests: XCTestCase {
             speakerEvidenceProvider: speakerEvidenceProvider
         )
         try await harness.coordinator.startCall()
-        let oldStreamIndex = await harness.recognizer.activeStreamIndexSnapshot()
 
         await harness.coordinator.simulateAssistantSpeaking("机器人正在回答自己的内容。")
         try await harness.coordinator.waitForState(.speaking)
@@ -368,15 +380,13 @@ final class VoiceCallCoordinatorTests: XCTestCase {
             audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
         ))
         try await harness.coordinator.waitForState(.interrupted)
-        try await harness.recognizer.waitForStartCount(2)
 
-        if let oldStreamIndex {
-            await harness.recognizer.emitFinal("机器人正在回答自己的内容", onStream: oldStreamIndex)
-        }
-        try await Task.sleep(nanoseconds: 50_000_000)
-        XCTAssertEqual(chatClient.sentMessages, [])
+        let startCount = await harness.recognizer.startCountSnapshot()
+        let cancelCount = await harness.recognizer.cancelCountSnapshot()
+        XCTAssertEqual(startCount, 1)
+        XCTAssertEqual(cancelCount, 0)
 
-        await harness.recognizer.emitPartial("帮我查黄金")
+        await harness.recognizer.emitFinal("帮我查黄金")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
@@ -413,6 +423,132 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
     }
 
+    // Barge-in is STRICTER than the submission gate. Even when the submission
+    // gate runs lenient (requiresVerifiedSpeaker: false), an "uncertain" speaker
+    // must NOT cut off the assistant: deciding whether to stop the AI is a
+    // separate, stricter decision from deciding whether to keep the sentence.
+    func testLenientGateStillDoesNotLetUncertainSpeakerBargeIn() async throws {
+        let chatClient = ControlledChatClient()
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
+            evidence: UserTurnSpeakerEvidence(match: .uncertain, score: 0.7, threshold: 0.82)
+        )
+        let harness = CoordinatorHarness(
+            chatClient: chatClient,
+            playbackAutoDrains: false,
+            submissionGate: SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false),
+            speakerEvidenceProvider: speakerEvidenceProvider
+        )
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.simulateAssistantSpeaking("机器人正在回答。")
+        try await harness.coordinator.waitForState(.speaking)
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
+        try await Task.sleep(nanoseconds: 50_000_000)
+
+        XCTAssertEqual(harness.coordinator.state, .speaking)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        XCTAssertEqual(cancelCount, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
+    }
+
+    func testLenientOtherSpeakerVoiceActivityDuringPlaybackKeepsPlaybackActive() async throws {
+        let chatClient = ControlledChatClient()
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
+            evidence: UserTurnSpeakerEvidence(match: .otherSpeaker, score: 0.4, threshold: 0.82)
+        )
+        let harness = CoordinatorHarness(
+            chatClient: chatClient,
+            playbackAutoDrains: false,
+            submissionGate: SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false),
+            speakerEvidenceProvider: speakerEvidenceProvider
+        )
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.simulateAssistantSpeaking("机器人正在回答。")
+        try await harness.coordinator.waitForState(.speaking)
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
+        try await Task.sleep(nanoseconds: 50_000_000)
+
+        XCTAssertEqual(harness.coordinator.state, .speaking)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        XCTAssertEqual(cancelCount, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "rejected other speaker")
+    }
+
+    func testManualInterruptStopsPlaybackAndReturnsToListening() async throws {
+        let chatClient = ControlledChatClient()
+        let harness = CoordinatorHarness(
+            chatClient: chatClient,
+            playbackAutoDrains: false
+        )
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.simulateAssistantSpeaking("机器人正在长篇大论地回答。")
+        try await harness.coordinator.waitForState(.speaking)
+
+        await harness.coordinator.interruptAssistant()
+
+        XCTAssertEqual(harness.coordinator.state, .interrupted)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        let clearCount = await harness.playback.clearCountSnapshot()
+        XCTAssertEqual(cancelCount, 1)
+        XCTAssertEqual(clearCount, 1)
+        XCTAssertTrue(harness.coordinator.messages.contains {
+            $0.role == .assistant && $0.deliveryState == .interrupted
+        })
+
+        // After a manual interrupt the user can still submit a new turn.
+        await harness.recognizer.emitFinal("帮我查黄金")
+        try await harness.coordinator.waitForState(.thinking)
+        XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
+    }
+
+    func testManualInterruptCancelsPendingResponseWhileThinking() async throws {
+        let chatClient = ControlledChatClient()
+        let harness = CoordinatorHarness(chatClient: chatClient)
+        try await harness.coordinator.startCall()
+
+        await harness.recognizer.emitFinal("First question")
+        try await harness.coordinator.waitForState(.thinking)
+
+        await harness.coordinator.interruptAssistant()
+
+        XCTAssertEqual(harness.coordinator.state, .interrupted)
+
+        // The cancelled response must not later overwrite the reopened floor.
+        chatClient.yield(.started(userChatID: "user-chat-1", botChatID: "bot-chat-1"))
+        chatClient.yield(.assistantToken("stale answer"))
+        try await Task.sleep(nanoseconds: 50_000_000)
+        XCTAssertEqual(harness.coordinator.state, .interrupted)
+
+        await harness.recognizer.emitFinal("帮我查英伟达")
+        try await harness.coordinator.waitForState(.thinking)
+        XCTAssertEqual(chatClient.sentMessages, ["First question", "帮我查英伟达"])
+    }
+
+    func testManualInterruptIsNoOpWhenListening() async throws {
+        let harness = CoordinatorHarness(chatClient: ControlledChatClient())
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.interruptAssistant()
+
+        XCTAssertEqual(harness.coordinator.state, .listening)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        XCTAssertEqual(cancelCount, 0)
+    }
+
     func testPlaybackAudioEvidenceRequestDisablesSpeakerEnrollment() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
@@ -443,7 +579,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.state, .speaking)
     }
 
-    func testStablePartialSpeechSubmitsWithoutWaitingForFinalEvent() async throws {
+    func testStablePartialSpeechDisplaysButDoesNotSubmitUntilFinal() async throws {
         let harness = CoordinatorHarness(
             chatClient: ControlledChatClient(),
             fastPartialSubmitDelayNanoseconds: 20_000_000
@@ -451,6 +587,14 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitPartial("Hello Aura")
+        try await harness.coordinator.waitForState(.recognizing(partialText: "Hello Aura"))
+
+        // A partial only refreshes the live display; it never auto-submits.
+        // Submission happens once, on the final, mirroring the web coordinator.
+        XCTAssertEqual(harness.chatClient.sentMessages, [])
+        XCTAssertEqual(harness.coordinator.activeUserPartialText, "Hello Aura")
+
+        await harness.recognizer.emitFinal("Hello Aura")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(harness.chatClient.sentMessages, ["Hello Aura"])
@@ -459,16 +603,23 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         })
     }
 
-    func testFastPartialSubmitUsesLatestPartialText() async throws {
+    func testRepeatedPartialsThenFinalSubmitOneCompleteUtterance() async throws {
         let harness = CoordinatorHarness(
             chatClient: ControlledChatClient(),
             fastPartialSubmitDelayNanoseconds: 40_000_000
         )
         try await harness.coordinator.startCall()
 
+        // Azure streams cumulative partials: "ABC" -> "ABCDEF" -> "ABCDEFG".
+        // None of them submit; only the final does, so the user turn is ONE
+        // bubble with the full text instead of three fragmented/duplicated ones.
         await harness.recognizer.emitPartial("Hello")
-        try await Task.sleep(nanoseconds: 10_000_000)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "Hello"))
         await harness.recognizer.emitPartial("Hello Aura")
+        try await harness.coordinator.waitForState(.recognizing(partialText: "Hello Aura"))
+        XCTAssertEqual(harness.chatClient.sentMessages, [])
+
+        await harness.recognizer.emitFinal("Hello Aura")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(harness.chatClient.sentMessages, ["Hello Aura"])
@@ -528,7 +679,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         )
     }
 
-    func testDuplicateFinalAfterFastPartialSubmitDoesNotResendSameUserTurn() async throws {
+    func testPartialThenMatchingFinalSubmitsOneUserTurn() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -537,15 +688,15 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitPartial("帮我查黄金")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "帮我查黄金"))
         await harness.recognizer.emitFinal("帮我查黄金")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 1)
     }
 
-    func testPunctuatedChineseFinalAfterFastPartialSubmitCorrectsExistingUserTurn() async throws {
+    func testPunctuatedChineseFinalAfterPartialSubmitsCleanedUtterance() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -554,16 +705,16 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitPartial("嘿晚上好啊")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "嘿晚上好啊"))
         await harness.recognizer.emitFinal("嘿，晚上好啊。")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
-        XCTAssertEqual(chatClient.sentMessages, ["嘿晚上好啊"])
+        XCTAssertEqual(chatClient.sentMessages, ["嘿，晚上好啊。"])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText), ["嘿，晚上好啊。"])
         XCTAssertEqual(harness.coordinator.activeUserPartialText, "")
     }
 
-    func testASRRevisionsWhileThinkingUpdateOneUserBubble() async throws {
+    func testASRRevisionsAcrossPartialsSubmitOneUserBubbleOnFinal() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -572,14 +723,17 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         )
         try await harness.coordinator.startCall()
 
+        // ASR keeps revising the same utterance across partials. None submit;
+        // the final commits the corrected text as a single user bubble.
         await harness.recognizer.emitPartial("呃我想看一下")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "呃我想看一下"))
         await harness.recognizer.emitPartial("我想看一下那个 x")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "我想看一下那个 x"))
+        XCTAssertEqual(chatClient.sentMessages, [])
         await harness.recognizer.emitFinal("我想看一下那个 X 的股票。")
-        try await Task.sleep(nanoseconds: 150_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
-        XCTAssertEqual(chatClient.sentMessages, ["呃我想看一下"])
+        XCTAssertEqual(chatClient.sentMessages, ["我想看一下那个 X 的股票。"])
         XCTAssertEqual(
             harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText),
             ["我想看一下那个 X 的股票。"]
@@ -625,7 +779,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.lastLatencyDebugText, "assistant response timed out")
     }
 
-    func testExtendedFinalAfterFastPartialSubmitCorrectsCurrentUserTurnWithoutResending() async throws {
+    func testExtendedFinalAfterPartialSubmitsCompleteUtteranceOnce() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -634,18 +788,18 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitPartial("帮我查黄金")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "帮我查黄金"))
         await harness.recognizer.emitFinal("帮我查黄金和英伟达")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
-        XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
+        XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金和英伟达"])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 1)
         XCTAssertTrue(harness.coordinator.messages.contains {
             $0.role == .user && $0.displayText == "帮我查黄金和英伟达"
         })
     }
 
-    func testDelayedFinalAfterFastPartialSubmitCorrectsTurnAfterReturningToListening() async throws {
+    func testLongRunningPartialThenFinalSubmitsFullUtteranceOnce() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -653,24 +807,23 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         )
         try await harness.coordinator.startCall()
 
+        // A long utterance streams a partial first (display only), then the
+        // final with the complete text. Only the final submits, as one bubble.
         await harness.recognizer.emitPartial("呃第194题早上当前是什么问题女生收件时")
-        try await harness.coordinator.waitForState(.thinking)
-        chatClient.yield(.started(userChatID: "user-chat-1", botChatID: "bot-chat-1"))
-        chatClient.yield(.completed)
-        try await harness.coordinator.waitForState(.listening)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "呃第194题早上当前是什么问题女生收件时"))
+        XCTAssertEqual(chatClient.sentMessages, [])
 
         await harness.recognizer.emitFinal("呃第194题早上当前是什么问题女生收件时想起来关于")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
-        XCTAssertEqual(chatClient.sentMessages, ["呃第194题早上当前是什么问题女生收件时"])
+        XCTAssertEqual(chatClient.sentMessages, ["呃第194题早上当前是什么问题女生收件时想起来关于"])
         XCTAssertEqual(
             harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText),
             ["呃第194题早上当前是什么问题女生收件时想起来关于"]
         )
-        XCTAssertEqual(harness.coordinator.state, .listening)
     }
 
-    func testOverlappingFinalAfterFastPartialSubmitDoesNotDuplicateSharedText() async throws {
+    func testOverlappingPartialThenFinalSubmitsFinalUtterance() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -679,14 +832,14 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitPartial("eating we eating me")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "eating we eating me"))
         await harness.recognizer.emitFinal("eating me he say kidding me")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
-        XCTAssertEqual(chatClient.sentMessages, ["eating we eating me"])
+        XCTAssertEqual(chatClient.sentMessages, ["eating me he say kidding me"])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 1)
         XCTAssertTrue(harness.coordinator.messages.contains {
-            $0.role == .user && $0.displayText == "eating we eating me he say kidding me"
+            $0.role == .user && $0.displayText == "eating me he say kidding me"
         })
     }
 
@@ -778,7 +931,11 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertTrue(harness.coordinator.lastLatencyDebugText.contains("assistant response start"))
     }
 
-    func testNonEchoPartialDuringAssistantPlaybackInterruptsWithoutSpeakerVerification() async throws {
+    // Voiceprint-gated barge-in (方案四): a raw recognized partial carries no
+    // audio evidence, so it can never be verified as the primary user. It must
+    // therefore NOT interrupt the assistant on its own — that stops a bystander /
+    // TV / our own echo from cutting off the AI.
+    func testRawPartialDuringAssistantPlaybackDoesNotInterruptWithoutVoiceprint() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -792,20 +949,24 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.waitForState(.speaking)
 
         await harness.recognizer.emitPartial("等等 我想问英伟达")
-        try await harness.coordinator.waitForState(.recognizing(partialText: "等等 我想问英伟达"))
-        try await harness.chatClient.waitForSentMessageCount(2)
+        try await Task.sleep(nanoseconds: 50_000_000)
 
+        // The raw partial neither interrupts nor displays: we stay speaking, the
+        // assistant keeps talking, and nothing is submitted.
+        XCTAssertEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
         let clearCount = await harness.playback.clearCountSnapshot()
-        XCTAssertEqual(cancelCount, 1)
-        XCTAssertEqual(clearCount, 1)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "accepted")
-        XCTAssertEqual(harness.chatClient.sentMessages, ["First question", "等等 我想问英伟达"])
+        XCTAssertEqual(cancelCount, 0)
+        XCTAssertEqual(clearCount, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "waiting voiceprint")
+        XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
     }
 
-    func testRecognitionFinalDuringAssistantPlaybackInterruptsWhenNotEcho() async throws {
+    // Final path of the voiceprint gate: a final with no speaker evidence cannot
+    // be confirmed as the primary user, so it must NOT cut off the assistant.
+    func testRecognitionFinalDuringAssistantPlaybackDoesNotInterruptWithoutVoiceprint() async throws {
         let chatClient = ControlledChatClient()
-        let harness = CoordinatorHarness(chatClient: chatClient)
+        let harness = CoordinatorHarness(chatClient: chatClient, playbackAutoDrains: false)
         try await harness.coordinator.startCall()
         await harness.recognizer.emitFinal("First question")
         try await harness.coordinator.waitForState(.thinking)
@@ -814,19 +975,24 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.waitForState(.speaking)
 
         await harness.recognizer.emitFinal("Stop and answer this")
-        try await harness.coordinator.waitForState(.thinking)
+        try await Task.sleep(nanoseconds: 50_000_000)
 
+        XCTAssertEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCount, 1)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "accepted")
-        XCTAssertEqual(harness.chatClient.sentMessages, ["First question", "Stop and answer this"])
+        XCTAssertEqual(cancelCount, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker unverified")
+        XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
     }
 
-    func testVoiceActivityDuringAssistantPlaybackInterruptsBeforeRecognitionText() async throws {
+    // Energy-only VAD (no audio evidence) cannot be voiceprint-verified, so it
+    // must NOT interrupt during playback — it only marks that we are waiting for
+    // speaker verification.
+    func testEnergyOnlyVoiceActivityDuringPlaybackDoesNotInterruptWithoutAudioEvidence() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
-            fastPartialSubmitDelayNanoseconds: 20_000_000
+            fastPartialSubmitDelayNanoseconds: 20_000_000,
+            playbackAutoDrains: false
         )
         try await harness.coordinator.startCall()
         await harness.recognizer.emitFinal("First question")
@@ -836,17 +1002,13 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.waitForState(.speaking)
 
         await harness.recognizer.emitVoiceActivity(inputLevel: 0.8, duration: 0.12)
-        try await harness.coordinator.waitForState(.interrupted)
+        try await Task.sleep(nanoseconds: 50_000_000)
 
+        XCTAssertEqual(harness.coordinator.state, .speaking)
         let cancelCountAfterActivity = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCountAfterActivity, 1)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "accepted")
+        XCTAssertEqual(cancelCountAfterActivity, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "waiting speaker verification")
         XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
-
-        await harness.recognizer.emitPartial("Actually answer this")
-        try await harness.coordinator.waitForState(.thinking)
-
-        XCTAssertEqual(harness.chatClient.sentMessages, ["First question", "Actually answer this"])
     }
 
     func testVerifiedPlaybackBargeInKeepsSpeakerEnabledAndSubmitsOnlyUserSpeech() async throws {
@@ -902,9 +1064,12 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
     func testVoiceActivityAfterAssistantStreamCompletionStillCancelsAudiblePlayback() async throws {
         let chatClient = ControlledChatClient()
+        let verifiedEvidence = UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(evidence: verifiedEvidence)
         let harness = CoordinatorHarness(
             chatClient: chatClient,
-            fastPartialSubmitDelayNanoseconds: 20_000_000
+            fastPartialSubmitDelayNanoseconds: 20_000_000,
+            speakerEvidenceProvider: speakerEvidenceProvider
         )
         try await harness.coordinator.startCall()
         await harness.recognizer.emitFinal("看一下行情")
@@ -914,7 +1079,15 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         chatClient.yield(.completed)
         try await harness.coordinator.waitForState(.listening)
 
-        await harness.recognizer.emitVoiceActivity(inputLevel: 0.8, duration: 0.12)
+        // A verified-speaker VAD even after stream completion still cancels the
+        // lingering audible playback (voiceprint-gated barge-in).
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
         try await harness.coordinator.waitForState(.interrupted)
 
         let cancelCountAfterActivity = await harness.playback.cancelCountSnapshot()
@@ -924,7 +1097,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "accepted")
         XCTAssertEqual(harness.chatClient.sentMessages, ["看一下行情"])
 
-        await harness.recognizer.emitPartial("我想看一下那个")
+        await harness.recognizer.emitFinal("我想看一下那个")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(harness.chatClient.sentMessages, ["看一下行情", "我想看一下那个"])
@@ -1041,12 +1214,17 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
         await harness.recognizer.emitPartial("等等 先看特斯拉")
         try await harness.coordinator.waitForState(.recognizing(partialText: "等等 先看特斯拉"))
-        try await harness.chatClient.waitForSentMessageCount(2)
 
+        // The partial interrupts prelude playback immediately; the final submits.
         let cancelCount = await harness.playback.cancelCountSnapshot()
         let clearCount = await harness.playback.clearCountSnapshot()
         XCTAssertEqual(cancelCount, 1)
         XCTAssertEqual(clearCount, 1)
+        XCTAssertEqual(harness.chatClient.sentMessages, ["帮我看一下今天英伟达"])
+
+        await harness.recognizer.emitFinal("等等 先看特斯拉")
+        try await harness.coordinator.waitForState(.thinking)
+
         XCTAssertEqual(harness.chatClient.sentMessages, ["帮我看一下今天英伟达", "等等 先看特斯拉"])
     }
 
@@ -1246,9 +1424,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.waitForState(.listening)
 
         await harness.recognizer.emitPartial("您好早上好")
-        try await harness.coordinator.waitForState(.thinking)
+        try await harness.coordinator.waitForState(.recognizing(partialText: "您好早上好"))
         await harness.recognizer.emitFinal("您好早上好您今天想先看黄金的行情还是英伟达的市场动态 您好早上好您今天想先看黄金的行情还是英伟达的市场动态")
-        try await Task.sleep(nanoseconds: 50_000_000)
+        try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(chatClient.sentMessages, ["看一下行情", "您好早上好"])
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 2)
@@ -1259,9 +1437,12 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
     func testInterruptedFinalStripsAssistantPlaybackPrefixBeforeUserSpeech() async throws {
         let chatClient = ControlledChatClient()
+        let verifiedEvidence = UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(evidence: verifiedEvidence)
         let harness = CoordinatorHarness(
             chatClient: chatClient,
-            playbackAutoDrains: false
+            playbackAutoDrains: false,
+            speakerEvidenceProvider: speakerEvidenceProvider
         )
         try await harness.coordinator.startCall()
         await harness.recognizer.emitFinal("看一下阿里巴巴")
@@ -1270,9 +1451,16 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         chatClient.yield(.assistantToken("您想继续说说还是先放放？我可以先帮你整理阿里巴巴的股价。"))
         try await harness.coordinator.waitForState(.speaking)
 
-        await harness.recognizer.emitVoiceActivity(inputLevel: 0.12, duration: 0.15)
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
         try await harness.coordinator.waitForState(.interrupted)
-        try await harness.recognizer.waitForStartCount(2)
+        // No recognizer reset: the interrupting utterance stays on the same
+        // stream and the assistant-echo prefix is stripped on its final.
         await harness.recognizer.emitFinal("您想继续说说还是先放放我想特别想了解一下那个关于阿里巴巴的股价")
         try await harness.coordinator.waitForState(.thinking)
 
@@ -1469,7 +1657,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         })
     }
 
-    func testPartialSpeechWhileThinkingBeforeAssistantTokenSubmitsNewTurnWithoutPrependingPreviousTurn() async throws {
+    func testNewSpeechWhileThinkingBeforeAssistantTokenSubmitsNewTurnWithoutPrependingPreviousTurn() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -1481,6 +1669,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         try await harness.coordinator.waitForState(.thinking)
         await harness.recognizer.emitPartial("with more context")
         try await harness.coordinator.waitForState(.recognizing(partialText: "with more context"))
+        await harness.recognizer.emitFinal("with more context")
         try await chatClient.waitForSentMessageCount(2)
 
         XCTAssertEqual(chatClient.sentMessages, ["First question", "with more context"])
@@ -1490,7 +1679,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         })
     }
 
-    func testRepeatedPartialSpeechBeforeAssistantTokenKeepsLatestNewInputWithoutPrependingPreviousTurn() async throws {
+    func testNewSpeechWhileThinkingSubmitsLatestInputWithoutPrependingPreviousTurn() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -1500,10 +1689,12 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
         await harness.recognizer.emitFinal("第一句")
         try await harness.coordinator.waitForState(.thinking)
+        // New speech arrives while the previous response is still pending. The
+        // partials only refresh the display; the final commits the latest input
+        // as its own turn, never prepending the previous turn's text.
         await harness.recognizer.emitPartial("第二句")
-        try await harness.coordinator.waitForState(.recognizing(partialText: "第二句"))
         await harness.recognizer.emitPartial("第三句")
-        try await harness.coordinator.waitForState(.recognizing(partialText: "第三句"))
+        await harness.recognizer.emitFinal("第三句")
         try await chatClient.waitForSentMessageCount(2)
 
         XCTAssertEqual(chatClient.sentMessages, ["第一句", "第三句"])
@@ -1515,15 +1706,26 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
     func testVoiceActivityWhileThinkingCancelsPendingResponseBeforeRecognitionText() async throws {
         let chatClient = ControlledChatClient()
+        let verifiedEvidence = UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(evidence: verifiedEvidence)
         let harness = CoordinatorHarness(
             chatClient: chatClient,
-            fastPartialSubmitDelayNanoseconds: 20_000_000
+            fastPartialSubmitDelayNanoseconds: 20_000_000,
+            speakerEvidenceProvider: speakerEvidenceProvider
         )
         try await harness.coordinator.startCall()
 
         await harness.recognizer.emitFinal("First question")
         try await harness.coordinator.waitForState(.thinking)
-        await harness.recognizer.emitVoiceActivity(inputLevel: 0.8, duration: 0.12)
+        // A verified-speaker VAD while thinking cancels the pending response
+        // (voiceprint-gated barge-in applies to the thinking floor too).
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .currentUser,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
         try await harness.coordinator.waitForState(.interrupted)
 
         let cancelCountAfterActivity = await harness.playback.cancelCountSnapshot()
@@ -1531,7 +1733,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(cancelCountAfterActivity, 1)
         XCTAssertEqual(clearCountAfterActivity, 1)
 
-        await harness.recognizer.emitPartial("New question")
+        await harness.recognizer.emitFinal("New question")
         try await harness.coordinator.waitForState(.thinking)
 
         XCTAssertEqual(chatClient.sentMessages, ["First question", "New question"])
@@ -1610,9 +1812,12 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
     func testAudioOnlyInterruptionWithoutRecognitionReturnsToListening() async throws {
         let chatClient = ControlledChatClient()
+        let verifiedEvidence = UserTurnSpeakerEvidence(match: .verifiedCurrentUser, score: 0.93, threshold: 0.82)
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(evidence: verifiedEvidence)
         let harness = CoordinatorHarness(
             chatClient: chatClient,
-            audioOnlyInterruptionTimeoutNanoseconds: 50_000_000
+            audioOnlyInterruptionTimeoutNanoseconds: 50_000_000,
+            speakerEvidenceProvider: speakerEvidenceProvider
         )
         try await harness.coordinator.startCall()
 
@@ -1622,7 +1827,13 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         chatClient.yield(.assistantToken("好的 我先介绍这个方案的背景和成本"))
         try await harness.coordinator.waitForState(.speaking)
 
-        await harness.recognizer.emitVoiceActivity(inputLevel: 0.8, duration: 0.5)
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.5,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
         try await harness.coordinator.waitForState(.interrupted)
         try await Task.sleep(nanoseconds: 100_000_000)
 

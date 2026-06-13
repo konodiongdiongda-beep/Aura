@@ -1,1 +1,17 @@
+# Local secrets (real Azure key lives here; never commit)
 AuraVoiceAssistant/App/LocalConfig.xcconfig
+
+# Build output / derived data
+build/
+build_sim/
+tmp/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Large vendored third-party binaries (exceed GitHub's 100MB limit;
+# fetch/build these locally — see Docs for setup).
+Vendor/SherpaOnnx/onnxruntime.xcframework/
+
+# macOS
+.DS_Store

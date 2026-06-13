@@ -140,7 +140,7 @@ enum SpeechServiceFactory {
     ) -> SpeechServiceBundle {
         #if os(iOS) && canImport(MicrosoftCognitiveServicesSpeech)
         let azureSynthesizer = AzureSpeechSynthesizer(configuration: configuration)
-        let speakerEvidenceProvider = HeuristicSpeakerEvidenceProvider()
+        let speakerEvidenceProvider = makeSpeakerEvidenceProvider()
         let acousticEchoCanceller = ReferenceAcousticEchoCanceller()
         return SpeechServiceBundle(
             recognizer: AzureSpeechRecognizer(
@@ -163,5 +163,18 @@ enum SpeechServiceFactory {
             reason: "Azure Speech SDK unavailable, using simulator mock"
         )
         #endif
+    }
+
+    /// Prefer the real CAM++ voiceprint (sherpa-onnx + bundled 192-dim model).
+    /// Falls back to the heuristic provider only if the model/SDK can't load, so
+    /// gating still functions (less accurately) rather than disappearing.
+    private static func makeSpeakerEvidenceProvider() -> any UserTurnSpeakerEvidenceProviding {
+        #if os(iOS)
+        if let engine = SpeakerVerificationModelLoader.makeEngine() {
+            return SpeakerVerificationEvidenceProvider(engine: engine)
+        }
+        print("[SpeechServiceFactory] CAM++ voiceprint unavailable, falling back to heuristic provider")
+        #endif
+        return HeuristicSpeakerEvidenceProvider()
     }
 }

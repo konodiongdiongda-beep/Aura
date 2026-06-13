@@ -253,6 +253,16 @@ struct InCallControls: View {
                 viewModel.toggleMute()
             }
 
+            if viewModel.canInterrupt {
+                ControlButton(
+                    icon: "hand.raised.fill",
+                    label: text.interrupt,
+                    tint: AppColors.error
+                ) {
+                    viewModel.interrupt()
+                }
+            }
+
             Button {
                 viewModel.endCall()
             } label: {

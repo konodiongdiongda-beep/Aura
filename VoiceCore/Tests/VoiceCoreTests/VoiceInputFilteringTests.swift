@@ -187,4 +187,23 @@ final class VoiceInputFilteringTests: XCTestCase {
         XCTAssertEqual(gate.evaluate(normalCandidate), .accept)
         XCTAssertEqual(gate.evaluate(playbackCandidate), .reject(.aiPlaybackEcho))
     }
+
+    func testSpeakerProfileGatePassesUncertainToFallbackWhenLenient() {
+        let gate = SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false)
+        let normalCandidate = UserTurnSubmissionCandidate(
+            text: "uncertain but plausible user speech",
+            isAssistantPlaybackActive: false,
+            isInterruptedInput: false,
+            speakerEvidence: UserTurnSpeakerEvidence(match: .uncertain, score: 0.83, threshold: 0.86)
+        )
+        let bargeInCandidate = UserTurnSubmissionCandidate(
+            text: "uncertain barge-in during playback",
+            isAssistantPlaybackActive: true,
+            isInterruptedInput: true,
+            speakerEvidence: UserTurnSpeakerEvidence(match: .uncertain, score: 0.83, threshold: 0.86)
+        )
+
+        XCTAssertEqual(gate.evaluate(normalCandidate), .accept)
+        XCTAssertEqual(gate.evaluate(bargeInCandidate), .accept)
+    }
 }

@@ -318,7 +318,10 @@ public struct SpeakerProfileUserTurnSubmissionGate: UserTurnSubmissionGating {
             case .otherSpeaker:
                 return .reject(.otherSpeaker)
             case .uncertain:
-                return .reject(.uncertainSpeaker)
+                if requiresVerifiedSpeaker {
+                    return .reject(.uncertainSpeaker)
+                }
+                return fallbackGate.evaluate(candidate)
             case .unavailable:
                 break
             }

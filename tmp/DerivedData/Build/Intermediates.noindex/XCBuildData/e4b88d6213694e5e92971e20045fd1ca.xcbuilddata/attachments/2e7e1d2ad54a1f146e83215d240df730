@@ -1,4 +1,0 @@
-module VoiceCore {
-header "VoiceCore-Swift.h"
-export *
-}

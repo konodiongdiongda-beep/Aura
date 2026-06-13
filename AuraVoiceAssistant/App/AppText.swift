@@ -84,6 +84,7 @@ struct AppText: Equatable {
     let unmute: String
     let end: String
     let speaker: String
+    let interrupt: String
 
     static func localized(_ language: AppLanguage) -> AppText {
         switch language {
@@ -146,7 +147,8 @@ struct AppText: Equatable {
                 mute: "Mute",
                 unmute: "Unmute",
                 end: "End",
-                speaker: "Speaker"
+                speaker: "Speaker",
+                interrupt: "Interrupt"
             )
         case .chinese:
             return AppText(
@@ -207,7 +209,8 @@ struct AppText: Equatable {
                 mute: "静音",
                 unmute: "取消静音",
                 end: "挂断",
-                speaker: "扬声器"
+                speaker: "扬声器",
+                interrupt: "打断"
             )
         }
     }

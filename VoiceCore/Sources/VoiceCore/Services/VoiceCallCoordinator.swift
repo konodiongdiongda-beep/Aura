@@ -280,6 +280,40 @@ public final class VoiceCallCoordinator: ObservableObject {
         await handleRecognitionEvent(.partial(partialText))
     }
 
+    /// Manually interrupt the assistant in response to a user tap. Stops audible
+    /// playback and any pending/streaming response, then reopens the floor for
+    /// the user to speak. Unlike voice barge-in this needs no ASR partial or
+    /// speaker verification, so it always works even when the microphone path is
+    /// unreliable (e.g. the simulator).
+    public func interruptAssistant() async {
+        guard state == .speaking || state == .thinking || isAssistantPlaybackActive else { return }
+        captureInterruptedAssistantEchoText()
+        markCurrentAssistantInterrupted()
+        invalidateActiveTurn()
+        didObserveBargeIn = true
+        isCapturingInterruptedInput = true
+        isAssistantStreamComplete = false
+        isAssistantPlaybackActive = false
+        activeUserPartialText = ""
+        activeAssistantText = ""
+        currentAssistantVoiceText = ""
+        currentTurnSubmittedAt = nil
+        didRecordAssistantResponseStart = false
+        activeUserChatID = nil
+        activeBotChatID = nil
+        currentAssistantMessageID = nil
+        pendingUserContinuationMessageID = nil
+        lastFilterResultText = "accepted"
+        // Mirror voice barge-in: land on .interrupted rather than .listening so a
+        // stale playback `.started` event cannot re-promote us to .speaking. The
+        // recovery task drops back to .listening if the user stays silent.
+        state = .interrupted
+        scheduleAudioOnlyInterruptionRecovery()
+        await recognizer.notifyPlaybackStateChanged(false)
+        await playback.cancel()
+        await playback.clear()
+    }
+
     public func simulateVoiceActivity(
         _ event: VoiceActivityEvent,
         speakerHint: SpeakerHint = .unknown,
@@ -298,34 +332,6 @@ public final class VoiceCallCoordinator: ObservableObject {
                 }
             } catch is CancellationError {
                 return
-            } catch let appError as AppError {
-                await MainActor.run {
-                    self.state = .error(appError)
-                }
-            } catch {
-                await MainActor.run {
-                    self.state = .error(.speechRecognitionFailed(error.localizedDescription))
-                }
-            }
-        }
-    }
-
-    private func resetRecognizerForPlaybackBargeInIfNeeded() {
-        guard state == .speaking || isAssistantPlaybackActive else { return }
-        recognizerResetTask?.cancel()
-        recognitionTask?.cancel()
-        recognitionTask = nil
-        recognizerResetTask = Task { [weak self] in
-            guard let self else { return }
-            await self.recognizer.cancel()
-            guard !Task.isCancelled else { return }
-            let recognitionEvents = await self.recognizer.events()
-            await MainActor.run {
-                guard !Task.isCancelled else { return }
-                self.startRecognitionEvents(recognitionEvents)
-            }
-            do {
-                try await self.recognizer.start()
             } catch let appError as AppError {
                 await MainActor.run {
                     self.state = .error(appError)
@@ -377,27 +383,44 @@ public final class VoiceCallCoordinator: ObservableObject {
         case .partial(let text):
             guard let cleanText = userSpeechTextForCurrentInput(text) else { return }
             guard !rejectAsRecentBackgroundActivityIfNeeded() else { return }
-            guard shouldAcceptPartialForDisplay(cleanText, state: state) || state == .speaking else {
+            if state == .speaking {
+                // Voiceprint-gated barge-in (方案四): a raw recognized partial
+                // NEVER interrupts the assistant on its own, because a partial
+                // carries no audio evidence and therefore cannot be verified as
+                // the primary speaker. Interruption is decided solely by the
+                // VAD + voiceprint path (evaluatePlaybackBargeInActivity) or by a
+                // verified final. This stops a bystander / TV / our own echo from
+                // cutting off the AI. We also do not display the partial yet:
+                // until the speaker is confirmed we don't know it's the user.
+                lastFilterResultText = "waiting voiceprint"
+                return
+            }
+            guard shouldAcceptPartialForDisplay(cleanText, state: state) else {
                 lastFilterResultText = "waiting final"
                 return
             }
             cancelAudioOnlyInterruptionRecovery()
-            if state == .speaking {
-                guard shouldAcceptPlaybackPartialBargeIn(cleanText) else {
-                    lastFilterResultText = "waiting final"
-                    return
+            if state == .thinking {
+                // A partial during thinking is either ASR still settling the
+                // utterance we just fast-submitted (a refinement of the same
+                // turn) or genuinely new speech. Only new speech should
+                // interrupt the pending response; a refinement just corrects
+                // the existing user bubble, mirroring the .thinking final path.
+                if !applyCurrentTurnCorrectionIfNeeded(for: cleanText, allowsInterruptedInput: false) {
+                    startPendingResponseInterruption(partialText: cleanText)
                 }
-                startBargeIn(partialText: cleanText)
-            } else if state == .thinking {
-                startPendingResponseInterruption(partialText: cleanText)
             } else if state == .listening || state == .interrupted || state == .recognizing(partialText: activeUserPartialText) {
+                // Mirror the web coordinator's onPartial: a partial only refreshes
+                // the live display for the open turn. We do NOT auto-submit it.
+                // Submission happens once, on the ASR final, so a single utterance
+                // becomes ONE user bubble instead of being chopped into
+                // ABC -> ABCDEF -> ABCDEFG fragments by fast partial submits.
                 let partialText = partialTextForCurrentRecognition(cleanText)
                 activeUserPartialText = partialText
                 if let pendingUserContinuationMessageID {
                     updateUserMessage(id: pendingUserContinuationMessageID, displayText: partialText)
                 }
                 state = .recognizing(partialText: partialText)
-                scheduleFastPartialSubmit(partialText)
             }
         case .final(let text):
             guard !rejectAsRecentBackgroundActivityIfNeeded() else { return }
@@ -447,7 +470,20 @@ public final class VoiceCallCoordinator: ObservableObject {
         let turnText = consumePendingLeadIn(appending: cleanText)
         switch state {
         case .speaking:
-            guard shouldSubmitPlaybackWindowFinal(turnText, speakerEvidence: speakerEvidence) else { return }
+            // Voiceprint-gated barge-in (方案四), final path: a final interrupts
+            // the assistant ONLY when the speaker is verified as the primary
+            // user. "Other speaker", "uncertain", and missing/unavailable
+            // evidence all keep the AI talking — we never cut it off for a voice
+            // we cannot confirm is the user. This mirrors the VAD path and is
+            // intentionally stricter than the (possibly lenient) submission gate:
+            // stopping the AI is a separate decision from keeping the sentence.
+            guard speakerEvidence?.match == .verifiedCurrentUser else {
+                lastFilterResultText = filterText(for: speakerEvidence)
+                if speakerEvidence?.match == .otherSpeaker || speakerEvidence?.match == .uncertain {
+                    rememberBackgroundRejection(for: speakerEvidence)
+                }
+                return
+            }
             startBargeIn(partialText: turnText)
             submitUserTurn(turnText, speakerEvidence: speakerEvidence)
             return
@@ -514,11 +550,6 @@ public final class VoiceCallCoordinator: ObservableObject {
     }
 
     private func evaluatePlaybackBargeInActivity(_ activity: VoiceActivityEvent) async {
-        if activity.source == .currentUser, activity.audioEvidence == nil, isImmediateBargeInActivity(activity) {
-            startAudioBargeIn()
-            return
-        }
-
         guard activity.inputLevel >= playbackSpeakerCheckInputLevel,
               activity.duration >= playbackSpeakerCheckDuration,
               let audioEvidence = activity.audioEvidence else {
@@ -533,6 +564,13 @@ public final class VoiceCallCoordinator: ObservableObject {
             allowsEnrollment: false
         ))
 
+        // Voiceprint-gated barge-in (mirrors the web coordinator's 方案四): an
+        // interruption is honored ONLY when the speaker is verified as the
+        // primary user. "Other speaker", "uncertain", and "unavailable" all keep
+        // the assistant talking, so a bystander / TV / echo cannot cut it off.
+        // This is intentionally STRICTER than the submission gate (which may run
+        // lenient): deciding *whether to stop the AI* is separate from deciding
+        // *whether to keep the user's sentence*.
         guard evidence?.match == .verifiedCurrentUser else {
             lastFilterResultText = filterText(for: evidence)
             if evidence?.match == .otherSpeaker || evidence?.match == .uncertain {
@@ -817,7 +855,6 @@ public final class VoiceCallCoordinator: ObservableObject {
     private func startBargeIn(partialText: String) {
         guard state == .speaking else { return }
         captureInterruptedAssistantEchoText()
-        resetRecognizerForPlaybackBargeInIfNeeded()
         invalidateActiveTurn()
         didObserveBargeIn = true
         isCapturingInterruptedInput = true
@@ -827,7 +864,14 @@ public final class VoiceCallCoordinator: ObservableObject {
         activeUserPartialText = partialText
         markCurrentAssistantInterrupted()
         state = .recognizing(partialText: partialText)
-        scheduleFastPartialSubmit(partialText)
+        // The barge-in partial only opens the interrupted turn for display.
+        // Submission waits for the ASR final, mirroring the web coordinator, so
+        // the interrupting utterance becomes one bubble instead of fragments.
+        // NOTE: we intentionally do NOT restart the recognizer here. Restarting
+        // dropped the rest of the interrupting sentence (the words after the
+        // first few that triggered the barge-in) into a cancelled stream, so the
+        // user's "等等 我想问英伟达" lost everything after "等等". Keeping the same
+        // stream lets the full utterance arrive in one final, exactly like web.
         Task { [playback] in
             await playback.cancel()
             await playback.clear()
@@ -837,7 +881,6 @@ public final class VoiceCallCoordinator: ObservableObject {
     private func startAudioBargeIn() {
         guard state == .speaking || state == .thinking || state == .listening else { return }
         captureInterruptedAssistantEchoText()
-        resetRecognizerForPlaybackBargeInIfNeeded()
         invalidateActiveTurn()
         didObserveBargeIn = true
         isCapturingInterruptedInput = true
@@ -856,7 +899,6 @@ public final class VoiceCallCoordinator: ObservableObject {
 
     private func startPendingResponseInterruption(partialText: String) {
         captureInterruptedAssistantEchoText()
-        resetRecognizerForPlaybackBargeInIfNeeded()
         invalidateActiveTurn()
         didObserveBargeIn = true
         isCapturingInterruptedInput = true
@@ -869,7 +911,8 @@ public final class VoiceCallCoordinator: ObservableObject {
         currentAssistantMessageID = nil
         pendingUserContinuationMessageID = nil
         state = .recognizing(partialText: partialText)
-        schedulePartialSubmit(partialText, delay: interruptedPartialSubmitDelayNanoseconds)
+        // Interrupting the pending response only opens the new turn for display.
+        // The ASR final commits it, so a single utterance is one user bubble.
         Task { [playback] in
             await playback.cancel()
             await playback.clear()
@@ -962,19 +1005,6 @@ public final class VoiceCallCoordinator: ObservableObject {
             text: text,
             isAssistantPlaybackActive: state == .speaking || isAssistantPlaybackActive,
             isInterruptedInput: isCapturingInterruptedInput,
-            speakerEvidence: speakerEvidence
-        )
-        return shouldSubmit(candidate)
-    }
-
-    private func shouldSubmitPlaybackWindowFinal(
-        _ text: String,
-        speakerEvidence: UserTurnSpeakerEvidence?
-    ) -> Bool {
-        let candidate = UserTurnSubmissionCandidate(
-            text: text,
-            isAssistantPlaybackActive: true,
-            isInterruptedInput: isCapturingInterruptedInput || didObserveBargeIn,
             speakerEvidence: speakerEvidence
         )
         return shouldSubmit(candidate)
@@ -1302,16 +1332,6 @@ public final class VoiceCallCoordinator: ObservableObject {
         leadInClearTask = nil
     }
 
-    private func scheduleFastPartialSubmit(_ text: String) {
-        guard text.count >= 2 else { return }
-        let delay = isCapturingInterruptedInput ? interruptedPartialSubmitDelayNanoseconds : fastPartialSubmitDelayNanoseconds
-        schedulePartialSubmit(text, delay: delay)
-    }
-
-    private func shouldAcceptPlaybackPartialBargeIn(_ text: String) -> Bool {
-        shouldAcceptPartialForDisplay(text, state: .listening) && isMeaningfulBargeInRemainder(text)
-    }
-
     private func playLocalResponsePreludeIfNeeded() {
         guard let prelude = localResponsePreludes.first else { return }
         rememberAssistantSpeech(prelude)
@@ -1333,29 +1353,6 @@ public final class VoiceCallCoordinator: ObservableObject {
     private func isLocalResponsePrelude(_ text: String) -> Bool {
         let cleanText = clean(text)
         return localResponsePreludes.contains { clean($0) == cleanText }
-    }
-
-    private func schedulePartialSubmit(_ text: String, delay: UInt64) {
-        guard text.count >= 2 else { return }
-        partialAutoSubmitTask?.cancel()
-        partialAutoSubmitTask = Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await Task.sleep(nanoseconds: delay)
-            } catch {
-                return
-            }
-            await MainActor.run {
-                guard self.state == .recognizing(partialText: text),
-                      self.clean(self.activeUserPartialText) == self.clean(text) else {
-                    return
-                }
-                self.submitUserTurn(
-                    text,
-                    mergeWithCurrentUserMessage: self.pendingUserContinuationMessageID != nil
-                )
-            }
-        }
     }
 
     private var currentUserBaseText: String? {

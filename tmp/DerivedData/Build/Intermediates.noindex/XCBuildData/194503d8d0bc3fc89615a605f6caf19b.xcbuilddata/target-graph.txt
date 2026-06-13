@@ -1,8 +1,0 @@
-Target dependency graph (4 targets)
-Target 'AuraVoiceAssistantTests' in project 'AuraVoiceAssistant'
-➜ Explicit dependency on target 'AuraVoiceAssistant' in project 'AuraVoiceAssistant'
-Target 'AuraVoiceAssistant' in project 'AuraVoiceAssistant'
-➜ Explicit dependency on target 'VoiceCore' in project 'VoiceCore'
-Target 'VoiceCore' in project 'VoiceCore'
-➜ Explicit dependency on target 'VoiceCore' in project 'VoiceCore'
-Target 'VoiceCore' in project 'VoiceCore' (no dependencies)

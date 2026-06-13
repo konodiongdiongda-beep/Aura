@@ -1,0 +1,11 @@
+// Clang module map exposing the sherpa-onnx C API to Swift as `import sherpa_onnx`.
+//
+// The module map dir is on SWIFT_INCLUDE_PATHS / HEADER_SEARCH_PATHS (project.yml),
+// and the linked xcframework adds its Headers dir so shim.h's
+// <sherpa-onnx/c-api/c-api.h> include resolves. Linking the actual static libs
+// is handled by the xcframework dependencies in project.yml, so no `link`
+// directives here (avoids duplicate/!-named link flags).
+module sherpa_onnx {
+    header "shim.h"
+    export *
+}

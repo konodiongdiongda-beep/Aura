@@ -72,7 +72,30 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
             NSLog("[ProcessedAzureAudioInputStream] voice processing unavailable: \(error.localizedDescription)")
         }
 
-        let sourceFormat = inputNode.outputFormat(forBus: 0)
+        var sourceFormat = inputNode.outputFormat(forBus: 0)
+        // Enabling voice processing (AEC/VPIO) can leave the input node with an
+        // invalid format (0 Hz / 0 channels) on hosts without proper microphone
+        // routing — notably the iOS Simulator. When that happens, fall back to a
+        // plain (non-voice-processed) input node, which the Simulator supports.
+        if sourceFormat.sampleRate <= 0 || sourceFormat.channelCount <= 0, voiceProcessingEnabled {
+            NSLog("[ProcessedAzureAudioInputStream] invalid input format with voice processing; retrying without it")
+            try? inputNode.setVoiceProcessingEnabled(false)
+            voiceProcessingEnabled = false
+            sourceFormat = inputNode.outputFormat(forBus: 0)
+        }
+
+        // If the format is still invalid there is no usable microphone on this
+        // device. Passing a 0-format to installTap makes AVFAudio raise an
+        // Objective-C NSException, which Swift `try` cannot catch and which
+        // aborts the whole process (SIGABRT). Surface a clean Swift error
+        // instead so the coordinator can fail gracefully rather than crash.
+        guard sourceFormat.sampleRate > 0, sourceFormat.channelCount > 0 else {
+            converter = nil
+            inputFormat = nil
+            throw VoiceCore.AppError.speechRecognitionFailed(
+                "No usable microphone input is available on this device (input format \(sourceFormat.sampleRate) Hz, \(sourceFormat.channelCount) ch). Microphone capture requires a real device or a Simulator with host microphone access."
+            )
+        }
         inputFormat = sourceFormat
         converter = AVAudioConverter(from: sourceFormat, to: targetFormat)
 
