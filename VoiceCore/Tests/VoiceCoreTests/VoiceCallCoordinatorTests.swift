@@ -45,7 +45,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker unverified")
     }
 
-    func testPlaybackAwareGateRejectsSpeakingFinalBeforeBargeInMarksInterrupted() async throws {
+    func testPlaybackAwareGateSpeakingFinalWithoutEvidenceInterruptsFailOpen() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -59,12 +59,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         await harness.recognizer.emitFinal("this is recognized speaker output")
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(chatClient.sentMessages, [])
-        XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 0)
-        XCTAssertEqual(harness.coordinator.state, .speaking)
-        // Voiceprint-gated: a final with no speaker evidence cannot be confirmed
-        // as the primary user, so it never interrupts the AI.
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker unverified")
+        // Fail-open: a final with no speaker evidence is NOT confirmed as another
+        // speaker, so it interrupts the assistant rather than being held back.
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
     }
 
     func testSpeakerEvidenceRejectsOtherSpeakerBeforeChatSubmission() async throws {
@@ -104,7 +101,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText), ["我想看黄金行情"])
     }
 
-    func testSpeakerEvidenceDoesNotPromoteUninterruptedPlaybackFinal() async throws {
+    func testSpeakerEvidenceUncertainPlaybackFinalInterruptsFailOpen() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -121,11 +118,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         )
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(chatClient.sentMessages, [])
-        XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 0)
-        XCTAssertEqual(harness.coordinator.state, .speaking)
-        // Voiceprint-gated: an uncertain speaker cannot interrupt the AI.
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
+        // Fail-open: an "uncertain" speaker is not confirmed as someone else, so
+        // the final interrupts the assistant.
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
     }
 
     func testUnknownPlaybackActivityDoesNotPromoteAssistantEchoToInterruptedUserTurn() async throws {
@@ -392,7 +387,7 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatClient.sentMessages, ["帮我查黄金"])
     }
 
-    func testUnverifiedVoiceActivityDuringPlaybackKeepsPlaybackActive() async throws {
+    func testUnverifiedVoiceActivityDuringPlaybackInterruptsFailOpen() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
             evidence: UserTurnSpeakerEvidence(match: .uncertain, score: 0.7, threshold: 0.82)
@@ -416,18 +411,18 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         ))
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(harness.coordinator.state, .speaking)
+        // Fail-open: an "uncertain" speaker is NOT confirmed as someone else, so
+        // the barge-in is honored and playback is cancelled.
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCount, 0)
-        XCTAssertEqual(chatClient.sentMessages, [])
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
+        XCTAssertEqual(cancelCount, 1)
     }
 
-    // Barge-in is STRICTER than the submission gate. Even when the submission
-    // gate runs lenient (requiresVerifiedSpeaker: false), an "uncertain" speaker
-    // must NOT cut off the assistant: deciding whether to stop the AI is a
-    // separate, stricter decision from deciding whether to keep the sentence.
-    func testLenientGateStillDoesNotLetUncertainSpeakerBargeIn() async throws {
+    // Barge-in is fail-open: an "uncertain" speaker is NOT confirmed as someone
+    // else, so it DOES interrupt the assistant. Only a positively identified
+    // different speaker (.otherSpeaker) is blocked. This keeps barge-in working
+    // when no voiceprint is enrolled or the engine is unavailable.
+    func testLenientGateLetsUncertainSpeakerBargeInFailOpen() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
             evidence: UserTurnSpeakerEvidence(match: .uncertain, score: 0.7, threshold: 0.82)
@@ -451,10 +446,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         ))
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(harness.coordinator.state, .speaking)
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCount, 0)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker uncertain")
+        XCTAssertEqual(cancelCount, 1)
     }
 
     func testLenientOtherSpeakerVoiceActivityDuringPlaybackKeepsPlaybackActive() async throws {
@@ -962,9 +956,10 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
     }
 
-    // Final path of the voiceprint gate: a final with no speaker evidence cannot
-    // be confirmed as the primary user, so it must NOT cut off the assistant.
-    func testRecognitionFinalDuringAssistantPlaybackDoesNotInterruptWithoutVoiceprint() async throws {
+    // Final path of the barge-in gate (fail-open): a final with no speaker
+    // evidence is NOT confirmed as another speaker, so it interrupts the
+    // assistant. This keeps barge-in working with no enrolled voiceprint.
+    func testRecognitionFinalDuringAssistantPlaybackInterruptsWithoutVoiceprint() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(chatClient: chatClient, playbackAutoDrains: false)
         try await harness.coordinator.startCall()
@@ -977,11 +972,10 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         await harness.recognizer.emitFinal("Stop and answer this")
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(harness.coordinator.state, .speaking)
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCount, 0)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "speaker unverified")
-        XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
+        XCTAssertEqual(cancelCount, 1)
+        XCTAssertEqual(harness.chatClient.sentMessages, ["First question", "Stop and answer this"])
     }
 
     // Energy-only VAD (no audio evidence) cannot be voiceprint-verified, so it

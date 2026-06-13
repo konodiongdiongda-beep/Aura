@@ -171,9 +171,10 @@ enum SpeechServiceFactory {
     private static func makeSpeakerEvidenceProvider() -> any UserTurnSpeakerEvidenceProviding {
         #if os(iOS)
         if let engine = SpeakerVerificationModelLoader.makeEngine() {
+            print("[Voiceprint] using CAM++ engine (sherpa-onnx), threshold=\(engine.threshold)")
             return SpeakerVerificationEvidenceProvider(engine: engine)
         }
-        print("[SpeechServiceFactory] CAM++ voiceprint unavailable, falling back to heuristic provider")
+        print("[Voiceprint] CAM++ voiceprint unavailable, falling back to heuristic provider")
         #endif
         return HeuristicSpeakerEvidenceProvider()
     }

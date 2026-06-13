@@ -262,28 +262,6 @@ final class VoiceCallViewModel: ObservableObject {
         }
     }
 
-    var canInterrupt: Bool {
-        switch state {
-        case .thinking, .speaking:
-            return true
-        default:
-            return false
-        }
-    }
-
-    func interrupt() {
-        guard let coordinator else {
-            state = .interrupted
-            activeAssistantText = ""
-            return
-        }
-
-        Task {
-            await coordinator.interruptAssistant()
-            sync(from: coordinator)
-        }
-    }
-
     func toggleSpeaker() {
         guard let coordinator else {
             isSpeakerEnabled.toggle()

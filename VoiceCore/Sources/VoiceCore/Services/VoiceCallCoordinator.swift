@@ -381,8 +381,12 @@ public final class VoiceCallCoordinator: ObservableObject {
         case .voiceActivity(let activity):
             await handleVoiceActivity(activity)
         case .partial(let text):
-            guard let cleanText = userSpeechTextForCurrentInput(text) else { return }
-            guard !rejectAsRecentBackgroundActivityIfNeeded() else { return }
+            guard let cleanText = userSpeechTextForCurrentInput(text) else {
+                return
+            }
+            guard !rejectAsRecentBackgroundActivityIfNeeded() else {
+                return
+            }
             if state == .speaking {
                 // Voiceprint-gated barge-in (方案四): a raw recognized partial
                 // NEVER interrupts the assistant on its own, because a partial
@@ -461,7 +465,9 @@ public final class VoiceCallCoordinator: ObservableObject {
     private func handleFinalRecognition(_ text: String, speakerEvidence: UserTurnSpeakerEvidence?) {
         partialAutoSubmitTask?.cancel()
         partialAutoSubmitTask = nil
-        guard let cleanText = userSpeechTextForCurrentInput(text) else { return }
+        guard let cleanText = userSpeechTextForCurrentInput(text) else {
+            return
+        }
         cancelAudioOnlyInterruptionRecovery()
         if shouldHoldAsLeadIn(cleanText, state: state) {
             holdLeadIn(cleanText)
@@ -470,18 +476,17 @@ public final class VoiceCallCoordinator: ObservableObject {
         let turnText = consumePendingLeadIn(appending: cleanText)
         switch state {
         case .speaking:
-            // Voiceprint-gated barge-in (方案四), final path: a final interrupts
-            // the assistant ONLY when the speaker is verified as the primary
-            // user. "Other speaker", "uncertain", and missing/unavailable
-            // evidence all keep the AI talking — we never cut it off for a voice
-            // we cannot confirm is the user. This mirrors the VAD path and is
-            // intentionally stricter than the (possibly lenient) submission gate:
-            // stopping the AI is a separate decision from keeping the sentence.
-            guard speakerEvidence?.match == .verifiedCurrentUser else {
+            // Voiceprint-gated barge-in (fail-open), final path: a final
+            // interrupts the assistant UNLESS the speaker is positively verified
+            // as someone else (`.otherSpeaker`). Verified primary, "uncertain",
+            // "unavailable", and missing evidence all interrupt. This mirrors the
+            // VAD path: we only refuse to stop the AI for a voice we have
+            // CONFIRMED is not the user, so an unenrolled / engine-unavailable
+            // session can still barge in. Stopping the AI is a separate decision
+            // from keeping the sentence (the submission gate).
+            guard speakerEvidence?.match != .otherSpeaker else {
                 lastFilterResultText = filterText(for: speakerEvidence)
-                if speakerEvidence?.match == .otherSpeaker || speakerEvidence?.match == .uncertain {
-                    rememberBackgroundRejection(for: speakerEvidence)
-                }
+                rememberBackgroundRejection(for: speakerEvidence)
                 return
             }
             startBargeIn(partialText: turnText)
@@ -564,18 +569,19 @@ public final class VoiceCallCoordinator: ObservableObject {
             allowsEnrollment: false
         ))
 
-        // Voiceprint-gated barge-in (mirrors the web coordinator's 方案四): an
-        // interruption is honored ONLY when the speaker is verified as the
-        // primary user. "Other speaker", "uncertain", and "unavailable" all keep
-        // the assistant talking, so a bystander / TV / echo cannot cut it off.
-        // This is intentionally STRICTER than the submission gate (which may run
-        // lenient): deciding *whether to stop the AI* is separate from deciding
-        // *whether to keep the user's sentence*.
-        guard evidence?.match == .verifiedCurrentUser else {
+        // Voiceprint-gated barge-in (fail-open): an interruption is honored
+        // UNLESS the speaker is positively verified as someone else
+        // (`.otherSpeaker`). Verified primary user, "uncertain", "unavailable",
+        // and missing evidence all ALLOW the interrupt. This keeps barge-in
+        // working when no profile is enrolled yet or the voiceprint engine is
+        // unavailable, while still blocking a confirmed different speaker (TV /
+        // bystander) from cutting the assistant off. Deciding *whether to stop
+        // the AI* is separate from deciding *whether to keep the user's
+        // sentence* (the submission gate).
+        let bargeInMatch = evidence?.match
+        guard bargeInMatch != .otherSpeaker else {
             lastFilterResultText = filterText(for: evidence)
-            if evidence?.match == .otherSpeaker || evidence?.match == .uncertain {
-                rememberBackgroundRejection(for: evidence)
-            }
+            rememberBackgroundRejection(for: evidence)
             return
         }
 
