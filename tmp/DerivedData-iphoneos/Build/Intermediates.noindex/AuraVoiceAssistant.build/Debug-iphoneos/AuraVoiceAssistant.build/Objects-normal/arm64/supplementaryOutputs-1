@@ -1,0 +1,30 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/App/AppConfig+VoiceCore.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppConfig+VoiceCore.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppConfig+VoiceCore.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppConfig+VoiceCore.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppConfig+VoiceCore.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppConfig+VoiceCore.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/DesignSystem/AppColors.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppColors.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppColors.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppColors.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppColors.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AppColors.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/Speech/AcousticEchoCanceller.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AcousticEchoCanceller.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AcousticEchoCanceller.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AcousticEchoCanceller.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AcousticEchoCanceller.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AcousticEchoCanceller.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/Speech/AdaptiveSpeakerEvidenceProvider.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AdaptiveSpeakerEvidenceProvider.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AdaptiveSpeakerEvidenceProvider.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AdaptiveSpeakerEvidenceProvider.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AdaptiveSpeakerEvidenceProvider.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/AdaptiveSpeakerEvidenceProvider.swiftdeps"
+  }
+}

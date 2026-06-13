@@ -1,0 +1,30 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/App/ContentView.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ContentView.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ContentView.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Models/ConversationTurn.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationTurn.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationTurn.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationTurn.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationTurn.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationTurn.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/History/ConversationStoring.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationStoring.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationStoring.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationStoring.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationStoring.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ConversationStoring.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/Speech/ControlledAudioSpeechSynthesizer.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ControlledAudioSpeechSynthesizer.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ControlledAudioSpeechSynthesizer.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ControlledAudioSpeechSynthesizer.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ControlledAudioSpeechSynthesizer.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/ControlledAudioSpeechSynthesizer.swiftdeps"
+  }
+}

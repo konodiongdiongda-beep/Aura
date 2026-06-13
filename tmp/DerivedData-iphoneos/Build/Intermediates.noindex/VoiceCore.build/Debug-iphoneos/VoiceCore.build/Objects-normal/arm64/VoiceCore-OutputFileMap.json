@@ -1,0 +1,269 @@
+{
+  "" : {
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCore-primary.dia",
+    "emit-module-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCore-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCore-primary-emit-module.dia",
+    "pch" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCore-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCore-primary.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/AppError.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/ChatMessage.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/Conversation.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/ConversationContext.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationContext~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/Pages.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Pages~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/VoiceCallState.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallState~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/AppServices.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppServices~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/ChatDTOs.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatDTOs~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/ChatStreamParser.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatStreamParser~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/ChatWebSocketClient.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatWebSocketClient~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/ConversationIDFactory.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ConversationIDFactory~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/MockChatClient.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockChatClient~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Chat/VoiceCoreDebugHelper.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCoreDebugHelper~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Coding.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Coding~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/History/HistoryDTOs.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryDTOs~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/History/HistoryService.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/HistoryService~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/History/MockHistoryClient.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockHistoryClient~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/ServiceProtocols.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ServiceProtocols~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/MockSpeechServices.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/MockSpeechServices~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/SentenceSegmenter.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SentenceSegmenter~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/SpeechEchoDetector.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechEchoDetector~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/SpeechProtocols.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechProtocols~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/SpeechTextSanitizer.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/SpeechTextSanitizer~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/TTSPlaybackQueue.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/TTSPlaybackQueue~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/Speech/VoiceInputFiltering.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceInputFiltering~partial.swiftmodule"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Services/VoiceCallCoordinator.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.dia",
+    "index-unit-output-path" : "/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.o",
+    "llvm-bc" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.bc",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator.swiftdeps",
+    "swiftmodule" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/VoiceCallCoordinator~partial.swiftmodule"
+  }
+}

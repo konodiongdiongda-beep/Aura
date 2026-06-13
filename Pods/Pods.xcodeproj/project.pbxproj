@@ -1,0 +1,739 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		97D3B6926BF0A2ABAB7F043559FA98A9 /* MicrosoftCognitiveServicesSpeech-iOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A086A6A8E0A37DD0FC892F865802DB64 /* Build configuration list for PBXAggregateTarget "MicrosoftCognitiveServicesSpeech-iOS" */;
+			buildPhases = (
+				A68FA835EC2580FD50EC4E720D5DC8EB /* [CP] Copy XCFrameworks */,
+			);
+			dependencies = (
+			);
+			name = "MicrosoftCognitiveServicesSpeech-iOS";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		0E7A06653F5090AD68E0F98F39824508 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		18F957C949C0F4630C42235A9CF5D040 /* Pods-AuraVoiceAssistant-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A8B805280719244796FC36818572188D /* Pods-AuraVoiceAssistant-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2777F6C32AFE1FA477347076B592ECC5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		354B79E6934CF21176BA28B9C010EFC7 /* Pods-AuraVoiceAssistantTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DCD73CFE3F25990BB6B541FAEFFBAB9D /* Pods-AuraVoiceAssistantTests-dummy.m */; };
+		36298FDD7C33D83EFAF54FF5EB7611BD /* Pods-AuraVoiceAssistant-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A74806F5A3435E9F4B355462CBC482D /* Pods-AuraVoiceAssistant-dummy.m */; };
+		43B99DA787315B47FCE456D805044291 /* Pods-AuraVoiceAssistantTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 308B65D308F98B2FBD55957B752175F1 /* Pods-AuraVoiceAssistantTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		60EA9265FB4A3B2A1503C54AD06676F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7067CA9E47E9B04A5BB1BDEB611498CF;
+			remoteInfo = "Pods-AuraVoiceAssistant";
+		};
+		E41D6C7AD9BC42AE081EE2BC65908888 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97D3B6926BF0A2ABAB7F043559FA98A9;
+			remoteInfo = "MicrosoftCognitiveServicesSpeech-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01C219BF2F95AF47569D9CB5D56C3BEA /* Pods-AuraVoiceAssistant-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AuraVoiceAssistant-frameworks.sh"; sourceTree = "<group>"; };
+		02B309B8666986AD9C9FB0221F1D6B5B /* MicrosoftCognitiveServicesSpeech-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MicrosoftCognitiveServicesSpeech-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		120ED59E3464F9266607985C62FACE85 /* Pods-AuraVoiceAssistant-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AuraVoiceAssistant-Info.plist"; sourceTree = "<group>"; };
+		2D3E17E34748E5AD4AAE65E2DDF37582 /* Pods-AuraVoiceAssistantTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AuraVoiceAssistantTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		2F54D99744945C1B119D10578B5EC113 /* Pods-AuraVoiceAssistantTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AuraVoiceAssistantTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		308B65D308F98B2FBD55957B752175F1 /* Pods-AuraVoiceAssistantTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AuraVoiceAssistantTests-umbrella.h"; sourceTree = "<group>"; };
+		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3BF1898F1879102350BA312C2213296A /* Pods-AuraVoiceAssistantTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AuraVoiceAssistantTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3C2C15235C8D86720C315F8150511E63 /* MicrosoftCognitiveServicesSpeech-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MicrosoftCognitiveServicesSpeech-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		58E27837BF8BDC6D6C90D733F67A3679 /* MicrosoftCognitiveServicesSpeech.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = MicrosoftCognitiveServicesSpeech.xcframework; sourceTree = "<group>"; };
+		5A74806F5A3435E9F4B355462CBC482D /* Pods-AuraVoiceAssistant-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AuraVoiceAssistant-dummy.m"; sourceTree = "<group>"; };
+		700CB2E33DFBE53AF23D8290B1FF2536 /* Pods-AuraVoiceAssistantTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AuraVoiceAssistantTests.release.xcconfig"; sourceTree = "<group>"; };
+		76186B6AFB8599C8D2FB7085FD32E94F /* Pods-AuraVoiceAssistant-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AuraVoiceAssistant-acknowledgements.markdown"; sourceTree = "<group>"; };
+		7AD5311B9C93226F8A1F48146C2AF2F9 /* MicrosoftCognitiveServicesSpeech-iOS-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "MicrosoftCognitiveServicesSpeech-iOS-xcframeworks.sh"; sourceTree = "<group>"; };
+		863533B93E0B2E5855E84B9AA90D0B12 /* Pods-AuraVoiceAssistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AuraVoiceAssistant.release.xcconfig"; sourceTree = "<group>"; };
+		9AA98C68CDC4AA340D48658CFDDA9FCB /* Pods-AuraVoiceAssistant-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AuraVoiceAssistant-acknowledgements.plist"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A8B805280719244796FC36818572188D /* Pods-AuraVoiceAssistant-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AuraVoiceAssistant-umbrella.h"; sourceTree = "<group>"; };
+		A9BC88B05741C7CA882CC1AA7BDCA1F3 /* Pods-AuraVoiceAssistantTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AuraVoiceAssistantTests-Info.plist"; sourceTree = "<group>"; };
+		C1ECECD1A53CA4B20333315EA775BDFC /* Pods-AuraVoiceAssistant.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AuraVoiceAssistant.debug.xcconfig"; sourceTree = "<group>"; };
+		C8F5C16456515CA7A7B5D5E52F4FAAF9 /* Pods-AuraVoiceAssistant */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AuraVoiceAssistant"; path = Pods_AuraVoiceAssistant.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1421AF8A2B3709BC2FC6E629337730F /* Pods-AuraVoiceAssistantTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-AuraVoiceAssistantTests.modulemap"; sourceTree = "<group>"; };
+		DCD73CFE3F25990BB6B541FAEFFBAB9D /* Pods-AuraVoiceAssistantTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AuraVoiceAssistantTests-dummy.m"; sourceTree = "<group>"; };
+		F196D1296F1A5DBBF65C5182482CD3D6 /* Pods-AuraVoiceAssistant.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-AuraVoiceAssistant.modulemap"; sourceTree = "<group>"; };
+		F95824C12B2EB0E9BC29D339FE7510EF /* Pods-AuraVoiceAssistantTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AuraVoiceAssistantTests"; path = Pods_AuraVoiceAssistantTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		577C140A3B8F9515A8064156B224B0D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E7A06653F5090AD68E0F98F39824508 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C809E9A44D8EF06AC3B47AE95A351D8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2777F6C32AFE1FA477347076B592ECC5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		330A08533CDF7D0DED639A5B6EB77EF8 /* Pods-AuraVoiceAssistantTests */ = {
+			isa = PBXGroup;
+			children = (
+				D1421AF8A2B3709BC2FC6E629337730F /* Pods-AuraVoiceAssistantTests.modulemap */,
+				2D3E17E34748E5AD4AAE65E2DDF37582 /* Pods-AuraVoiceAssistantTests-acknowledgements.markdown */,
+				2F54D99744945C1B119D10578B5EC113 /* Pods-AuraVoiceAssistantTests-acknowledgements.plist */,
+				DCD73CFE3F25990BB6B541FAEFFBAB9D /* Pods-AuraVoiceAssistantTests-dummy.m */,
+				A9BC88B05741C7CA882CC1AA7BDCA1F3 /* Pods-AuraVoiceAssistantTests-Info.plist */,
+				308B65D308F98B2FBD55957B752175F1 /* Pods-AuraVoiceAssistantTests-umbrella.h */,
+				3BF1898F1879102350BA312C2213296A /* Pods-AuraVoiceAssistantTests.debug.xcconfig */,
+				700CB2E33DFBE53AF23D8290B1FF2536 /* Pods-AuraVoiceAssistantTests.release.xcconfig */,
+			);
+			name = "Pods-AuraVoiceAssistantTests";
+			path = "Target Support Files/Pods-AuraVoiceAssistantTests";
+			sourceTree = "<group>";
+		};
+		3E1771BA2EFAE07A111504C5BAC132C5 /* MicrosoftCognitiveServicesSpeech-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D68FFDC90C9ECAEE1BC47FBDE825FA71 /* Frameworks */,
+				931C5CDED088F9AE7EA013098F892B35 /* Support Files */,
+			);
+			name = "MicrosoftCognitiveServicesSpeech-iOS";
+			path = "MicrosoftCognitiveServicesSpeech-iOS";
+			sourceTree = "<group>";
+		};
+		675A5DEC050A2D6657457D866BDFC3FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C8F5C16456515CA7A7B5D5E52F4FAAF9 /* Pods-AuraVoiceAssistant */,
+				F95824C12B2EB0E9BC29D339FE7510EF /* Pods-AuraVoiceAssistantTests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		82EFEC5AC61821C79D9FF69BEBD705E5 /* Pods-AuraVoiceAssistant */ = {
+			isa = PBXGroup;
+			children = (
+				F196D1296F1A5DBBF65C5182482CD3D6 /* Pods-AuraVoiceAssistant.modulemap */,
+				76186B6AFB8599C8D2FB7085FD32E94F /* Pods-AuraVoiceAssistant-acknowledgements.markdown */,
+				9AA98C68CDC4AA340D48658CFDDA9FCB /* Pods-AuraVoiceAssistant-acknowledgements.plist */,
+				5A74806F5A3435E9F4B355462CBC482D /* Pods-AuraVoiceAssistant-dummy.m */,
+				01C219BF2F95AF47569D9CB5D56C3BEA /* Pods-AuraVoiceAssistant-frameworks.sh */,
+				120ED59E3464F9266607985C62FACE85 /* Pods-AuraVoiceAssistant-Info.plist */,
+				A8B805280719244796FC36818572188D /* Pods-AuraVoiceAssistant-umbrella.h */,
+				C1ECECD1A53CA4B20333315EA775BDFC /* Pods-AuraVoiceAssistant.debug.xcconfig */,
+				863533B93E0B2E5855E84B9AA90D0B12 /* Pods-AuraVoiceAssistant.release.xcconfig */,
+			);
+			name = "Pods-AuraVoiceAssistant";
+			path = "Target Support Files/Pods-AuraVoiceAssistant";
+			sourceTree = "<group>";
+		};
+		931C5CDED088F9AE7EA013098F892B35 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				7AD5311B9C93226F8A1F48146C2AF2F9 /* MicrosoftCognitiveServicesSpeech-iOS-xcframeworks.sh */,
+				02B309B8666986AD9C9FB0221F1D6B5B /* MicrosoftCognitiveServicesSpeech-iOS.debug.xcconfig */,
+				3C2C15235C8D86720C315F8150511E63 /* MicrosoftCognitiveServicesSpeech-iOS.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/MicrosoftCognitiveServicesSpeech-iOS";
+			sourceTree = "<group>";
+		};
+		B8F1FB067BFDF2A33E3DE018084E87A9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3E1771BA2EFAE07A111504C5BAC132C5 /* MicrosoftCognitiveServicesSpeech-iOS */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				B8F1FB067BFDF2A33E3DE018084E87A9 /* Pods */,
+				675A5DEC050A2D6657457D866BDFC3FA /* Products */,
+				D99E89FE93F9404AE51865657C14842B /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4801F62A6B08CD9B5410329F1A18FDE /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D68FFDC90C9ECAEE1BC47FBDE825FA71 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				58E27837BF8BDC6D6C90D733F67A3679 /* MicrosoftCognitiveServicesSpeech.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D99E89FE93F9404AE51865657C14842B /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				82EFEC5AC61821C79D9FF69BEBD705E5 /* Pods-AuraVoiceAssistant */,
+				330A08533CDF7D0DED639A5B6EB77EF8 /* Pods-AuraVoiceAssistantTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		80118B05A1D88810DA98438606033D99 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43B99DA787315B47FCE456D805044291 /* Pods-AuraVoiceAssistantTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC9C40AAFE57FA9291288007739E92F8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18F957C949C0F4630C42235A9CF5D040 /* Pods-AuraVoiceAssistant-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		7067CA9E47E9B04A5BB1BDEB611498CF /* Pods-AuraVoiceAssistant */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BBEB7CA1A17ECE6971A48D46082AB1C /* Build configuration list for PBXNativeTarget "Pods-AuraVoiceAssistant" */;
+			buildPhases = (
+				BC9C40AAFE57FA9291288007739E92F8 /* Headers */,
+				019175CE6E41E2F97099FEEA01DC85D5 /* Sources */,
+				C809E9A44D8EF06AC3B47AE95A351D8B /* Frameworks */,
+				9AE1C51FB2F8F5C5810FC775BE857FED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31D0EC5620AD5682B4720DBFC1F15330 /* PBXTargetDependency */,
+			);
+			name = "Pods-AuraVoiceAssistant";
+			productName = Pods_AuraVoiceAssistant;
+			productReference = C8F5C16456515CA7A7B5D5E52F4FAAF9 /* Pods-AuraVoiceAssistant */;
+			productType = "com.apple.product-type.framework";
+		};
+		B19412F4BA45F195F5BF2373DD4072F2 /* Pods-AuraVoiceAssistantTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED07602B34F3DB5F1D8088938EF45272 /* Build configuration list for PBXNativeTarget "Pods-AuraVoiceAssistantTests" */;
+			buildPhases = (
+				80118B05A1D88810DA98438606033D99 /* Headers */,
+				88312005D1A94203C27CC1840D84A5F8 /* Sources */,
+				577C140A3B8F9515A8064156B224B0D7 /* Frameworks */,
+				05D7A3E9B63CFDCF38476AAB4DC6C124 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FEA72362D57B9DE5A39A36A0AECE29E2 /* PBXTargetDependency */,
+			);
+			name = "Pods-AuraVoiceAssistantTests";
+			productName = Pods_AuraVoiceAssistantTests;
+			productReference = F95824C12B2EB0E9BC29D339FE7510EF /* Pods-AuraVoiceAssistantTests */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 675A5DEC050A2D6657457D866BDFC3FA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97D3B6926BF0A2ABAB7F043559FA98A9 /* MicrosoftCognitiveServicesSpeech-iOS */,
+				7067CA9E47E9B04A5BB1BDEB611498CF /* Pods-AuraVoiceAssistant */,
+				B19412F4BA45F195F5BF2373DD4072F2 /* Pods-AuraVoiceAssistantTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		05D7A3E9B63CFDCF38476AAB4DC6C124 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AE1C51FB2F8F5C5810FC775BE857FED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A68FA835EC2580FD50EC4E720D5DC8EB /* [CP] Copy XCFrameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/MicrosoftCognitiveServicesSpeech-iOS/MicrosoftCognitiveServicesSpeech-iOS-xcframeworks-input-files.xcfilelist",
+			);
+			name = "[CP] Copy XCFrameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/MicrosoftCognitiveServicesSpeech-iOS/MicrosoftCognitiveServicesSpeech-iOS-xcframeworks-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/MicrosoftCognitiveServicesSpeech-iOS/MicrosoftCognitiveServicesSpeech-iOS-xcframeworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		019175CE6E41E2F97099FEEA01DC85D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36298FDD7C33D83EFAF54FF5EB7611BD /* Pods-AuraVoiceAssistant-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		88312005D1A94203C27CC1840D84A5F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				354B79E6934CF21176BA28B9C010EFC7 /* Pods-AuraVoiceAssistantTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		31D0EC5620AD5682B4720DBFC1F15330 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "MicrosoftCognitiveServicesSpeech-iOS";
+			target = 97D3B6926BF0A2ABAB7F043559FA98A9 /* MicrosoftCognitiveServicesSpeech-iOS */;
+			targetProxy = E41D6C7AD9BC42AE081EE2BC65908888 /* PBXContainerItemProxy */;
+		};
+		FEA72362D57B9DE5A39A36A0AECE29E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-AuraVoiceAssistant";
+			target = 7067CA9E47E9B04A5BB1BDEB611498CF /* Pods-AuraVoiceAssistant */;
+			targetProxy = 60EA9265FB4A3B2A1503C54AD06676F4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		154F61BD4FFC4CAF5127A26A596CC370 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 700CB2E33DFBE53AF23D8290B1FF2536 /* Pods-AuraVoiceAssistantTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5994EB6D6EB4EC7C7303515C201556B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C2C15235C8D86720C315F8150511E63 /* MicrosoftCognitiveServicesSpeech-iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		61B2CAECA69D943866E413E8F2F5F259 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02B309B8666986AD9C9FB0221F1D6B5B /* MicrosoftCognitiveServicesSpeech-iOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		82449DE9F6D6E07C72C75CB52B4CF32A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 863533B93E0B2E5855E84B9AA90D0B12 /* Pods-AuraVoiceAssistant.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		90D4D09BCB6A4660E43ACBE9ECB6FE9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		9553C89E183877A5CB2F3C6801BEC129 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		D6D8A80E4FC0EBE7E46F7098DB619433 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BF1898F1879102350BA312C2213296A /* Pods-AuraVoiceAssistantTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E07D77AE803AE20EB19F5A6979E446E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1ECECD1A53CA4B20333315EA775BDFC /* Pods-AuraVoiceAssistant.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90D4D09BCB6A4660E43ACBE9ECB6FE9A /* Debug */,
+				9553C89E183877A5CB2F3C6801BEC129 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4BBEB7CA1A17ECE6971A48D46082AB1C /* Build configuration list for PBXNativeTarget "Pods-AuraVoiceAssistant" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E07D77AE803AE20EB19F5A6979E446E9 /* Debug */,
+				82449DE9F6D6E07C72C75CB52B4CF32A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A086A6A8E0A37DD0FC892F865802DB64 /* Build configuration list for PBXAggregateTarget "MicrosoftCognitiveServicesSpeech-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61B2CAECA69D943866E413E8F2F5F259 /* Debug */,
+				5994EB6D6EB4EC7C7303515C201556B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED07602B34F3DB5F1D8088938EF45272 /* Build configuration list for PBXNativeTarget "Pods-AuraVoiceAssistantTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6D8A80E4FC0EBE7E46F7098DB619433 /* Debug */,
+				154F61BD4FFC4CAF5127A26A596CC370 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AZURE_SPEECH_KEY</key>
+	<string>$(AZURE_SPEECH_KEY)</string>
+	<key>AZURE_SPEECH_REGION</key>
+	<string>$(AZURE_SPEECH_REGION)</string>
+	<key>AZURE_SPEECH_VOICE_NAME</key>
+	<string>$(AZURE_SPEECH_VOICE_NAME)</string>
+	<key>AZURE_SPEECH_MODE</key>
+	<string>$(AZURE_SPEECH_MODE)</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Aura Voice Assistant</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>CHAT_WEBSOCKET_URL</key>
+	<string>$(CHAT_WEBSOCKET_URL)</string>
+	<key>DEFAULT_USERNAME</key>
+	<string>$(DEFAULT_USERNAME)</string>
+	<key>DEFAULT_USER_ID</key>
+	<string>$(DEFAULT_USER_ID)</string>
+	<key>HISTORY_LIST_URL</key>
+	<string>$(HISTORY_LIST_URL)</string>
+	<key>HISTORY_MESSAGES_URL</key>
+	<string>$(HISTORY_MESSAGES_URL)</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Aura uses the microphone to capture your voice during assistant calls.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Aura uses speech recognition to transcribe your voice during assistant calls.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>43.98.164.20</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string></string>
+	</dict>
+</dict>
+</plist>

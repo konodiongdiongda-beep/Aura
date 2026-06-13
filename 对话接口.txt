@@ -1,0 +1,215 @@
+
+用户名：test01
+用户ID：35
+cid：会话id，客户端自己生成，生成方式：UUID().uuidString，
+cid_md5：会话id md5转小写后取前16位
+
+
+会话列表和消息列表主要是为了方便开发调试使用
+
+
+1、会话列表（只有在客户端成功调用一次发送消息接口，并且服务端有响应时，才会生成新的会话），post
+请求URL: http://43.98.164.20:8007/history/user/page
+
+请求参数:
+{
+  "user_id" : 35,
+  "page" : 1,
+  "page_size" : 20,
+  "user_name" : "test01",
+  "context" : {
+    "request_id" : "test01_861240b2fb9c3943_20260519205156", //（user_name+cid_md5+ second_time）
+    "cid_md5" : "861240b2fb9c3943", // 会话ID md5转小写后取前16位
+    "second_time" : "20260519205156" // 当前时间戳字符串，秒级
+  }
+}
+
+
+2、消息列表，post
+请求URL: http://43.98.164.20:8007/history-with-alerts/
+请求参数:
+{
+  "page_size" : 20,
+  "page" : 0,
+  "user_name" : "test01",
+  "user_id" : 35,
+  "context" : {
+    "second_time" : "20260519213258",
+    "cid_md5" : "d6268356dca58b09",
+    "request_id" : "test01_d6268356dca58b09_20260519213258"
+  },
+  "cid" : "33EE4404-D63B-41FE-AD7B-1767D70E071E"
+}
+
+
+返回结果示例：
+{
+  "message" : "获取成功",
+  "total" : 2,
+  "success" : true,
+  "data" : [
+    {
+      "cid" : "54909A13-24BC-46C8-A8BD-42BFFD151D60",
+      "metadata" : {
+        "files" : [
+
+        ],
+        "user_chat_id" : "3D1900A5-9B6F-4A0E-BE51-F3A36A6E0EE0",
+        "request_id" : "liyang_861240b2fb9c3943_20260519210857",
+        "prompt_version" : null,
+        "cid_md5" : "861240b2fb9c3943",
+        "voice_mode" : false,
+        "current_turn_channel" : null,
+        "second_time" : "20260519210857",
+        "cards_opt_in" : false,
+        "bot_chat_id" : "D973B717-51DE-420C-920A-9BC6105BD5E5",
+        "tone_profile_version" : null,
+        "image_urls" : [
+
+        ],
+        "additionalProp1" : {
+
+        },
+        "model_name" : "azure-gpt-4.1",
+        "stream" : true,
+        "session_input_mode" : null
+      },
+      "role" : "user",
+      "user_id" : 4,
+      "voice_text" : null,
+      "created_at" : "2026-05-19T13:08:57",
+      "chat_id" : "3D1900A5-9B6F-4A0E-BE51-F3A36A6E0EE0",
+      "updated_at" : "2026-05-19T13:08:57",
+      "user_name" : "liyang",
+      "display_text" : "晚上好啊",
+      "id" : 1476
+    },
+    {
+      "cid" : "54909A13-24BC-46C8-A8BD-42BFFD151D60",
+      "metadata" : {
+        "agent_name" : "system_agent",
+        "stream_final" : true,
+        "processing_time" : null,
+        "user_chat_id" : "3D1900A5-9B6F-4A0E-BE51-F3A36A6E0EE0",
+        "bot_chat_id" : "D973B717-51DE-420C-920A-9BC6105BD5E5",
+        "iterations" : 1,
+        "final_state" : "FINISHED",
+        "status" : "completed"
+      },
+      "role" : "bot",
+      "user_id" : 4,
+      "voice_text" : null,
+      "created_at" : "2026-05-19T21:09:07",
+      "chat_id" : "D973B717-51DE-420C-920A-9BC6105BD5E5",
+      "updated_at" : "2026-05-19T21:09:07",
+      "user_name" : "liyang",
+      "display_text" : "您好，晚上好。今天想聊点什么，或者要看哪些行情吗？",
+      "id" : 1477
+    }
+  ]
+}
+
+
+
+
+
+3、发送消息：websocket请求方式
+请求URL: ws://43.98.164.20:8007/ws/chat
+请求参数:
+{
+  "collect_step_results" : false,
+  "user_name" : "test01",
+  "context" : {
+    "stream" : true,
+    "additionalProp1" : {
+
+    },
+    "model_name" : "azure-gpt-4.1", // 大模型名称固定值
+    "user_chat_id" : "486B5216-D40C-44C1-809F-6ED5E5F41E6E", // 用户消息id，客户端生成，UUID().uuidString
+    "bot_chat_id" : "73E6F86A-AE9B-4C11-9947-01BD603B1B46",  // ai消息id，客户端生成，UUID().uuidString
+    "files" : [
+
+    ],
+    "image_urls" : [
+
+    ],
+    "voice_mode" : false,
+    "cid_md5" : "023312cb830dde1a",
+    "second_time" : "20260519213152",
+    "request_id" : "test01_023312cb830dde1a_20260519213152"
+  },
+  "user_id" : 35,
+  "cid" : "33EE4404-D63B-41FE-AD7B-1767D70E071E", // 当前的会话id，同一个会话里发送消息的cid是相同的，UUID().uuidString
+  "content" : "你是谁"
+}
+
+返回结果，流式数据返回：
+{"agent_name": "system_agent", "step_type": "model_response", "step_output": {"tool": "chat_agent"}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "我是", "index": 0}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "财经", "index": 1}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "领域", "index": 2}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "的", "index": 3}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "对", "index": 4}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "话", "index": 5}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "助手", "index": 6}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "，可以", "index": 7}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "协", "index": 8}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "助", "index": 9}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "您", "index": 10}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "查", "index": 11}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "、", "index": 13}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "跟", "index": 14}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "进", "index": 15}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "新闻", "index": 16}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "、", "index": 17}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "聊", "index": 18}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "市场", "index": 19}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "，也", "index": 20}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "能", "index": 21}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "接", "index": 22}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "住", "index": 23}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "绪", "index": 25}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "和", "index": 26}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "日", "index": 28}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "沟", "index": 30}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "通", "index": 31}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "。", "index": 32}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "有什么", "index": 33}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "问题", "index": 34}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "都", "index": 35}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "直接", "index": 37}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "问", "index": 38}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "我", "index": 39}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"display_text": "。", "index": 40}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "[],", "index": 41}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "\"", "index": 42}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "intent", "index": 43}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "\":\"", "index": 44}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "chat", "index": 45}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "\"", "index": 46}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "}", "index": 47}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "model_response", "step_output": {"tool": "attempt_completion"}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "final_token", "step_output": {"text": "isplay_text\":\"我是财经领域的对话助手，可以协助您查行情、跟进新闻、聊市场，也能接住情绪和做日常沟通。有什么问题都可以直接问我。\",\"cards\":[],\"intent\":\"chat\"}", "index": 48}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "chat_agent", "step_type": "tool_execution", "step_output": {"tool_name": "attempt_completion", "tool_status": "success", "state_after": "AgentState.FINISHED"}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "system_agent", "step_type": "tool_execution", "step_output": {"tool_name": "chat_agent", "tool_status": "success", "state_after": "AgentState.FINISHED"}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"type": "message_ids", "user_message_id": 1480, "bot_message_id": 1481, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+{"agent_name": "system_agent", "step_type": "finish", "step_output": {"status": "completed", "result": "{\"voice_text\":\"\",\"display_text\":\"我是财经领域的对话助手，可以协助您查行情、跟进新闻、聊市场，也能接住情绪和做日常沟通。有什么问题都可以直接问我。\",\"cards\":[],\"intent\":\"chat\"}", "iterations": 1, "final_state": "FINISHED", "agent_name": "system_agent", "agent_stats": {"system_agent": {"agent_time": 5.627, "polish_time": 0.0, "total_time": 5.628}, "chat_agent": {"agent_time": 2.455, "polish_time": 0.0, "total_time": 2.486}, "total_time": 5.628}, "chat_delivery": {"trace_id": "test01_023312cb830dde1a_20260519213152", "intent": "chat", "mode": "display_only", "prompt_version": "chat-agent-md@1", "tone_profile_version": "default", "task_status": "display_only_completed", "mode_decision": {"mode": "display_only", "reason": "explicit_voice_mode_off", "signals": {"voice_mode_flag": false, "session_input_mode": null, "current_turn_channel": null, "explicit_screen_preference": false}}, "voice": {"text_for_tts": ""}, "display": {"daybook_narrative": "我是财经领域的对话助手，可以协助您查行情、跟进新闻、聊市场，也能接住情绪和做日常沟通。有什么问题都可以直接问我。", "cards": []}}, "stream_ack_phrase": "", "total_time": 5.637}, "user_chat_id": "486B5216-D40C-44C1-809F-6ED5E5F41E6E", "bot_chat_id": "73E6F86A-AE9B-4C11-9947-01BD603B1B46"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/App/AppText.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppText.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppText.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppText.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppText.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppText.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/DesignSystem/AppSpacing.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppSpacing.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppSpacing.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppSpacing.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppSpacing.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppSpacing.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/DesignSystem/AppTypography.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppTypography.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppTypography.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppTypography.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppTypography.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppTypography.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Views/Shared/AppHeaderView.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppHeaderView.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppHeaderView.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppHeaderView.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppHeaderView.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/AppHeaderView.swiftdeps"
+  }
+}

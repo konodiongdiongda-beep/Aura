@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "manifest": "/Users/dongbu/Public/Data/Myproject/phone/tools/real_voice_regression/manifest.json",
+  "summary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0
+  },
+  "scenarios": [
+    {
+      "scenario": "assistant_tail_echo",
+      "category": "ai_playback_echo",
+      "runtime": {
+        "target": "trace",
+        "route": "speaker",
+        "aec": "trace-only",
+        "simulator_note": "Deterministic policy replay; not physical AEC evidence."
+      },
+      "asr": [
+        {
+          "index": 0,
+          "type": "final",
+          "text": "确认一下"
+        },
+        {
+          "index": 6,
+          "type": "final",
+          "text": "请告诉我具体是哪些条件我来帮您确认"
+        }
+      ],
+      "playback": [
+        {
+          "index": 2,
+          "type": "assistant_final",
+          "text": "您想确认不是全部条件，而是特定的一些。请告诉我具体是哪些条件，我来帮您确认。"
+        },
+        {
+          "index": 3,
+          "type": "assistant_completed",
+          "text": ""
+        }
+      ],
+      "coordinator": {
+        "states": [
+          "thinking",
+          "listening"
+        ],
+        "filter": "rejected echo"
+      },
+      "result": {
+        "submitted_texts": [
+          "确认一下"
+        ],
+        "user_messages": [
+          "确认一下"
+        ],
+        "last_filter": "rejected echo",
+        "final_state": "listening",
+        "pass": true
+      }
+    },
+    {
+      "scenario": "short_answer_after_prompt",
+      "category": "short_answer",
+      "runtime": {
+        "target": "trace",
+        "route": "speaker",
+        "aec": "trace-only",
+        "simulator_note": "Deterministic policy replay; not physical AEC evidence."
+      },
+      "asr": [
+        {
+          "index": 0,
+          "type": "final",
+          "text": "看一下行情"
+        },
+        {
+          "index": 5,
+          "type": "final",
+          "text": "黄金"
+        }
+      ],
+      "playback": [
+        {
+          "index": 2,
+          "type": "assistant_final",
+          "text": "您想先看黄金，还是先看英伟达的情况？"
+        },
+        {
+          "index": 3,
+          "type": "assistant_completed",
+          "text": ""
+        }
+      ],
+      "coordinator": {
+        "states": [
+          "thinking",
+          "listening",
+          "thinking"
+        ],
+        "filter": "verification unavailable"
+      },
+      "result": {
+        "submitted_texts": [
+          "看一下行情",
+          "黄金"
+        ],
+        "user_messages": [
+          "看一下行情",
+          "黄金"
+        ],
+        "last_filter": "verification unavailable",
+        "final_state": "thinking",
+        "pass": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "short_answer_after_prompt",
+  "description": "A short real user answer after an assistant prompt must not be rejected as prompt echo.",
+  "runtime": {
+    "target": "trace",
+    "route": "speaker",
+    "aec": "trace-only",
+    "simulator_note": "Deterministic policy replay; not physical AEC evidence."
+  },
+  "steps": [
+    {"type": "user_final", "text": "看一下行情"},
+    {"type": "wait_state", "state": "thinking"},
+    {
+      "type": "assistant_final",
+      "display_text": "您想先看黄金，还是先看英伟达的情况？",
+      "voice_text": "您想先看黄金，还是先看英伟达的情况？"
+    },
+    {"type": "assistant_completed"},
+    {"type": "wait_state", "state": "listening"},
+    {"type": "user_final", "text": "黄金"},
+    {"type": "wait_state", "state": "thinking"}
+  ],
+  "expect": {
+    "submitted_texts": ["看一下行情", "黄金"],
+    "user_messages": ["看一下行情", "黄金"],
+    "last_filter": "verification unavailable",
+    "final_state": "thinking"
+  }
+}

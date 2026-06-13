@@ -1,0 +1,23 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/AppError.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/AppError.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/ChatMessage.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/ChatMessage.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/VoiceCore/Sources/VoiceCore/Models/Conversation.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/VoiceCore.build/Debug-iphoneos/VoiceCore.build/Objects-normal/arm64/Conversation.swiftdeps"
+  }
+}

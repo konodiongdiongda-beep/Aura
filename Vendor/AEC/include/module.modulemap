@@ -1,0 +1,5 @@
+module AuraAEC {
+  header "AuraAEC.h"
+  export *
+  link "aec"
+}

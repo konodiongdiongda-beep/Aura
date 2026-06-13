@@ -1,0 +1,30 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/DesignSystem/GlassPanel.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/GlassPanel.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/GlassPanel.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/GlassPanel.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/GlassPanel.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/GlassPanel.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/ViewModels/HistoryListViewModel.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListViewModel.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListViewModel.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListViewModel.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListViewModel.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListViewModel.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Views/History/HistoryListView.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListView.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListView.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListView.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListView.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/HistoryListView.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Views/Voice/InCallView.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/InCallView.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/InCallView.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/InCallView.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/InCallView.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData-iphoneos/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphoneos/AuraVoiceAssistant.build/Objects-normal/arm64/InCallView.swiftdeps"
+  }
+}

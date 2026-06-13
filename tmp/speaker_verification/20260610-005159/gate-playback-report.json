@@ -1,0 +1,46 @@
+{
+  "profile": {
+    "user_id": "current-user",
+    "sample_count": 2,
+    "extractor": "numpy-mfcc-prototype-v1"
+  },
+  "thresholds": {
+    "accept_threshold": 0.86,
+    "uncertain_margin": 0.04,
+    "mode": "playback"
+  },
+  "candidates": [
+    {
+      "path": "tmp/voice_samples/user-sample-20260610-005159-03.wav",
+      "score": 0.878222,
+      "decision": "accepted_current_user",
+      "mode": "playback",
+      "should_submit": true,
+      "threshold": 0.86
+    },
+    {
+      "path": "tmp/speaker_verification/20260610-005159/ai-playback.wav",
+      "score": 0.832208,
+      "decision": "uncertain",
+      "mode": "playback",
+      "should_submit": false,
+      "threshold": 0.86
+    },
+    {
+      "path": "tmp/speaker_verification/20260610-005159/mix-user03-ai-70-70.wav",
+      "score": 0.849499,
+      "decision": "uncertain",
+      "mode": "playback",
+      "should_submit": false,
+      "threshold": 0.86
+    },
+    {
+      "path": "tmp/speaker_verification/20260610-005159/mix-user03-ai-40-90.wav",
+      "score": 0.842339,
+      "decision": "uncertain",
+      "mode": "playback",
+      "should_submit": false,
+      "threshold": 0.86
+    }
+  ]
+}

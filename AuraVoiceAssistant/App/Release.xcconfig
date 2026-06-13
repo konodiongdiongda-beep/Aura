@@ -1,0 +1,3 @@
+#include "../../Pods/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.release.xcconfig"
+#include? "LocalConfig.xcconfig"
+

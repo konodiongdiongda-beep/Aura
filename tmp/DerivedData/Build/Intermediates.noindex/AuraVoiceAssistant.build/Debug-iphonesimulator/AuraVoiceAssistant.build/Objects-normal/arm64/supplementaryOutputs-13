@@ -1,0 +1,23 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/DesignSystem/PreviewScaffold.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewScaffold.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewScaffold.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewScaffold.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewScaffold.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewScaffold.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/Speech/ProcessedAzureAudioInputStream.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/ProcessedAzureAudioInputStream.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/ProcessedAzureAudioInputStream.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/ProcessedAzureAudioInputStream.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/ProcessedAzureAudioInputStream.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/ProcessedAzureAudioInputStream.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Views/Settings/SettingsView.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/SettingsView.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/SettingsView.swiftdeps"
+  }
+}

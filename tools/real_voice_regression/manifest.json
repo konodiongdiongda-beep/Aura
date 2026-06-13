@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "description": "MVP real-voice regression scenarios. Audio fixtures can be added incrementally; trace fixtures are the deterministic policy replay source.",
+  "scenarios": [
+    {
+      "id": "assistant_tail_echo",
+      "category": "ai_playback_echo",
+      "trace": "../../VoiceCore/Tests/VoiceCoreTests/Fixtures/RealVoiceTrace/assistant_tail_echo.trace.json",
+      "audio": null,
+      "must_pass": true,
+      "acceptance": {
+        "submitted_texts": ["确认一下"],
+        "last_filter": "rejected echo"
+      }
+    },
+    {
+      "id": "short_answer_after_prompt",
+      "category": "short_answer",
+      "trace": "../../VoiceCore/Tests/VoiceCoreTests/Fixtures/RealVoiceTrace/short_answer_after_prompt.trace.json",
+      "audio": null,
+      "must_pass": true,
+      "acceptance": {
+        "submitted_texts": ["看一下行情", "黄金"],
+        "last_filter": "verification unavailable"
+      }
+    }
+  ]
+}

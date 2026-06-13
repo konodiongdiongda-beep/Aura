@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "assistant_tail_echo",
+  "description": "Assistant sentence tail returns as delayed ASR final and must not become a user turn.",
+  "runtime": {
+    "target": "trace",
+    "route": "speaker",
+    "aec": "trace-only",
+    "simulator_note": "Deterministic policy replay; not physical AEC evidence."
+  },
+  "steps": [
+    {"type": "user_final", "text": "确认一下"},
+    {"type": "wait_state", "state": "thinking"},
+    {
+      "type": "assistant_final",
+      "display_text": "您想确认不是全部条件，而是特定的一些。请告诉我具体是哪些条件，我来帮您确认。",
+      "voice_text": "您想确认不是全部条件，而是特定的一些。请告诉我具体是哪些条件，我来帮您确认。"
+    },
+    {"type": "assistant_completed"},
+    {"type": "wait_state", "state": "listening"},
+    {"type": "advance_time", "seconds": 20},
+    {"type": "user_final", "text": "请告诉我具体是哪些条件我来帮您确认"},
+    {"type": "settle", "milliseconds": 50}
+  ],
+  "expect": {
+    "submitted_texts": ["确认一下"],
+    "user_messages": ["确认一下"],
+    "last_filter": "rejected echo",
+    "final_state": "listening"
+  }
+}

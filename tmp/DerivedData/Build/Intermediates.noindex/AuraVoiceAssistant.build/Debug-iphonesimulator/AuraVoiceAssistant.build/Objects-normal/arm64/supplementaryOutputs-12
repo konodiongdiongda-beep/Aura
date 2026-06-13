@@ -1,0 +1,23 @@
+{
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Mocks/MockData.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MockData.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MockData.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MockData.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MockData.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MockData.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/Services/History/PreviewConversationStore.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewConversationStore.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewConversationStore.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewConversationStore.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewConversationStore.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/PreviewConversationStore.swiftdeps"
+  },
+  "/Users/dongbu/Public/Data/Myproject/phone/AuraVoiceAssistant/ViewModels/MessageListViewModel.swift" : {
+    "const-values" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MessageListViewModel.swiftconstvalues",
+    "dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MessageListViewModel.d",
+    "diagnostics" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MessageListViewModel.dia",
+    "object" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MessageListViewModel.o",
+    "swift-dependencies" : "/Users/dongbu/Public/Data/Myproject/phone/tmp/DerivedData/Build/Intermediates.noindex/AuraVoiceAssistant.build/Debug-iphonesimulator/AuraVoiceAssistant.build/Objects-normal/arm64/MessageListViewModel.swiftdeps"
+  }
+}

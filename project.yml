@@ -1,0 +1,80 @@
+name: AuraVoiceAssistant
+options:
+  bundleIdPrefix: com.aura
+  deploymentTarget:
+    iOS: "15.0"
+packages:
+  VoiceCore:
+    path: VoiceCore
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 1.0
+targets:
+  AuraVoiceAssistant:
+    type: application
+    platform: iOS
+    sources:
+      - path: AuraVoiceAssistant
+      - path: Vendor/AEC/SpeexDSP/libspeexdsp
+    dependencies:
+      - package: VoiceCore
+    configFiles:
+      Debug: AuraVoiceAssistant/App/Debug.xcconfig
+      Release: AuraVoiceAssistant/App/Release.xcconfig
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aura.voiceassistant
+        IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+        INFOPLIST_FILE: AuraVoiceAssistant/App/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CONFIGURATION_BUILD_DIR: $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+        HEADER_SEARCH_PATHS:
+          - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include
+          - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp
+        HEADER_SEARCH_PATHS[sdk=iphoneos*]:
+          - $(PROJECT_DIR)/Vendor/AEC/include
+          - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include
+          - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp
+        LIBRARY_SEARCH_PATHS[sdk=iphoneos*]: $(PROJECT_DIR)/Vendor/AEC/lib/ios-arm64
+        OTHER_LDFLAGS[sdk=iphoneos*]: -laec
+        GCC_PREPROCESSOR_DEFINITIONS:
+          - $(inherited)
+          - FLOATING_POINT
+          - USE_KISS_FFT
+          - EXPORT=
+          - DISABLE_WARNINGS
+    info:
+      path: AuraVoiceAssistant/App/Info.plist
+      properties:
+        CFBundleDisplayName: Aura Voice Assistant
+        UILaunchScreen:
+          UIColorName: ""
+        NSMicrophoneUsageDescription: Aura uses the microphone to capture your voice during assistant calls.
+        NSSpeechRecognitionUsageDescription: Aura uses speech recognition to transcribe your voice during assistant calls.
+        NSAppTransportSecurity:
+          NSExceptionDomains:
+            43.98.164.20:
+              NSExceptionAllowsInsecureHTTPLoads: true
+              NSIncludesSubdomains: false
+        AZURE_SPEECH_KEY: $(AZURE_SPEECH_KEY)
+        AZURE_SPEECH_REGION: $(AZURE_SPEECH_REGION)
+        AZURE_SPEECH_VOICE_NAME: $(AZURE_SPEECH_VOICE_NAME)
+        AZURE_SPEECH_MODE: $(AZURE_SPEECH_MODE)
+        CHAT_WEBSOCKET_URL: $(CHAT_WEBSOCKET_URL)
+        HISTORY_LIST_URL: $(HISTORY_LIST_URL)
+        HISTORY_MESSAGES_URL: $(HISTORY_MESSAGES_URL)
+        DEFAULT_USERNAME: $(DEFAULT_USERNAME)
+        DEFAULT_USER_ID: $(DEFAULT_USER_ID)
+  AuraVoiceAssistantTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AuraVoiceAssistantTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+    dependencies:
+      - target: AuraVoiceAssistant

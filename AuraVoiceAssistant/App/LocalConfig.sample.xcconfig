@@ -1,0 +1,14 @@
+// Copy this file to LocalConfig.xcconfig and fill local values.
+// Do not commit LocalConfig.xcconfig with real Azure credentials.
+
+AZURE_SPEECH_KEY =
+AZURE_SPEECH_REGION = southeastasia
+AZURE_SPEECH_VOICE_NAME = zh-CN-XiaoxiaoNeural
+// auto: Simulator uses mock by default. azure: force Azure SDK initialization when configured.
+AZURE_SPEECH_MODE = azure
+
+CHAT_WEBSOCKET_URL = ws:/$()/43.98.164.20:6007/ws/chat
+HISTORY_LIST_URL = http:/$()/43.98.164.20:6007/history/user/page
+HISTORY_MESSAGES_URL = http:/$()/43.98.164.20:6007/history-with-alerts/
+DEFAULT_USERNAME = test01
+DEFAULT_USER_ID = 35
