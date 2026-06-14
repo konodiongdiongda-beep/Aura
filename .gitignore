@@ -4,6 +4,7 @@ AuraVoiceAssistant/App/LocalConfig.xcconfig
 # Build output / derived data
 build/
 build_sim/
+build_device/
 tmp/
 DerivedData/
 *.xcuserstate
@@ -15,3 +16,6 @@ Vendor/SherpaOnnx/onnxruntime.xcframework/
 
 # macOS
 .DS_Store
+
+# Local-only docs (deploy notes, not for the repo)
+打包方法.md

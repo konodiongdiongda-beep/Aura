@@ -8,17 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		030735CABD36D7FB877879E3 /* mdf.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB37C6945A490ADAA1C892F /* mdf.c */; };
+		045DBE39257F6200C8F46EA5 /* SharedVoiceAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38064A03A4729BC7D5F6C2 /* SharedVoiceAudioEngine.swift */; };
 		050E27718752A13049E7E068 /* ConversationTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F15A97519E0296F00C87383 /* ConversationTurn.swift */; };
 		0CB8262C8AC06298B9649C01 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = E98DA96367C0D314859A27A0 /* kiss_fft.c */; };
-		0F7A7387657ED0B551E2FA76 /* HeuristicSpeakerEvidenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE2C16DB77B0CB3B8137840 /* HeuristicSpeakerEvidenceProvider.swift */; };
 		10F6EF7662E8D50CB51ACE82 /* VoiceCoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135EAF7176B363A5B9244EC9 /* VoiceCoreIntegrationTests.swift */; };
 		116FDEFBF9ACC25271E05737 /* AzureSpeechSynthesizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB83F38B79DFFD42433F1B8 /* AzureSpeechSynthesizer.swift */; };
 		1F5DBF8687F4A241461889DA /* AcousticEchoCanceller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135EDA5308A37E7B01CCA36B /* AcousticEchoCanceller.swift */; };
 		20DCDC18005170C56D70FE97 /* ControlledAudioSpeechSynthesizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6501B1D3558F9812519F61BF /* ControlledAudioSpeechSynthesizer.swift */; };
-		245D5BBD9333C2ED263A9418 /* HeuristicSpeakerEvidenceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43413DDD2AB8B0A0164BDC37 /* HeuristicSpeakerEvidenceProviderTests.swift */; };
 		265F9E51B92C691C544E70E2 /* AppText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E7DE32AB32D0A49E242C7C /* AppText.swift */; };
 		2B98BAEABC0D641404AB7289 /* VoiceCallViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934810D4BE79D86D4FC1AD82 /* VoiceCallViewModelTests.swift */; };
-		34B6806890B9B295C301E167 /* SherpaSpeakerEmbeddingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748943E5E304DB1E5515C129 /* SherpaSpeakerEmbeddingModel.swift */; };
+		31747AC6D0BA1A6306A6BACA /* Pods_AuraVoiceAssistantTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 137A2EF1E1B630F35384BBED /* Pods_AuraVoiceAssistantTests.framework */; };
 		3525ED531F20400EF1A84883 /* MicrophoneAudioEvidenceBufferTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3629706AC017BA11BAC3F69B /* MicrophoneAudioEvidenceBufferTests.swift */; };
 		376D7EDA33AA542253166220 /* SystemSpeechSynthesizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738D1A10CB568B886FC63FF0 /* SystemSpeechSynthesizer.swift */; };
 		3D16567E5616C616385540D8 /* filterbank.c in Sources */ = {isa = PBXBuildFile; fileRef = C3912FB15893ADC1FE0ECCA2 /* filterbank.c */; };
@@ -27,7 +26,6 @@
 		4D6B81AA049DD566766AF9A8 /* HistoryListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C3FFB83D39A6CD77A55EF /* HistoryListViewModelTests.swift */; };
 		504F8DAFD7DC71A84E80C874 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7EC7115BB119D09279F16 /* MockData.swift */; };
 		53AFB3F64F0C12C5A608093F /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4848598178BFBD6B6206975A /* AppConfig.swift */; };
-		556EBBB66C7AF736B0C6DF93 /* sherpa-onnx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCEAE589BE0727B085A32273 /* sherpa-onnx.xcframework */; };
 		56282EB560EBDF956F823CCF /* GlassPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8B43BF7EF897A75924B702 /* GlassPanel.swift */; };
 		565719299A7D44F0EB0BBD98 /* ProcessedAzureAudioInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E695C3A7592221F8D633137 /* ProcessedAzureAudioInputStream.swift */; };
 		63A1FF0A622198BF37810AFF /* HistoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED8B0AA53F0E22D5945199D /* HistoryListViewModel.swift */; };
@@ -39,16 +37,14 @@
 		91FD33EA7308098F82575AF7 /* AppSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607FDB41A0A13B2B2E060FD /* AppSpacing.swift */; };
 		93E4F87383BFC128EF14925C /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40B221DC97837A5192BD2F /* SettingsViewModelTests.swift */; };
 		9486BC672CFE76688A003EB5 /* PreviewConversationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424E818917A2D6800613E199 /* PreviewConversationStore.swift */; };
-		A422366D97A7BE350CCA4047 /* onnxruntime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42BED9761F573DB499738716 /* onnxruntime.xcframework */; };
 		A5495E23EBFD3AB1055E174B /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD600D4F541E457C74E6EB /* AppColors.swift */; };
-		AA4734E861BE0AA0FF2AE111 /* Pods_AuraVoiceAssistantTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE7C825D3E0AB61CC7885F3 /* Pods_AuraVoiceAssistantTests.framework */; };
 		B43DA451DA9E1248E427A292 /* VoiceWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC211B1DAB5DCD4B62BDE01 /* VoiceWaveView.swift */; };
 		B71FB7606C7BDB13D2685FF8 /* AppHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BEA77503A913A0F6CF2895 /* AppHeaderView.swift */; };
-		B7D3DD58FA64FCF3291C3D3B /* Pods_AuraVoiceAssistant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF64164795B6E501A0207E18 /* Pods_AuraVoiceAssistant.framework */; };
 		B84073C7FC928B03B5F38BF1 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18233E523C189CC3AC189860 /* MessageDetailView.swift */; };
 		BE45AC22A42E76A059807637 /* PreviewScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB9F638E65BCF5DF6790568 /* PreviewScaffold.swift */; };
 		C01E94597CA06779762B2948 /* preprocess.c in Sources */ = {isa = PBXBuildFile; fileRef = 272F5229B00145CED5953DE3 /* preprocess.c */; };
 		C10DD8656ACDF13E75D6C152 /* smallft.c in Sources */ = {isa = PBXBuildFile; fileRef = EEC4180ABAE828E7FB94F571 /* smallft.c */; };
+		C1F51DACF1BE8806D9F0120D /* Pods_AuraVoiceAssistant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF916B9F8F438050C5C0CA4E /* Pods_AuraVoiceAssistant.framework */; };
 		C83FAB8C7CEC66192CE35D2A /* ConversationStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F559E14EC06BC79B680FBD /* ConversationStoring.swift */; };
 		C85A2D81CFF95006CF1594D5 /* AzureSpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD3C00B0EFFAE090AC8B5E9 /* AzureSpeechRecognizer.swift */; };
 		CB19145D7367CF5ACD83937D /* AcousticEchoCancellerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E96491BAD1B3FD0B01168C /* AcousticEchoCancellerTests.swift */; };
@@ -56,7 +52,9 @@
 		D569EFFB9B4DEC814D7C957F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21093BB059738EDB7AA0B09C /* Assets.xcassets */; };
 		D68E998F45C9334ED0EF9DFD /* MeshBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED3D04C0E610BF24A14D6C0 /* MeshBackground.swift */; };
 		D6CE536A19906AB47522303D /* SustainedVoiceActivityEmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D94FB50692B7E2D2F700980 /* SustainedVoiceActivityEmitterTests.swift */; };
+		D7F9E8755C6C1D4FBAD36771 /* EngineAudioDataPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721246BF55E809B6B8832B1 /* EngineAudioDataPlayer.swift */; };
 		D8E41878FB7E60FC0FFAEB64 /* AppConfig+VoiceCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30042FA1EABD9C15465A25B9 /* AppConfig+VoiceCore.swift */; };
+		DD47FC99BA6880FE9CF39CCD /* AudioLevelMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470FCA68719726E9932485CE /* AudioLevelMonitor.swift */; };
 		DD95B1FBF042E42003589CB2 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6494998E5FC3CC0F71290377 /* SettingsViewModel.swift */; };
 		E04B2727299FE3A9BF0C3251 /* fftwrap.c in Sources */ = {isa = PBXBuildFile; fileRef = F83E6D7443467D4516C99F92 /* fftwrap.c */; };
 		E280E70E7E1CB72C73D15240 /* SustainedVoiceActivityEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6A03B545C20CED708E5E11 /* SustainedVoiceActivityEmitter.swift */; };
@@ -66,7 +64,6 @@
 		EB7102744ECE7610D5B6F099 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE457990A547F29A24BE6C2 /* ContentView.swift */; };
 		ECC68B3B2D74EEB7463AC39E /* VoiceRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E140F98A5C60D95CD26494B5 /* VoiceRootView.swift */; };
 		EE59D0319B031A4EBC885349 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = ED9560427F2E4FE1A55669F9 /* .gitkeep */; };
-		EF48D5F7BA2303E3E6D3D87E /* campplus_zh_cn_common.onnx in Resources */ = {isa = PBXBuildFile; fileRef = 2F9312842417C609964A4A9D /* campplus_zh_cn_common.onnx */; };
 		F345A62EF8358F8331745533 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1105A26558516E8158708D61 /* SettingsView.swift */; };
 		F4F0BCBB958411388F3B945A /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87BFB564F8938C8B3996793 /* AudioSessionManager.swift */; };
 		F7D95BB51DE66950A2792B1B /* AppTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CE417348D3C0AF983924D6 /* AppTypography.swift */; };
@@ -91,15 +88,16 @@
 		1105A26558516E8158708D61 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		135EAF7176B363A5B9244EC9 /* VoiceCoreIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCoreIntegrationTests.swift; sourceTree = "<group>"; };
 		135EDA5308A37E7B01CCA36B /* AcousticEchoCanceller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcousticEchoCanceller.swift; sourceTree = "<group>"; };
+		137A2EF1E1B630F35384BBED /* Pods_AuraVoiceAssistantTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuraVoiceAssistantTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		18233E523C189CC3AC189860 /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
 		21093BB059738EDB7AA0B09C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25F559E14EC06BC79B680FBD /* ConversationStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationStoring.swift; sourceTree = "<group>"; };
+		2721246BF55E809B6B8832B1 /* EngineAudioDataPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineAudioDataPlayer.swift; sourceTree = "<group>"; };
 		272F5229B00145CED5953DE3 /* preprocess.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = preprocess.c; sourceTree = "<group>"; };
 		28BEA77503A913A0F6CF2895 /* AppHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeaderView.swift; sourceTree = "<group>"; };
 		2BCCBEF7313D552512A01429 /* math_approx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = math_approx.h; sourceTree = "<group>"; };
 		2D423EF80A249150EB63934E /* filterbank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = filterbank.h; sourceTree = "<group>"; };
 		2F40B221DC97837A5192BD2F /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
-		2F9312842417C609964A4A9D /* campplus_zh_cn_common.onnx */ = {isa = PBXFileReference; path = campplus_zh_cn_common.onnx; sourceTree = "<group>"; };
 		2FB305B67029713BA0EF6AE7 /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		2FB83F38B79DFFD42433F1B8 /* AzureSpeechSynthesizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureSpeechSynthesizer.swift; sourceTree = "<group>"; };
 		30042FA1EABD9C15465A25B9 /* AppConfig+VoiceCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppConfig+VoiceCore.swift"; sourceTree = "<group>"; };
@@ -111,12 +109,9 @@
 		3CB37C6945A490ADAA1C892F /* mdf.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mdf.c; sourceTree = "<group>"; };
 		3CDC961EA54F8D486E03B818 /* fixed_arm4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fixed_arm4.h; sourceTree = "<group>"; };
 		3ED8B0AA53F0E22D5945199D /* HistoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListViewModel.swift; sourceTree = "<group>"; };
-		3EE2C16DB77B0CB3B8137840 /* HeuristicSpeakerEvidenceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeuristicSpeakerEvidenceProvider.swift; sourceTree = "<group>"; };
-		3F7E31EB8C7FCE32977A71FA /* Pods-AuraVoiceAssistantTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistantTests.debug.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.debug.xcconfig"; sourceTree = "<group>"; };
 		424E818917A2D6800613E199 /* PreviewConversationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewConversationStore.swift; sourceTree = "<group>"; };
-		42BED9761F573DB499738716 /* onnxruntime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = onnxruntime.xcframework; path = Vendor/SherpaOnnx/onnxruntime.xcframework; sourceTree = "<group>"; };
-		43413DDD2AB8B0A0164BDC37 /* HeuristicSpeakerEvidenceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeuristicSpeakerEvidenceProviderTests.swift; sourceTree = "<group>"; };
 		435C3FFB83D39A6CD77A55EF /* HistoryListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListViewModelTests.swift; sourceTree = "<group>"; };
+		470FCA68719726E9932485CE /* AudioLevelMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioLevelMonitor.swift; sourceTree = "<group>"; };
 		4848598178BFBD6B6206975A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		48DACB8AF2BC2E39E0059DF2 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		4B0340483CD5958B62B50D34 /* SpeechServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechServiceFactory.swift; sourceTree = "<group>"; };
@@ -127,17 +122,17 @@
 		5AC211B1DAB5DCD4B62BDE01 /* VoiceWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceWaveView.swift; sourceTree = "<group>"; };
 		5E92C22AB7C222617E416D81 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		5ED3D04C0E610BF24A14D6C0 /* MeshBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshBackground.swift; sourceTree = "<group>"; };
+		5EEBE65FC10209F6E7F985E7 /* Pods-AuraVoiceAssistant.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistant.debug.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.debug.xcconfig"; sourceTree = "<group>"; };
 		63B00898BE4E88A875439310 /* fftwrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fftwrap.h; sourceTree = "<group>"; };
 		63BC59FA1A1FF7EDEFF55E1C /* VoiceCallAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCallAssistantApp.swift; sourceTree = "<group>"; };
 		6494998E5FC3CC0F71290377 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		6501B1D3558F9812519F61BF /* ControlledAudioSpeechSynthesizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledAudioSpeechSynthesizer.swift; sourceTree = "<group>"; };
-		6F64D7FCD8412778C12F38EE /* Pods-AuraVoiceAssistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistant.release.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.release.xcconfig"; sourceTree = "<group>"; };
 		6FD934B0E4EB483F5F3EDA75 /* fixed_bfin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fixed_bfin.h; sourceTree = "<group>"; };
 		738D1A10CB568B886FC63FF0 /* SystemSpeechSynthesizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSpeechSynthesizer.swift; sourceTree = "<group>"; };
-		748943E5E304DB1E5515C129 /* SherpaSpeakerEmbeddingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SherpaSpeakerEmbeddingModel.swift; sourceTree = "<group>"; };
+		7D0F44C8D5B9033CA58CA7E9 /* Pods-AuraVoiceAssistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistant.release.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.release.xcconfig"; sourceTree = "<group>"; };
 		814619541CB2D80753F965B9 /* kiss_fftr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kiss_fftr.h; sourceTree = "<group>"; };
-		86E38F389D609968859D6AEB /* Pods-AuraVoiceAssistantTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistantTests.release.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.release.xcconfig"; sourceTree = "<group>"; };
 		891DBFAA0A96A98FA39EB3B8 /* misc_bfin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = misc_bfin.h; sourceTree = "<group>"; };
+		8A38064A03A4729BC7D5F6C2 /* SharedVoiceAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedVoiceAudioEngine.swift; sourceTree = "<group>"; };
 		8BFD600D4F541E457C74E6EB /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		8D94FB50692B7E2D2F700980 /* SustainedVoiceActivityEmitterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SustainedVoiceActivityEmitterTests.swift; sourceTree = "<group>"; };
 		8EB9F638E65BCF5DF6790568 /* PreviewScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewScaffold.swift; sourceTree = "<group>"; };
@@ -151,7 +146,6 @@
 		AFE7EC7115BB119D09279F16 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		B1E34B4329DD53665313FC7F /* fixed_debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fixed_debug.h; sourceTree = "<group>"; };
 		B952AF47DBAB2132C7B5D497 /* arch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arch.h; sourceTree = "<group>"; };
-		BDE7C825D3E0AB61CC7885F3 /* Pods_AuraVoiceAssistantTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuraVoiceAssistantTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3912FB15893ADC1FE0ECCA2 /* filterbank.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = filterbank.c; sourceTree = "<group>"; };
 		C7FE137FE63CE819AB6A9647 /* fixed_generic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fixed_generic.h; sourceTree = "<group>"; };
 		C9C8DB07CA854B5078F1FC85 /* VoiceHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceHomeView.swift; sourceTree = "<group>"; };
@@ -160,39 +154,37 @@
 		CD064F11237EA1B1D907FB15 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _kiss_fft_guts.h; sourceTree = "<group>"; };
 		CFD3DB7F8F28711DD9C653EE /* kiss_fftr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kiss_fftr.c; sourceTree = "<group>"; };
 		D0C7C194F9909704D9EC5675 /* os_support.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = os_support.h; sourceTree = "<group>"; };
-		D583AC53FBEB78AFF2CB02DD /* Pods-AuraVoiceAssistant.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistant.debug.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant.debug.xcconfig"; sourceTree = "<group>"; };
+		DB6B5758716F10C5A169F5D1 /* Pods-AuraVoiceAssistantTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistantTests.debug.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DCE457990A547F29A24BE6C2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		DF64164795B6E501A0207E18 /* Pods_AuraVoiceAssistant.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuraVoiceAssistant.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF916B9F8F438050C5C0CA4E /* Pods_AuraVoiceAssistant.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuraVoiceAssistant.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E140F98A5C60D95CD26494B5 /* VoiceRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRootView.swift; sourceTree = "<group>"; };
 		E607FDB41A0A13B2B2E060FD /* AppSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSpacing.swift; sourceTree = "<group>"; };
 		E6E7DE32AB32D0A49E242C7C /* AppText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppText.swift; sourceTree = "<group>"; };
 		E98DA96367C0D314859A27A0 /* kiss_fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kiss_fft.c; sourceTree = "<group>"; };
+		ED3464D7DF7AF67A0FE4D861 /* Pods-AuraVoiceAssistantTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuraVoiceAssistantTests.release.xcconfig"; path = "Target Support Files/Pods-AuraVoiceAssistantTests/Pods-AuraVoiceAssistantTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED9560427F2E4FE1A55669F9 /* .gitkeep */ = {isa = PBXFileReference; path = .gitkeep; sourceTree = "<group>"; };
 		EEC4180ABAE828E7FB94F571 /* smallft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = smallft.c; sourceTree = "<group>"; };
 		F14417D62505695D145DB93D /* InCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InCallView.swift; sourceTree = "<group>"; };
 		F734FF020444E530305CD286 /* LocalConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LocalConfig.xcconfig; sourceTree = "<group>"; };
 		F7E96491BAD1B3FD0B01168C /* AcousticEchoCancellerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcousticEchoCancellerTests.swift; sourceTree = "<group>"; };
 		F83E6D7443467D4516C99F92 /* fftwrap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fftwrap.c; sourceTree = "<group>"; };
-		FCEAE589BE0727B085A32273 /* sherpa-onnx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "sherpa-onnx.xcframework"; path = "Vendor/SherpaOnnx/sherpa-onnx.xcframework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1F50B5303258025108CFE6B9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA4734E861BE0AA0FF2AE111 /* Pods_AuraVoiceAssistantTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		41F503E624E42E54EB5E6A9F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EA22BE2F17596C4AC68A8501 /* VoiceCore in Frameworks */,
-				556EBBB66C7AF736B0C6DF93 /* sherpa-onnx.xcframework in Frameworks */,
-				A422366D97A7BE350CCA4047 /* onnxruntime.xcframework in Frameworks */,
-				B7D3DD58FA64FCF3291C3D3B /* Pods_AuraVoiceAssistant.framework in Frameworks */,
+				C1F51DACF1BE8806D9F0120D /* Pods_AuraVoiceAssistant.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F3E1A063AEAD037B41A618D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31747AC6D0BA1A6306A6BACA /* Pods_AuraVoiceAssistantTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,7 +300,6 @@
 			isa = PBXGroup;
 			children = (
 				ED9560427F2E4FE1A55669F9 /* .gitkeep */,
-				2F9312842417C609964A4A9D /* campplus_zh_cn_common.onnx */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -343,17 +334,6 @@
 			path = AuraVoiceAssistant;
 			sourceTree = "<group>";
 		};
-		9765E1E4338240CDA45C23CA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				42BED9761F573DB499738716 /* onnxruntime.xcframework */,
-				FCEAE589BE0727B085A32273 /* sherpa-onnx.xcframework */,
-				DF64164795B6E501A0207E18 /* Pods_AuraVoiceAssistant.framework */,
-				BDE7C825D3E0AB61CC7885F3 /* Pods_AuraVoiceAssistantTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		988F5F8982D2852512472301 /* History */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,18 +341,6 @@
 				424E818917A2D6800613E199 /* PreviewConversationStore.swift */,
 			);
 			path = History;
-			sourceTree = "<group>";
-		};
-		9A50D8B0112E574194514D26 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D583AC53FBEB78AFF2CB02DD /* Pods-AuraVoiceAssistant.debug.xcconfig */,
-				6F64D7FCD8412778C12F38EE /* Pods-AuraVoiceAssistant.release.xcconfig */,
-				3F7E31EB8C7FCE32977A71FA /* Pods-AuraVoiceAssistantTests.debug.xcconfig */,
-				86E38F389D609968859D6AEB /* Pods-AuraVoiceAssistantTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		9D594C08F4C2510ED356EEB8 /* Products */ = {
@@ -391,9 +359,9 @@
 				FFA6B950D34F2C89CF6A5FAC /* AuraVoiceAssistantTests */,
 				2F11E7DB2C7B43425DC64768 /* libspeexdsp */,
 				E9488C8F6B8C4915885E3675 /* Packages */,
-				9765E1E4338240CDA45C23CA /* Frameworks */,
 				9D594C08F4C2510ED356EEB8 /* Products */,
-				9A50D8B0112E574194514D26 /* Pods */,
+				C8474DA6E008451579925ABE /* Pods */,
+				FB370CC5E67A03E7DF2E62C9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -404,6 +372,18 @@
 				FEE07DC06EBBABF6ACC4DE4A /* Speech */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		C8474DA6E008451579925ABE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5EEBE65FC10209F6E7F985E7 /* Pods-AuraVoiceAssistant.debug.xcconfig */,
+				7D0F44C8D5B9033CA58CA7E9 /* Pods-AuraVoiceAssistant.release.xcconfig */,
+				DB6B5758716F10C5A169F5D1 /* Pods-AuraVoiceAssistantTests.debug.xcconfig */,
+				ED3464D7DF7AF67A0FE4D861 /* Pods-AuraVoiceAssistantTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		E9488C8F6B8C4915885E3675 /* Packages */ = {
@@ -431,18 +411,28 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		FB370CC5E67A03E7DF2E62C9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DF916B9F8F438050C5C0CA4E /* Pods_AuraVoiceAssistant.framework */,
+				137A2EF1E1B630F35384BBED /* Pods_AuraVoiceAssistantTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FEE07DC06EBBABF6ACC4DE4A /* Speech */ = {
 			isa = PBXGroup;
 			children = (
 				135EDA5308A37E7B01CCA36B /* AcousticEchoCanceller.swift */,
+				470FCA68719726E9932485CE /* AudioLevelMonitor.swift */,
 				A87BFB564F8938C8B3996793 /* AudioSessionManager.swift */,
 				0CD3C00B0EFFAE090AC8B5E9 /* AzureSpeechRecognizer.swift */,
 				2FB83F38B79DFFD42433F1B8 /* AzureSpeechSynthesizer.swift */,
 				6501B1D3558F9812519F61BF /* ControlledAudioSpeechSynthesizer.swift */,
-				3EE2C16DB77B0CB3B8137840 /* HeuristicSpeakerEvidenceProvider.swift */,
+				2721246BF55E809B6B8832B1 /* EngineAudioDataPlayer.swift */,
 				4E11990DA4904D28E4EA2401 /* MicrophoneAudioEvidenceBuffer.swift */,
 				0E695C3A7592221F8D633137 /* ProcessedAzureAudioInputStream.swift */,
-				748943E5E304DB1E5515C129 /* SherpaSpeakerEmbeddingModel.swift */,
+				8A38064A03A4729BC7D5F6C2 /* SharedVoiceAudioEngine.swift */,
 				4B0340483CD5958B62B50D34 /* SpeechServiceFactory.swift */,
 				CC6A03B545C20CED708E5E11 /* SustainedVoiceActivityEmitter.swift */,
 				738D1A10CB568B886FC63FF0 /* SystemSpeechSynthesizer.swift */,
@@ -454,7 +444,6 @@
 			isa = PBXGroup;
 			children = (
 				F7E96491BAD1B3FD0B01168C /* AcousticEchoCancellerTests.swift */,
-				43413DDD2AB8B0A0164BDC37 /* HeuristicSpeakerEvidenceProviderTests.swift */,
 				435C3FFB83D39A6CD77A55EF /* HistoryListViewModelTests.swift */,
 				3629706AC017BA11BAC3F69B /* MicrophoneAudioEvidenceBufferTests.swift */,
 				2F40B221DC97837A5192BD2F /* SettingsViewModelTests.swift */,
@@ -473,11 +462,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9CDAFAF151B7302494DBE9B /* Build configuration list for PBXNativeTarget "AuraVoiceAssistant" */;
 			buildPhases = (
-				632F234AFA67D92D3BAF492F /* [CP] Check Pods Manifest.lock */,
+				CC253A62A66504E63A7C9D08 /* [CP] Check Pods Manifest.lock */,
 				3618BAD91DCDB182375FDBA2 /* Sources */,
 				EDDB0DD6EC227039196EA01A /* Resources */,
 				41F503E624E42E54EB5E6A9F /* Frameworks */,
-				0EC4FD249F92EE025AF70093 /* [CP] Embed Pods Frameworks */,
+				CACAA68570EE8710351D6550 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -495,9 +484,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D25AAC611CC55335CB88145 /* Build configuration list for PBXNativeTarget "AuraVoiceAssistantTests" */;
 			buildPhases = (
-				941DF726F8DAAFDA7042D035 /* [CP] Check Pods Manifest.lock */,
+				7D116192A1505F7A18021BD6 /* [CP] Check Pods Manifest.lock */,
 				1D3D8894E66AE6B9C4C741A1 /* Sources */,
-				1F50B5303258025108CFE6B9 /* Frameworks */,
+				4F3E1A063AEAD037B41A618D /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -517,6 +506,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					5838E2725B92B1D52F0698BE = {
+						DevelopmentTeam = S8J8QUU6XW;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = D31C53CEF5D75395335B5757 /* Build configuration list for PBXProject "AuraVoiceAssistant" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -549,53 +544,13 @@
 			files = (
 				EE59D0319B031A4EBC885349 /* .gitkeep in Resources */,
 				D569EFFB9B4DEC814D7C957F /* Assets.xcassets in Resources */,
-				EF48D5F7BA2303E3E6D3D87E /* campplus_zh_cn_common.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0EC4FD249F92EE025AF70093 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		632F234AFA67D92D3BAF492F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AuraVoiceAssistant-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		941DF726F8DAAFDA7042D035 /* [CP] Check Pods Manifest.lock */ = {
+		7D116192A1505F7A18021BD6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -617,6 +572,45 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CACAA68570EE8710351D6550 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AuraVoiceAssistant/Pods-AuraVoiceAssistant-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC253A62A66504E63A7C9D08 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AuraVoiceAssistant-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -625,7 +619,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB19145D7367CF5ACD83937D /* AcousticEchoCancellerTests.swift in Sources */,
-				245D5BBD9333C2ED263A9418 /* HeuristicSpeakerEvidenceProviderTests.swift in Sources */,
 				4D6B81AA049DD566766AF9A8 /* HistoryListViewModelTests.swift in Sources */,
 				3525ED531F20400EF1A84883 /* MicrophoneAudioEvidenceBufferTests.swift in Sources */,
 				93E4F87383BFC128EF14925C /* SettingsViewModelTests.swift in Sources */,
@@ -648,6 +641,7 @@
 				91FD33EA7308098F82575AF7 /* AppSpacing.swift in Sources */,
 				265F9E51B92C691C544E70E2 /* AppText.swift in Sources */,
 				F7D95BB51DE66950A2792B1B /* AppTypography.swift in Sources */,
+				DD47FC99BA6880FE9CF39CCD /* AudioLevelMonitor.swift in Sources */,
 				F4F0BCBB958411388F3B945A /* AudioSessionManager.swift in Sources */,
 				C85A2D81CFF95006CF1594D5 /* AzureSpeechRecognizer.swift in Sources */,
 				116FDEFBF9ACC25271E05737 /* AzureSpeechSynthesizer.swift in Sources */,
@@ -655,8 +649,8 @@
 				20DCDC18005170C56D70FE97 /* ControlledAudioSpeechSynthesizer.swift in Sources */,
 				C83FAB8C7CEC66192CE35D2A /* ConversationStoring.swift in Sources */,
 				050E27718752A13049E7E068 /* ConversationTurn.swift in Sources */,
+				D7F9E8755C6C1D4FBAD36771 /* EngineAudioDataPlayer.swift in Sources */,
 				56282EB560EBDF956F823CCF /* GlassPanel.swift in Sources */,
-				0F7A7387657ED0B551E2FA76 /* HeuristicSpeakerEvidenceProvider.swift in Sources */,
 				6C5FDF5949BBEEBBDBF21254 /* HistoryListView.swift in Sources */,
 				63A1FF0A622198BF37810AFF /* HistoryListViewModel.swift in Sources */,
 				821AD51EF9E090A78F16E69E /* InCallView.swift in Sources */,
@@ -670,7 +664,7 @@
 				565719299A7D44F0EB0BBD98 /* ProcessedAzureAudioInputStream.swift in Sources */,
 				F345A62EF8358F8331745533 /* SettingsView.swift in Sources */,
 				DD95B1FBF042E42003589CB2 /* SettingsViewModel.swift in Sources */,
-				34B6806890B9B295C301E167 /* SherpaSpeakerEmbeddingModel.swift in Sources */,
+				045DBE39257F6200C8F46EA5 /* SharedVoiceAudioEngine.swift in Sources */,
 				4B3AF03D60E95EEC0889DBCF /* SpeechServiceFactory.swift in Sources */,
 				E280E70E7E1CB72C73D15240 /* SustainedVoiceActivityEmitter.swift in Sources */,
 				376D7EDA33AA542253166220 /* SystemSpeechSynthesizer.swift in Sources */,
@@ -702,7 +696,7 @@
 /* Begin XCBuildConfiguration section */
 		29E1AF9EA9C4BB966D660DF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F7E31EB8C7FCE32977A71FA /* Pods-AuraVoiceAssistantTests.debug.xcconfig */;
+			baseConfigurationReference = DB6B5758716F10C5A169F5D1 /* Pods-AuraVoiceAssistantTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -790,12 +784,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"\"Vendor/SherpaOnnx\"",
-				);
+				DEVELOPMENT_TEAM = S8J8QUU6XW;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					FLOATING_POINT,
@@ -806,15 +797,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx/include",
 				);
 				"HEADER_SEARCH_PATHS[sdk=iphoneos*]" = (
 					"$(PROJECT_DIR)/Vendor/AEC/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx/include",
 				);
 				INFOPLIST_FILE = AuraVoiceAssistant/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -828,17 +815,15 @@
 					"-laec",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -I$(PROJECT_DIR)/Vendor/SherpaOnnx -Xcc -I$(PROJECT_DIR)/Vendor/SherpaOnnx/include";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aura.voiceassistant;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Vendor/SherpaOnnx";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		6EC81AEF8CDFC5A54B63A986 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86E38F389D609968859D6AEB /* Pods-AuraVoiceAssistantTests.release.xcconfig */;
+			baseConfigurationReference = ED3464D7DF7AF67A0FE4D861 /* Pods-AuraVoiceAssistantTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -919,12 +904,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"\"Vendor/SherpaOnnx\"",
-				);
+				DEVELOPMENT_TEAM = S8J8QUU6XW;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					FLOATING_POINT,
@@ -935,15 +917,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx/include",
 				);
 				"HEADER_SEARCH_PATHS[sdk=iphoneos*]" = (
 					"$(PROJECT_DIR)/Vendor/AEC/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include",
 					"$(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx",
-					"$(PROJECT_DIR)/Vendor/SherpaOnnx/include",
 				);
 				INFOPLIST_FILE = AuraVoiceAssistant/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -957,10 +935,8 @@
 					"-laec",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -I$(PROJECT_DIR)/Vendor/SherpaOnnx -Xcc -I$(PROJECT_DIR)/Vendor/SherpaOnnx/include";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aura.voiceassistant;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Vendor/SherpaOnnx";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

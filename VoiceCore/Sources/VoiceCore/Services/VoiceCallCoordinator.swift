@@ -1,5 +1,8 @@
 import Combine
 import Foundation
+import os
+
+fileprivate let logger = Logger(subsystem: "com.aura.voicecore", category: "VoiceCallCoordinator")
 
 @MainActor
 public final class VoiceCallCoordinator: ObservableObject {
@@ -9,6 +12,9 @@ public final class VoiceCallCoordinator: ObservableObject {
     @Published public private(set) var activeUserPartialText: String
     @Published public private(set) var activeAssistantText: String
     @Published public private(set) var isSpeakerEnabled: Bool
+    @Published public private(set) var currentSpeakerRoute: SpeakerRoute = .speaker
+    @Published public private(set) var availableSpeakerRoutes: [SpeakerRoute] = []
+    @Published public private(set) var actualOutputDescription: String = "—"
     @Published public private(set) var lastFilterResultText: String
     @Published public private(set) var lastLatencyDebugText: String
 
@@ -24,7 +30,7 @@ public final class VoiceCallCoordinator: ObservableObject {
     private let submissionGate: any UserTurnSubmissionGating
     private let speakerEvidenceProvider: any UserTurnSpeakerEvidenceProviding
     private let echoDetector: SpeechEchoDetector
-    private let playbackEchoDetector = SpeechEchoDetector(similarityThreshold: 0.45, minimumEchoCharacterCount: 4)
+    private let playbackEchoDetector = SpeechEchoDetector(similarityThreshold: 0.70, minimumEchoCharacterCount: 4)
     private let dateProvider: () -> Date
     private let fastPartialSubmitDelayNanoseconds: UInt64
     private let interruptedPartialSubmitDelayNanoseconds: UInt64
@@ -37,10 +43,33 @@ public final class VoiceCallCoordinator: ObservableObject {
     private let assistantTailEchoMemoryWindow: TimeInterval = 120
     private let currentUserBargeInInputLevel = 0.08
     private let currentUserBargeInDuration: TimeInterval = 0.10
-    private let playbackSpeakerCheckInputLevel = 0.06
     private let playbackSpeakerCheckDuration: TimeInterval = 0.12
     private let minimumStablePartialCharacterCount = 4
     private let backgroundRejectionMemoryWindow: TimeInterval = 1.2
+    // Barge-in during playback triggers on sustained microphone ENERGY rather
+    // than voiceprint. On-device measurement showed residual AI echo (the AEC
+    // can't fully cancel it) drags the user's live voiceprint score into the same
+    // range as pure echo (~0.13–0.33), so voiceprint cannot reliably decide "is
+    // this the user" mid-playback. Instead we stop the assistant on sustained
+    // energy above this raised threshold — the user's louder, closer voice trips
+    // it while low-level residual echo doesn't — and leave the "keep the
+    // sentence?" decision to the voiceprint-backed submission gate, which runs on
+    // the clean (post-interrupt, non-playback) audio. Tune from the on-device
+    // [VCC-BARGE] level logs.
+    private let playbackBargeInInputLevel: Double = 0.10
+    // Second barge-in dimension (LiveKit-style onset detection, local heuristic).
+    // A sharp energy jump at speech onset signals a near-field user speaking up,
+    // even at moderate volume — so we allow barge-in at a LOWER energy floor when
+    // the onset is steep. Diffuse far-field chatter ramps in slowly and won't
+    // clear onsetRate, so this loosens responsiveness WITHOUT loosening the bar
+    // for background voices. Tune from the on-device [VCC-BARGE] onset= logs.
+    private let playbackBargeInOnsetFloorLevel: Double = 0.07
+    private let playbackBargeInOnsetRate: Double = 0.05
+    // Near-field submit gate (listening state). Deliberately LOW to start: missing
+    // a bit of background noise is far better than dropping the user's real speech
+    // (which would reintroduce the "I talk but nothing sends" bug). Raise toward
+    // the gap between user vs. background once [VCC-SUBMIT] rms= logs are in hand.
+    private let nearFieldSubmissionLevel: Double = 0.04
 
     private var recognitionTask: Task<Void, Never>?
     private var recognizerResetTask: Task<Void, Never>?
@@ -96,14 +125,17 @@ public final class VoiceCallCoordinator: ObservableObject {
         bargeInGate: BargeInGate = BargeInGate(),
         submissionGate: any UserTurnSubmissionGating = AcceptingUserTurnSubmissionGate(),
         speakerEvidenceProvider: any UserTurnSpeakerEvidenceProviding = NoopUserTurnSpeakerEvidenceProvider(),
-        echoDetector: SpeechEchoDetector = SpeechEchoDetector(),
+        echoDetector: SpeechEchoDetector = SpeechEchoDetector(similarityThreshold: 0.85, minimumEchoCharacterCount: 6),
         dateProvider: @escaping () -> Date = Date.init,
         fastPartialSubmitDelayNanoseconds: UInt64 = 120_000_000,
         interruptedPartialSubmitDelayNanoseconds: UInt64 = 700_000_000,
         audioOnlyInterruptionTimeoutNanoseconds: UInt64 = 900_000_000,
         leadInHoldNanoseconds: UInt64 = 1_500_000_000,
         assistantResponseStartTimeoutNanoseconds: UInt64 = 3_000_000_000,
-        assistantResponseHardTimeoutNanoseconds: UInt64 = 15_000_000_000,
+        // Backend first-token latency measured at ~28-30s (LLM buffers the full
+        // turn then flushes all tokens in <1s). The hard timeout must clear that
+        // with margin or live turns get killed before the answer ever arrives.
+        assistantResponseHardTimeoutNanoseconds: UInt64 = 60_000_000_000,
         localResponsePreludes: [String] = [],
         state: VoiceCallState = .idle,
         elapsedSeconds: Int = 0,
@@ -160,6 +192,9 @@ public final class VoiceCallCoordinator: ObservableObject {
         do {
             try await audioSession.startCall()
             isSpeakerEnabled = await audioSession.isSpeakerEnabled
+            currentSpeakerRoute = await audioSession.currentRoute
+            availableSpeakerRoutes = await audioSession.availableRoutes
+            print("[VoiceCallCoordinator] startCall routes: \(availableSpeakerRoutes.map { $0.displayName })")
             conversationContext = conversationIDFactory.makeConversationContext()
             activeUserPartialText = ""
             activeAssistantText = ""
@@ -184,6 +219,14 @@ public final class VoiceCallCoordinator: ObservableObject {
             let playbackEvents = await playback.playbackEvents()
             startPlaybackEvents(playbackEvents)
             try await recognizer.start()
+            // The recognizer starts AVAudioEngine with voice processing (VPIO),
+            // which resets the output route to the receiver. Re-apply the desired
+            // route AFTER the engine is running so playback uses the speaker
+            // (or the user's chosen route) instead of the quiet earpiece.
+            try? await audioSession.setRoute(currentSpeakerRoute)
+            isSpeakerEnabled = await audioSession.isSpeakerEnabled
+            currentSpeakerRoute = await audioSession.currentRoute
+            actualOutputDescription = await audioSession.actualOutputDescription
             startTimer()
             state = .listening
         } catch let appError as AppError {
@@ -242,6 +285,8 @@ public final class VoiceCallCoordinator: ObservableObject {
         do {
             try await audioSession.setSpeakerEnabled(enabled)
             isSpeakerEnabled = enabled
+            currentSpeakerRoute = await audioSession.currentRoute
+            actualOutputDescription = await audioSession.actualOutputDescription
         } catch {
             state = .error(.unknown(error.localizedDescription))
         }
@@ -249,6 +294,17 @@ public final class VoiceCallCoordinator: ObservableObject {
 
     public func toggleSpeaker() async {
         await setSpeakerEnabled(!isSpeakerEnabled)
+    }
+
+    public func setSpeakerRoute(_ route: SpeakerRoute) async {
+        do {
+            try await audioSession.setRoute(route)
+            isSpeakerEnabled = await audioSession.isSpeakerEnabled
+            currentSpeakerRoute = await audioSession.currentRoute
+            actualOutputDescription = await audioSession.actualOutputDescription
+        } catch {
+            state = .error(.unknown(error.localizedDescription))
+        }
     }
 
     public func simulateUserSpeech(_ text: String) async {
@@ -320,6 +376,14 @@ public final class VoiceCallCoordinator: ObservableObject {
         text: String
     ) async {
         await evaluateBargeIn(event: event, speakerHint: speakerHint, text: text, submitOnAllow: true)
+    }
+
+    public func pauseRecognition() async {
+        await recognizer.stop()
+    }
+
+    public func resumeRecognition() async throws {
+        try await recognizer.start()
     }
 
     private func startRecognitionEvents(_ stream: AsyncThrowingStream<SpeechRecognitionEvent, Error>) {
@@ -432,10 +496,33 @@ public final class VoiceCallCoordinator: ObservableObject {
         case .finalWithEvidence(let text, let speakerEvidence):
             handleFinalRecognition(text, speakerEvidence: speakerEvidence)
         case .finalWithAudioEvidence(let text, let audioEvidence):
+            guard passesNearFieldSubmissionGate(audioEvidence) else { return }
             let request = speakerEvidenceRequest(for: audioEvidence)
             let speakerEvidence = await speakerEvidenceProvider.evidence(for: request)
             handleFinalRecognition(text, speakerEvidence: speakerEvidence)
         }
+    }
+
+    /// Near-field energy gate for the SUBMIT path (not barge-in). The recognizer
+    /// transcribes everything it hears — including background chatter / TV — and
+    /// with voiceprint removed the only thing standing between "recognized words"
+    /// and "sent to the AI" is this. The user speaking into the phone is loud
+    /// (near-field); far-field background is quiet, so a low RMS turn is dropped
+    /// even though it produced text. Skipped while the assistant is speaking /
+    /// during an interruption, where the barge-in path already governs capture.
+    /// Tune from the on-device [VCC-SUBMIT] rms= logs.
+    private func passesNearFieldSubmissionGate(_ audioEvidence: SpeechAudioEvidence) -> Bool {
+        let playbackActive = state == .speaking || isAssistantPlaybackActive
+        let interruptedInput = isCapturingInterruptedInput || didObserveBargeIn
+        guard !playbackActive, !interruptedInput else { return true }
+        let rms = audioEvidence.rmsLevel
+        if rms < nearFieldSubmissionLevel {
+            print("[VCC-SUBMIT] dropped far-field rms=\(rms) (need>=\(nearFieldSubmissionLevel))")
+            lastFilterResultText = "rejected far-field"
+            return false
+        }
+        print("[VCC-SUBMIT] accepted rms=\(rms)")
+        return true
     }
 
     private func speakerEvidenceRequest(for audioEvidence: SpeechAudioEvidence) -> UserTurnSpeakerEvidenceRequest {
@@ -476,19 +563,12 @@ public final class VoiceCallCoordinator: ObservableObject {
         let turnText = consumePendingLeadIn(appending: cleanText)
         switch state {
         case .speaking:
-            // Voiceprint-gated barge-in (fail-open), final path: a final
-            // interrupts the assistant UNLESS the speaker is positively verified
-            // as someone else (`.otherSpeaker`). Verified primary, "uncertain",
-            // "unavailable", and missing evidence all interrupt. This mirrors the
-            // VAD path: we only refuse to stop the AI for a voice we have
-            // CONFIRMED is not the user, so an unenrolled / engine-unavailable
-            // session can still barge in. Stopping the AI is a separate decision
-            // from keeping the sentence (the submission gate).
-            guard speakerEvidence?.match != .otherSpeaker else {
-                lastFilterResultText = filterText(for: speakerEvidence)
-                rememberBackgroundRejection(for: speakerEvidence)
-                return
-            }
+            // Energy/text barge-in, final path. A recognized final arriving during
+            // playback means the user spoke over the assistant, so stop the AI now.
+            // Voiceprint is NOT used to gate the interruption (echo makes the live
+            // score unreliable mid-playback); it gates only whether the sentence is
+            // kept, via the submission gate inside submitUserTurn — which runs after
+            // we've left .speaking so it sees clean, non-playback evidence.
             startBargeIn(partialText: turnText)
             submitUserTurn(turnText, speakerEvidence: speakerEvidence)
             return
@@ -555,36 +635,32 @@ public final class VoiceCallCoordinator: ObservableObject {
     }
 
     private func evaluatePlaybackBargeInActivity(_ activity: VoiceActivityEvent) async {
-        guard activity.inputLevel >= playbackSpeakerCheckInputLevel,
-              activity.duration >= playbackSpeakerCheckDuration,
-              let audioEvidence = activity.audioEvidence else {
-            lastFilterResultText = "waiting speaker verification"
+        // Energy-triggered barge-in. Voiceprint is NOT consulted here: residual AI
+        // echo makes any live speaker score unreliable during playback. Two ways
+        // to trip, whichever fires first (both leave the "keep the sentence?"
+        // decision to the submission gate on clean post-interrupt audio):
+        //   1. Loud, sustained energy (far above residual echo).
+        //   2. A sharp onset jump at moderate energy — a near-field user speaking
+        //      up. Far-field chatter ramps in diffusely and won't clear the onset
+        //      bar, so this adds responsiveness without inviting background voices.
+        guard activity.duration >= playbackSpeakerCheckDuration else {
+            lastFilterResultText = "below barge threshold"
+            print("[VCC-BARGE] below dur level=\(activity.inputLevel) dur=\(activity.duration) onset=\(activity.onsetRate)")
             return
         }
 
-        let evidence = await speakerEvidenceProvider.evidence(for: UserTurnSpeakerEvidenceRequest(
-            audio: audioEvidence,
-            isAssistantPlaybackActive: true,
-            isInterruptedInput: false,
-            allowsEnrollment: false
-        ))
+        let loudEnough = activity.inputLevel >= playbackBargeInInputLevel
+        let sharpOnset = activity.inputLevel >= playbackBargeInOnsetFloorLevel &&
+            activity.onsetRate >= playbackBargeInOnsetRate
 
-        // Voiceprint-gated barge-in (fail-open): an interruption is honored
-        // UNLESS the speaker is positively verified as someone else
-        // (`.otherSpeaker`). Verified primary user, "uncertain", "unavailable",
-        // and missing evidence all ALLOW the interrupt. This keeps barge-in
-        // working when no profile is enrolled yet or the voiceprint engine is
-        // unavailable, while still blocking a confirmed different speaker (TV /
-        // bystander) from cutting the assistant off. Deciding *whether to stop
-        // the AI* is separate from deciding *whether to keep the user's
-        // sentence* (the submission gate).
-        let bargeInMatch = evidence?.match
-        guard bargeInMatch != .otherSpeaker else {
-            lastFilterResultText = filterText(for: evidence)
-            rememberBackgroundRejection(for: evidence)
+        guard loudEnough || sharpOnset else {
+            lastFilterResultText = "below barge threshold"
+            print("[VCC-BARGE] below threshold level=\(activity.inputLevel) dur=\(activity.duration) onset=\(activity.onsetRate) (need level>=\(playbackBargeInInputLevel) OR onset>=\(playbackBargeInOnsetRate)@level>=\(playbackBargeInOnsetFloorLevel))")
             return
         }
 
+        let trigger = loudEnough ? "loud" : "onset"
+        print("[VCC-BARGE] energy barge-in FIRED via=\(trigger) level=\(activity.inputLevel) dur=\(activity.duration) onset=\(activity.onsetRate)")
         startAudioBargeIn()
     }
 
@@ -860,6 +936,7 @@ public final class VoiceCallCoordinator: ObservableObject {
 
     private func startBargeIn(partialText: String) {
         guard state == .speaking else { return }
+        print("[VCC-BARGE] startBargeIn (final path) FIRED state=\(state)")
         captureInterruptedAssistantEchoText()
         invalidateActiveTurn()
         didObserveBargeIn = true
@@ -886,6 +963,7 @@ public final class VoiceCallCoordinator: ObservableObject {
 
     private func startAudioBargeIn() {
         guard state == .speaking || state == .thinking || state == .listening else { return }
+        print("[VCC-BARGE] startAudioBargeIn (VAD path) FIRED state=\(state)")
         captureInterruptedAssistantEchoText()
         invalidateActiveTurn()
         didObserveBargeIn = true
@@ -1133,16 +1211,16 @@ public final class VoiceCallCoordinator: ObservableObject {
                 voiceText: nil,
                 deliveryState: .streaming
             )
-            state = .speaking
-            isAssistantPlaybackActive = true
-            Task { [playback] in
-                await playback.enqueue(token, isFinal: false)
-            }
+            // Display text updates live, but audio is NOT enqueued per token.
+            // This backend buffers the whole turn then flushes all tokens within
+            // ~0.5s, so per-token segmentation gains no latency yet splits words
+            // mid-phrase and breaks prosody. The full turn is synthesized once at
+            // `.final`. Keep the on-screen state as streaming; don't enter
+            // `.speaking` until real audio plays.
         case .final(let displayText, let voiceText, _):
             recordAssistantResponseStartIfNeeded()
             let finalDisplayText = clean(displayText).isEmpty ? activeAssistantText : displayText
             let finalVoiceText = clean(voiceText ?? "").isEmpty ? finalDisplayText : (voiceText ?? finalDisplayText)
-            let shouldSpeakFinalText = activeAssistantTextWasNotStreamed(finalDisplayText)
             activeAssistantText = finalDisplayText
             currentAssistantVoiceText = finalVoiceText
             rememberAssistantSpeech(finalDisplayText)
@@ -1157,11 +1235,16 @@ public final class VoiceCallCoordinator: ObservableObject {
                 voiceText: finalVoiceText,
                 deliveryState: .complete
             )
-            state = .speaking
-            isAssistantPlaybackActive = true
-            if shouldSpeakFinalText {
+            // Speak the on-screen text (display_text), not the backend's separate
+            // voice_text, so the spoken words match what the user is reading. The
+            // whole turn is one segment for natural prosody; the playback queue's
+            // sanitizer strips punctuation/symbols before synthesis.
+            let speechText = clean(finalDisplayText)
+            if !speechText.isEmpty {
+                state = .speaking
+                isAssistantPlaybackActive = true
                 Task { [playback] in
-                    await playback.enqueue(finalVoiceText, isFinal: true)
+                    await playback.enqueue(speechText, isFinal: true)
                 }
             } else {
                 Task { [playback] in
@@ -1797,10 +1880,6 @@ public final class VoiceCallCoordinator: ObservableObject {
             return
         }
         candidates.append(cleanText)
-    }
-
-    private func activeAssistantTextWasNotStreamed(_ finalDisplayText: String) -> Bool {
-        clean(activeAssistantText).isEmpty || clean(activeAssistantText) != clean(finalDisplayText)
     }
 
     private func nextMessageID(prefix: String) -> String {

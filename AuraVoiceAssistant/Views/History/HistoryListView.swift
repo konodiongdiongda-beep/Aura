@@ -45,13 +45,11 @@ struct HistoryListView: View {
                     ScrollView {
                         LazyVStack(spacing: AppSpacing.md) {
                             ForEach(viewModel.filteredConversations) { conversation in
-                                Button {
-                                    Self.select(conversation, onSelectConversation: onSelectConversation)
-                                } label: {
-                                    HistoryRow(conversation: conversation)
-                                }
-                                .buttonStyle(.plain)
-                                .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                HistoryRow(conversation: conversation)
+                                    .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                    .onTapGesture {
+                                        onSelectConversation?(conversation)
+                                    }
                             }
                         }
                         .padding(.bottom, AppSpacing.xl)
@@ -65,13 +63,6 @@ struct HistoryListView: View {
                 viewModel.loadFirstPage()
             }
         }
-    }
-
-    static func select(
-        _ conversation: Conversation,
-        onSelectConversation: ((Conversation) -> Void)?
-    ) {
-        onSelectConversation?(conversation)
     }
 }
 
@@ -140,7 +131,6 @@ struct HistoryRow: View {
                     .foregroundStyle(AppColors.outline)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
     }
 }

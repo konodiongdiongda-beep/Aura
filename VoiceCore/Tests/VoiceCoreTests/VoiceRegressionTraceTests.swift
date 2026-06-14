@@ -359,10 +359,19 @@ private actor TracePlaybackController: SpeechPlaybackControlling {
 
 private actor TraceAudioSessionManager: AudioSessionManaging {
     var isSpeakerEnabled = true
+    var currentRoute: SpeakerRoute = .speaker
+    var availableRoutes: [SpeakerRoute] = [.speaker, .receiver]
+    var actualOutputDescription: String { currentRoute.displayName }
+
     func startCall() async throws {}
     func endCall() async {}
     func setSpeakerEnabled(_ enabled: Bool) async throws {
         isSpeakerEnabled = enabled
+        currentRoute = enabled ? .speaker : .receiver
+    }
+    func setRoute(_ route: SpeakerRoute) async throws {
+        currentRoute = route
+        isSpeakerEnabled = (route == .speaker)
     }
 }
 

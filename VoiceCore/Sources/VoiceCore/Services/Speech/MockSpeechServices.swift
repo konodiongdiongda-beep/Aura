@@ -65,9 +65,13 @@ public actor MockSpeechSynthesizer: SpeechSynthesizing {
 public actor MockAudioSessionManager: AudioSessionManaging {
     public private(set) var isActive = false
     public private(set) var isSpeakerEnabled: Bool
+    public private(set) var currentRoute: SpeakerRoute = .speaker
+    public private(set) var availableRoutes: [SpeakerRoute] = [.speaker, .receiver]
+    public var actualOutputDescription: String { currentRoute.displayName }
 
     public init(isSpeakerEnabled: Bool = true) {
         self.isSpeakerEnabled = isSpeakerEnabled
+        self.currentRoute = isSpeakerEnabled ? .speaker : .receiver
     }
 
     public func startCall() async throws {
@@ -80,5 +84,11 @@ public actor MockAudioSessionManager: AudioSessionManaging {
 
     public func setSpeakerEnabled(_ enabled: Bool) async throws {
         isSpeakerEnabled = enabled
+        currentRoute = enabled ? .speaker : .receiver
+    }
+
+    public func setRoute(_ route: SpeakerRoute) async throws {
+        currentRoute = route
+        isSpeakerEnabled = (route == .speaker)
     }
 }

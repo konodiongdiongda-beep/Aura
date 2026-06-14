@@ -20,19 +20,27 @@ public struct VoiceActivityEvent: Equatable, Sendable {
     public var isAIPlaybackActive: Bool
     public var source: VoiceActivitySource
     public var audioEvidence: SpeechAudioEvidence?
+    /// Energy jump at speech onset (current level minus the quiet level right
+    /// before speech began). A near-field user speaking up produces a sharp jump;
+    /// far-field background chatter ramps in diffusely. Used as a second barge-in
+    /// dimension so we can trip on a clear onset at lower volume without lowering
+    /// the bar for diffuse background. 0 when unknown (default / synthetic events).
+    public var onsetRate: Double
 
     public init(
         inputLevel: Double,
         duration: TimeInterval,
         isAIPlaybackActive: Bool,
         source: VoiceActivitySource = .unknown,
-        audioEvidence: SpeechAudioEvidence? = nil
+        audioEvidence: SpeechAudioEvidence? = nil,
+        onsetRate: Double = 0
     ) {
         self.inputLevel = inputLevel
         self.duration = duration
         self.isAIPlaybackActive = isAIPlaybackActive
         self.source = source
         self.audioEvidence = audioEvidence
+        self.onsetRate = onsetRate
     }
 }
 
@@ -219,6 +227,34 @@ public struct SpeechAudioEvidence: Equatable, Sendable {
         self.pcm16MonoData = pcm16MonoData
         self.sampleRate = sampleRate
         self.duration = duration
+    }
+
+    /// RMS energy of the captured audio, normalized to 0...1 (same scale as the
+    /// live mic `inputLevel`). Used as a near-field gate on the submission path:
+    /// the user speaking into the phone is loud (near-field) while background
+    /// chatter / TV is quiet (far-field), so a low RMS means "don't submit this
+    /// even if the recognizer turned it into words". 0 for empty audio.
+    public var rmsLevel: Double {
+        let data = pcm16MonoData
+        guard data.count >= 2 else { return 0 }
+        var sumSquares = 0.0
+        var count = 0
+        data.withUnsafeBytes { (raw: UnsafeRawBufferPointer) in
+            let n = raw.count / 2
+            // Subsample for cost: at most ~512 points is plenty for an RMS estimate.
+            let stride = max(1, n / 512)
+            var i = 0
+            while i < n {
+                let lo = UInt16(raw[i * 2])
+                let hi = UInt16(raw[i * 2 + 1]) << 8
+                let sample = Double(Int16(bitPattern: hi | lo)) / Double(Int16.max)
+                sumSquares += sample * sample
+                count += 1
+                i += stride
+            }
+        }
+        guard count > 0 else { return 0 }
+        return min(1, (sumSquares / Double(count)).squareRoot())
     }
 }
 

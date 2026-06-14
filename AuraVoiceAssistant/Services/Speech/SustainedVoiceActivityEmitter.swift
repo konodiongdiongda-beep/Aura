@@ -23,6 +23,11 @@ final class SustainedVoiceActivityEmitter: @unchecked Sendable {
     private let isPlaybackActive: @Sendable () -> Bool
     private var lastEmitTime: TimeInterval = 0
     private var voiceActivityStartedAt: TimeInterval?
+    /// Energy level just before the current speech burst began. Captured on the
+    /// last sub-threshold frame so onset sharpness = peak - thisFloor.
+    private var preSpeechFloor: Double = 0
+    private var onsetLevelAtStart: Double = 0
+    private var lastLevel: Double = 0
 
     init(
         configuration: SustainedVoiceActivityEmitterConfiguration = SustainedVoiceActivityEmitterConfiguration(),
@@ -39,13 +44,19 @@ final class SustainedVoiceActivityEmitter: @unchecked Sendable {
         now: TimeInterval = Date().timeIntervalSinceReferenceDate
     ) -> VoiceActivityEvent? {
         guard level >= configuration.minimumLevel else {
+            // Below threshold: this is the quiet floor speech will rise from.
+            // Track it so the next burst can measure its onset jump.
+            preSpeechFloor = level
+            lastLevel = level
             voiceActivityStartedAt = nil
             return nil
         }
 
         if voiceActivityStartedAt == nil {
             voiceActivityStartedAt = now
+            onsetLevelAtStart = preSpeechFloor
         }
+        lastLevel = level
 
         let startTime = voiceActivityStartedAt ?? now
         let sustainedDuration = now - startTime
@@ -58,7 +69,8 @@ final class SustainedVoiceActivityEmitter: @unchecked Sendable {
             duration: max(bufferDuration, sustainedDuration + bufferDuration),
             isAIPlaybackActive: isPlaybackActive(),
             source: .unknown,
-            audioEvidence: audioEvidence
+            audioEvidence: audioEvidence,
+            onsetRate: max(0, level - onsetLevelAtStart)
         )
     }
 }

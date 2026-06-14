@@ -118,7 +118,7 @@ enum SpeechServiceFactory {
             recognizer: MockSpeechRecognizer(),
             synthesizer: MockSpeechSynthesizer(),
             audioSession: MockAudioSessionManager(),
-            submissionGate: SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false),
+            submissionGate: PlaybackAwareUserTurnSubmissionGate(),
             speakerEvidenceProvider: NoopUserTurnSpeakerEvidenceProvider(),
             mode: .mock(reason: reason),
             environment: environment
@@ -140,20 +140,24 @@ enum SpeechServiceFactory {
     ) -> SpeechServiceBundle {
         #if os(iOS) && canImport(MicrosoftCognitiveServicesSpeech)
         let azureSynthesizer = AzureSpeechSynthesizer(configuration: configuration)
-        let speakerEvidenceProvider = makeSpeakerEvidenceProvider()
         let acousticEchoCanceller = ReferenceAcousticEchoCanceller()
+        // One engine shared by mic capture and TTS playback so VPIO can cancel
+        // the assistant's own voice in hardware and playback stays at full volume.
+        let sharedEngine = SharedVoiceAudioEngine()
         return SpeechServiceBundle(
             recognizer: AzureSpeechRecognizer(
                 configuration: configuration,
+                sharedEngine: sharedEngine,
                 acousticEchoCanceller: acousticEchoCanceller
             ),
             synthesizer: ControlledAudioSpeechSynthesizer(
                 upstream: azureSynthesizer,
-                referenceCapture: acousticEchoCanceller
+                referenceCapture: acousticEchoCanceller,
+                speaker: EngineAudioDataPlayer(sharedEngine: sharedEngine)
             ),
-            audioSession: AudioSessionManager(),
-            submissionGate: SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false),
-            speakerEvidenceProvider: speakerEvidenceProvider,
+            audioSession: AudioSessionManager(debugShowAllRoutes: SpeechRuntimeEnvironment.current == .simulator),
+            submissionGate: PlaybackAwareUserTurnSubmissionGate(),
+            speakerEvidenceProvider: NoopUserTurnSpeakerEvidenceProvider(),
             mode: .azure,
             environment: environment
         )
@@ -163,19 +167,5 @@ enum SpeechServiceFactory {
             reason: "Azure Speech SDK unavailable, using simulator mock"
         )
         #endif
-    }
-
-    /// Prefer the real CAM++ voiceprint (sherpa-onnx + bundled 192-dim model).
-    /// Falls back to the heuristic provider only if the model/SDK can't load, so
-    /// gating still functions (less accurately) rather than disappearing.
-    private static func makeSpeakerEvidenceProvider() -> any UserTurnSpeakerEvidenceProviding {
-        #if os(iOS)
-        if let engine = SpeakerVerificationModelLoader.makeEngine() {
-            print("[Voiceprint] using CAM++ engine (sherpa-onnx), threshold=\(engine.threshold)")
-            return SpeakerVerificationEvidenceProvider(engine: engine)
-        }
-        print("[Voiceprint] CAM++ voiceprint unavailable, falling back to heuristic provider")
-        #endif
-        return HeuristicSpeakerEvidenceProvider()
     }
 }

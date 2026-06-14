@@ -5,22 +5,17 @@ import VoiceCore
 
 actor AzureSpeechSynthesizer: SpeechSynthesizing {
     private let configuration: AzureSpeechConfiguration
-    private var speakerSynthesizer: SPXSpeechSynthesizer?
     private var dataSynthesizer: SPXSpeechSynthesizer?
 
     init(configuration: AzureSpeechConfiguration) {
         self.configuration = configuration
     }
 
+    /// Not used: playback goes through the shared engine's player node, not
+    /// Azure's native `defaultSpeakerOutput`. The wrapping
+    /// `ControlledAudioSpeechSynthesizer` always calls `synthesize()` instead.
     func speak(_ text: String) async throws {
-        let synthesizer = try cachedSpeakerSynthesizer()
-
-        let result = try await Task.detached(priority: .userInitiated) {
-            try synthesizer.speakText(text)
-        }.value
-        guard result.reason == SPXResultReason.synthesizingAudioCompleted else {
-            throw VoiceCore.AppError.speechSynthesisFailed("Azure Speech synthesis did not complete.")
-        }
+        throw VoiceCore.AppError.speechSynthesisFailed("AzureSpeechSynthesizer.speak is unsupported; use synthesize().")
     }
 
     func synthesize(_ text: String) async throws -> SpeechSynthesisOutput {
@@ -37,37 +32,27 @@ actor AzureSpeechSynthesizer: SpeechSynthesizing {
     }
 
     func cancel() async {
-        _ = try? speakerSynthesizer?.stopSpeaking()
         _ = try? dataSynthesizer?.stopSpeaking()
-        speakerSynthesizer = nil
         dataSynthesizer = nil
-    }
-
-    private func cachedSpeakerSynthesizer() throws -> SPXSpeechSynthesizer {
-        if let speakerSynthesizer {
-            return speakerSynthesizer
-        }
-        let synthesizer = try makeSynthesizer(playToDefaultSpeaker: true)
-        speakerSynthesizer = synthesizer
-        return synthesizer
     }
 
     private func cachedDataSynthesizer() throws -> SPXSpeechSynthesizer {
         if let dataSynthesizer {
             return dataSynthesizer
         }
-        let synthesizer = try makeSynthesizer(playToDefaultSpeaker: false)
+        let synthesizer = try makeSynthesizer()
         dataSynthesizer = synthesizer
         return synthesizer
     }
 
-    private func makeSynthesizer(playToDefaultSpeaker: Bool) throws -> SPXSpeechSynthesizer {
+    private func makeSynthesizer() throws -> SPXSpeechSynthesizer {
         let config = try configuration.validated()
         let speechConfig = try SPXSpeechConfiguration(subscription: config.subscriptionKey, region: config.region)
         speechConfig.speechSynthesisVoiceName = config.preferredVoiceName
-
-        let audioConfig = playToDefaultSpeaker ? try SPXAudioConfiguration(defaultSpeakerOutput: ()) : nil
-        return try SPXSpeechSynthesizer(speechConfiguration: speechConfig, audioConfiguration: audioConfig)
+        // No audio configuration → Azure renders to a data buffer instead of its
+        // own speaker output, so we can play it through the shared engine.
+        return try SPXSpeechSynthesizer(speechConfiguration: speechConfig, audioConfiguration: nil)
     }
 }
 #endif
+

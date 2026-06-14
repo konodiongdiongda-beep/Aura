@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import VoiceCore
+import UIKit
 
 @MainActor
 final class VoiceCallViewModel: ObservableObject {
@@ -16,11 +17,17 @@ final class VoiceCallViewModel: ObservableObject {
     @Published private(set) var lastSpeechRecognitionEvent: SpeechRecognitionEvent?
     @Published var isMuted: Bool
     @Published var isSpeakerEnabled: Bool
+    @Published private(set) var currentSpeakerRoute: SpeakerRoute = .speaker
+    @Published private(set) var availableSpeakerRoutes: [SpeakerRoute] = [.speaker, .receiver]
+    @Published private(set) var actualOutputDescription: String = "—"
+    @Published private(set) var audioDiagnostic: String = ""
+    private(set) var audioLevel: Double = 0.0
 
     private let coordinator: VoiceCallCoordinator?
     private let historyStore: (any ConversationStoring)?
     private var cancellables: Set<AnyCancellable> = []
     private var lastPersistedSignature: String?
+    private var levelUpdateTimer: Timer?
 
     convenience init() {
         self.init(coordinator: Self.makeDefaultCoordinator(), historyStore: LocalConversationStore())
@@ -43,7 +50,11 @@ final class VoiceCallViewModel: ObservableObject {
         self.lastSpeechRecognitionEvent = nil
         self.isMuted = false
         self.isSpeakerEnabled = coordinator.isSpeakerEnabled
+        self.currentSpeakerRoute = coordinator.currentSpeakerRoute
+        self.availableSpeakerRoutes = coordinator.availableSpeakerRoutes
         bindCoordinator(coordinator)
+        setupLifecycleObservers()
+        startLevelMonitoring()
     }
 
     init(
@@ -70,6 +81,7 @@ final class VoiceCallViewModel: ObservableObject {
         self.lastSpeechRecognitionEvent = nil
         self.isMuted = isMuted
         self.isSpeakerEnabled = isSpeakerEnabled
+        startLevelMonitoring()
     }
 
     var statusTitle: String {
@@ -274,6 +286,15 @@ final class VoiceCallViewModel: ObservableObject {
         }
     }
 
+    func setSpeakerRoute(_ route: SpeakerRoute) {
+        guard let coordinator else { return }
+
+        Task {
+            await coordinator.setSpeakerRoute(route)
+            sync(from: coordinator)
+        }
+    }
+
     func sendTextForDebug(_ text: String) {
         let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleanText.isEmpty else { return }
@@ -415,7 +436,11 @@ final class VoiceCallViewModel: ObservableObject {
             chatClient: services.chatClient,
             recognizer: speechServices.recognizer,
             synthesizer: speechServices.synthesizer,
-            playback: TTSPlaybackQueue(synthesizer: speechServices.synthesizer),
+            // Whole-turn playback: this backend flushes all tokens at once, so we
+            // synthesize the entire reply as ONE segment for natural prosody. A
+            // very large maxSegmentLength keeps SentenceSegmenter from splitting
+            // mid-reply; isFinal flush emits the full buffer.
+            playback: TTSPlaybackQueue(synthesizer: speechServices.synthesizer, maxSegmentLength: 100_000, firstSegmentMinLength: 0),
             audioSession: speechServices.audioSession,
             conversationIDFactory: services.idFactory,
             submissionGate: speechServices.submissionGate,
@@ -444,6 +469,9 @@ final class VoiceCallViewModel: ObservableObject {
         lastFilterResultText = coordinator.lastFilterResultText
         lastLatencyDebugText = coordinator.lastLatencyDebugText
         isSpeakerEnabled = coordinator.isSpeakerEnabled
+        currentSpeakerRoute = coordinator.currentSpeakerRoute
+        availableSpeakerRoutes = coordinator.availableSpeakerRoutes
+        actualOutputDescription = coordinator.actualOutputDescription
         persistCurrentConversation()
     }
 
@@ -575,5 +603,85 @@ final class VoiceCallViewModel: ObservableObject {
             print("Unable to persist typed text: \(error.localizedDescription)")
             #endif
         }
+    }
+
+    private func setupLifecycleObservers() {
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.didEnterBackgroundNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { await self?.handleEnterBackground() }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.willEnterForegroundNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { await self?.handleWillEnterForeground() }
+        }
+    }
+
+    private func handleEnterBackground() async {
+        guard let coordinator else { return }
+        guard state.isActiveCall else { return }
+        await coordinator.pauseRecognition()
+    }
+
+    private func handleWillEnterForeground() async {
+        guard let coordinator else { return }
+        guard state.isActiveCall else { return }
+        do {
+            try await coordinator.resumeRecognition()
+        } catch {
+            print("[VoiceCallViewModel] Failed to resume recognition: \(error.localizedDescription)")
+        }
+    }
+
+    deinit {
+        levelUpdateTimer?.invalidate()
+    }
+
+    private func startLevelMonitoring() {
+        levelUpdateTimer?.invalidate()
+        levelUpdateTimer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let target = self.targetAudioLevel()
+            // Exponential smoothing: rise quickly, fall a touch slower so the
+            // bars track real audio without flickering, and settle to 0 when silent.
+            let smoothing = target > self.audioLevel ? 0.55 : 0.25
+            var next = self.audioLevel + (target - self.audioLevel) * smoothing
+            if next < 0.015 { next = 0.0 }
+            self.audioLevel = next
+            let diag = AudioLevelMonitor.shared.diagnostic
+            if diag != self.audioDiagnostic {
+                self.audioDiagnostic = diag
+            }
+        }
+    }
+
+    private func targetAudioLevel() -> Double {
+        guard state.isActiveCall else { return 0.0 }
+
+        let liveLevel = AudioLevelMonitor.shared.currentLevel
+        if liveLevel > 0.0 {
+            // Apply a gentle gain so normal-volume speech reaches a visible range.
+            return min(1.0, liveLevel * 1.8)
+        }
+
+        // No live level available (e.g. during TTS playback): keep the bars flat
+        // unless we are actively speaking, where a soft idle motion reads better.
+        if state == .speaking {
+            return 0.28 + 0.18 * (0.5 + 0.5 * sin(Date().timeIntervalSince1970 * 6.0))
+        }
+
+        return 0.0
+    }
+
+    private func stopLevelMonitoring() {
+        levelUpdateTimer?.invalidate()
+        levelUpdateTimer = nil
+        audioLevel = 0.0
     }
 }

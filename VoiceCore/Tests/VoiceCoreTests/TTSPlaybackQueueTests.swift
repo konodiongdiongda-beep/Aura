@@ -160,15 +160,18 @@ private actor RecordingSpeechSynthesizer: SpeechSynthesizing {
     }
 
     func speak(_ text: String) async throws {
-        spokenTexts.append(text)
-        if suspendUntilCancelled {
-            try await Task.sleep(nanoseconds: 10_000_000_000)
-        }
+        try await play(SpeechSynthesisOutput(audioData: Data(text.utf8), text: text))
     }
 
     func synthesize(_ text: String) async throws -> SpeechSynthesisOutput {
-        spokenTexts.append(text)
-        return SpeechSynthesisOutput(audioData: Data(text.utf8), text: text)
+        SpeechSynthesisOutput(audioData: Data(text.utf8), text: text)
+    }
+
+    func play(_ output: SpeechSynthesisOutput) async throws {
+        spokenTexts.append(output.text)
+        if suspendUntilCancelled {
+            try await Task.sleep(nanoseconds: 10_000_000_000)
+        }
     }
 
     func cancel() async {

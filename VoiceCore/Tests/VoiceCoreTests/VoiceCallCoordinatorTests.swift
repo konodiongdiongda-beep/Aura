@@ -101,28 +101,6 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.map(\.displayText), ["我想看黄金行情"])
     }
 
-    func testSpeakerEvidenceUncertainPlaybackFinalInterruptsFailOpen() async throws {
-        let chatClient = ControlledChatClient()
-        let harness = CoordinatorHarness(
-            chatClient: chatClient,
-            playbackAutoDrains: false,
-            submissionGate: SpeakerProfileUserTurnSubmissionGate()
-        )
-        try await harness.coordinator.startCall()
-
-        await harness.coordinator.simulateAssistantSpeaking("机器人正在解释上一条问题。")
-        try await harness.coordinator.waitForState(.speaking)
-        await harness.recognizer.emitFinalWithEvidence(
-            "please show gold price",
-            UserTurnSpeakerEvidence(match: .uncertain, score: 0.83, threshold: 0.86)
-        )
-        try await Task.sleep(nanoseconds: 50_000_000)
-
-        // Fail-open: an "uncertain" speaker is not confirmed as someone else, so
-        // the final interrupts the assistant.
-        XCTAssertNotEqual(harness.coordinator.state, .speaking)
-    }
-
     func testUnknownPlaybackActivityDoesNotPromoteAssistantEchoToInterruptedUserTurn() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
@@ -134,8 +112,11 @@ final class VoiceCallCoordinatorTests: XCTestCase {
 
         await harness.coordinator.simulateAssistantSpeaking("当前正在播放机器人自己的回答。")
         try await harness.coordinator.waitForState(.speaking)
+        // Low-level residual echo (post-AEC) sits below the playback barge energy
+        // threshold, so it must NOT interrupt the assistant. This is the problem-2
+        // guard: the AI's own leaked voice should not cut itself off.
         await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
-            inputLevel: 0.85,
+            inputLevel: 0.08,
             duration: 0.8,
             isAIPlaybackActive: true,
             source: .unknown
@@ -207,9 +188,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         let cancelCount = await harness.playback.cancelCountSnapshot()
         XCTAssertEqual(cancelCount, 1)
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "accepted")
-        let requests = await speakerEvidenceProvider.requestsSnapshot()
-        XCTAssertEqual(requests.first?.isAssistantPlaybackActive, true)
-        XCTAssertEqual(requests.first?.allowsEnrollment, false)
+        // Barge-in is energy-only now; the voiceprint provider is NOT consulted to
+        // decide the interruption (it only gates submission on the post-interrupt
+        // final), so we no longer assert it was invoked here.
     }
 
     func testInterruptedFinalTrimsAssistantPrefixBeforeSubmittingUserSpeech() async throws {
@@ -451,10 +432,18 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(cancelCount, 1)
     }
 
-    func testLenientOtherSpeakerVoiceActivityDuringPlaybackKeepsPlaybackActive() async throws {
+    // Energy-triggered barge-in: sustained mic energy above the playback barge
+    // threshold stops the assistant regardless of voiceprint, because during
+    // playback the live voiceprint score is unreliable (echo contamination).
+    // Stopping the AI is decoupled from keeping the sentence: a non-primary
+    // speaker pauses the assistant here, but their turn is rejected at submission
+    // (see testOtherSpeakerInterruptStopsAssistantButDoesNotSubmit). This is the
+    // problem-1 design: other people can briefly pause the AI but cannot inject
+    // their words into the conversation.
+    func testEnergyAboveThresholdDuringPlaybackInterruptsRegardlessOfSpeaker() async throws {
         let chatClient = ControlledChatClient()
         let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
-            evidence: UserTurnSpeakerEvidence(match: .otherSpeaker, score: 0.4, threshold: 0.82)
+            evidence: UserTurnSpeakerEvidence(match: .otherSpeaker, score: 0.1, threshold: 0.82)
         )
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -475,9 +464,82 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         ))
         try await Task.sleep(nanoseconds: 50_000_000)
 
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        XCTAssertEqual(cancelCount, 1)
+    }
+
+    // Below the playback barge energy threshold nothing interrupts: low-level
+    // residual echo / faint background noise leaves the assistant talking. This
+    // is the problem-2 guard at the energy layer.
+    func testEnergyBelowThresholdDuringPlaybackKeepsPlaybackActive() async throws {
+        let chatClient = ControlledChatClient()
+        let harness = CoordinatorHarness(
+            chatClient: chatClient,
+            playbackAutoDrains: false,
+            submissionGate: SpeakerProfileUserTurnSubmissionGate(requiresVerifiedSpeaker: false)
+        )
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.simulateAssistantSpeaking("机器人正在回答。")
+        try await harness.coordinator.waitForState(.speaking)
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.10,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
+        try await Task.sleep(nanoseconds: 50_000_000)
+
         XCTAssertEqual(harness.coordinator.state, .speaking)
         let cancelCount = await harness.playback.cancelCountSnapshot()
         XCTAssertEqual(cancelCount, 0)
+        XCTAssertEqual(harness.coordinator.lastFilterResultText, "below barge threshold")
+    }
+
+    // Problem-1 contract end to end: another person's voice has enough energy to
+    // stop the assistant (barge-in is energy-only), but the recognized sentence
+    // carries .otherSpeaker voiceprint evidence, so the submission gate rejects it
+    // — the bystander pauses the AI yet cannot inject a turn into the conversation.
+    func testOtherSpeakerInterruptStopsAssistantButDoesNotSubmit() async throws {
+        let chatClient = ControlledChatClient()
+        let speakerEvidenceProvider = RecordingSpeakerEvidenceProvider(
+            evidence: UserTurnSpeakerEvidence(match: .otherSpeaker, score: 0.2, threshold: 0.35)
+        )
+        let harness = CoordinatorHarness(
+            chatClient: chatClient,
+            playbackAutoDrains: false,
+            submissionGate: SpeakerProfileUserTurnSubmissionGate(),
+            speakerEvidenceProvider: speakerEvidenceProvider
+        )
+        try await harness.coordinator.startCall()
+
+        await harness.coordinator.simulateAssistantSpeaking("机器人正在回答。")
+        try await harness.coordinator.waitForState(.speaking)
+
+        // Loud voice during playback -> energy barge-in stops the assistant.
+        await harness.recognizer.emitVoiceActivity(VoiceActivityEvent(
+            inputLevel: 0.86,
+            duration: 0.22,
+            isAIPlaybackActive: true,
+            source: .unknown,
+            audioEvidence: SpeechAudioEvidence(pcm16MonoData: Data(repeating: 1, count: 32_000), sampleRate: 16_000, duration: 1)
+        ))
+        try await harness.coordinator.waitForState(.interrupted)
+        try await Task.sleep(nanoseconds: 50_000_000)
+        let cancelCount = await harness.playback.cancelCountSnapshot()
+        XCTAssertEqual(cancelCount, 1)
+
+        // The interrupting sentence is another speaker -> rejected at submission.
+        await harness.recognizer.emitFinalWithEvidence(
+            "旁边有人在大声讲电话",
+            UserTurnSpeakerEvidence(match: .otherSpeaker, score: 0.2, threshold: 0.35)
+        )
+        try await Task.sleep(nanoseconds: 50_000_000)
+
+        XCTAssertEqual(chatClient.sentMessages, [])
+        XCTAssertEqual(harness.coordinator.messages.filter { $0.role == .user }.count, 0)
         XCTAssertEqual(harness.coordinator.lastFilterResultText, "rejected other speaker")
     }
 
@@ -978,10 +1040,11 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         XCTAssertEqual(harness.chatClient.sentMessages, ["First question", "Stop and answer this"])
     }
 
-    // Energy-only VAD (no audio evidence) cannot be voiceprint-verified, so it
-    // must NOT interrupt during playback — it only marks that we are waiting for
-    // speaker verification.
-    func testEnergyOnlyVoiceActivityDuringPlaybackDoesNotInterruptWithoutAudioEvidence() async throws {
+    // Energy-only VAD (no audio evidence) now interrupts during playback: the
+    // trigger is pure sustained energy and no longer waits for voiceprint, so a
+    // missing audio buffer doesn't block the barge-in. (Submission, which does
+    // use voiceprint, runs separately on the post-interrupt final.)
+    func testEnergyOnlyVoiceActivityDuringPlaybackInterruptsWithoutAudioEvidence() async throws {
         let chatClient = ControlledChatClient()
         let harness = CoordinatorHarness(
             chatClient: chatClient,
@@ -998,11 +1061,9 @@ final class VoiceCallCoordinatorTests: XCTestCase {
         await harness.recognizer.emitVoiceActivity(inputLevel: 0.8, duration: 0.12)
         try await Task.sleep(nanoseconds: 50_000_000)
 
-        XCTAssertEqual(harness.coordinator.state, .speaking)
+        XCTAssertNotEqual(harness.coordinator.state, .speaking)
         let cancelCountAfterActivity = await harness.playback.cancelCountSnapshot()
-        XCTAssertEqual(cancelCountAfterActivity, 0)
-        XCTAssertEqual(harness.coordinator.lastFilterResultText, "waiting speaker verification")
-        XCTAssertEqual(harness.chatClient.sentMessages, ["First question"])
+        XCTAssertEqual(cancelCountAfterActivity, 1)
     }
 
     func testVerifiedPlaybackBargeInKeepsSpeakerEnabledAndSubmitsOnlyUserSpeech() async throws {
@@ -2232,6 +2293,9 @@ private actor RecordingPlaybackController: SpeechPlaybackControlling {
 
 private actor RecordingAudioSessionManager: AudioSessionManaging {
     private(set) var isSpeakerEnabled = true
+    private(set) var currentRoute: SpeakerRoute = .speaker
+    private(set) var availableRoutes: [SpeakerRoute] = [.speaker, .receiver]
+    var actualOutputDescription: String { currentRoute.displayName }
     private(set) var startCallCount = 0
     private(set) var endCallCount = 0
 
@@ -2245,6 +2309,12 @@ private actor RecordingAudioSessionManager: AudioSessionManaging {
 
     func setSpeakerEnabled(_ enabled: Bool) async throws {
         isSpeakerEnabled = enabled
+        currentRoute = enabled ? .speaker : .receiver
+    }
+
+    func setRoute(_ route: SpeakerRoute) async throws {
+        currentRoute = route
+        isSpeakerEnabled = (route == .speaker)
     }
 
     func startCallCountSnapshot() -> Int {

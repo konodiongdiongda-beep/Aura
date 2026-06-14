@@ -55,6 +55,8 @@ struct AppText: Equatable {
     let microphoneNotRequested: String
     let permissionLabel: String
     let microphoneRequestedByPhase3: String
+    let settingsVersionLabel: String
+    let settingsBuildLabel: String
     let historyTab: String
     let voiceTab: String
     let settingsTab: String
@@ -119,6 +121,8 @@ struct AppText: Equatable {
                 microphoneNotRequested: "Requested during calls",
                 permissionLabel: "Permission",
                 microphoneRequestedByPhase3: "Requested by Phase 3 audio layer",
+                settingsVersionLabel: "Version",
+                settingsBuildLabel: "Build",
                 historyTab: "History",
                 voiceTab: "Voice",
                 settingsTab: "Settings",
@@ -181,6 +185,8 @@ struct AppText: Equatable {
                 microphoneNotRequested: "通话中请求",
                 permissionLabel: "权限",
                 microphoneRequestedByPhase3: "由 Phase 3 音频层请求",
+                settingsVersionLabel: "版本",
+                settingsBuildLabel: "构建",
                 historyTab: "历史",
                 voiceTab: "语音",
                 settingsTab: "设置",

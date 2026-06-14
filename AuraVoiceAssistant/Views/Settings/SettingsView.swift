@@ -9,7 +9,17 @@ struct SettingsView: View {
             AppHeaderView(title: text.settingsTitle, subtitle: text.configurationSubtitle, trailingIcon: "gearshape.fill")
 
             ScrollView {
-                VStack(spacing: AppSpacing.md) {
+                VStack(spacing: AppSpacing.lg) {
+
+                    // MARK: – User Profile Card
+                    UserProfileCard(
+                        username: viewModel.config.defaultUsername,
+                        userID: viewModel.config.defaultUserID,
+                        userLabel: text.userTitle,
+                        idLabel: "ID"
+                    )
+
+                    // MARK: – Language Switcher Card
                     SettingsCard(
                         title: text.languageTitle,
                         subtitle: text.languageSubtitle,
@@ -22,47 +32,13 @@ struct SettingsView: View {
                         )
                     }
 
-                    SettingsCard(
-                        title: text.azureSpeechTitle,
-                        subtitle: viewModel.azureStatusText,
-                        icon: "waveform.badge.mic",
-                        tint: viewModel.speechServiceModeText == "Azure" ? AppColors.success : AppColors.error
-                    ) {
-                        SettingsRow(label: text.azureKeyLabel, value: viewModel.azureKeyPresenceText)
-                        SettingsRow(label: text.regionLabel, value: viewModel.azureRegionText)
-                        SettingsRow(label: text.voiceLabel, value: viewModel.preferredVoiceText)
-                        SettingsRow(label: text.speechModeLabel, value: viewModel.speechServiceModeText)
-                        SettingsRow(label: text.environmentLabel, value: viewModel.speechRuntimeEnvironmentText)
-                        SettingsRow(label: text.statusLabel, value: viewModel.speechStatusText)
-                    }
-
-                    SettingsCard(
-                        title: text.userTitle,
-                        subtitle: viewModel.userDisplayText,
-                        icon: "person.crop.circle.fill",
-                        tint: AppColors.primary
-                    ) {
-                        SettingsRow(label: text.historyIdentityLabel, value: text.qaUser)
-                    }
-
-                    SettingsCard(
-                        title: text.speakerEnrollmentTitle,
-                        subtitle: viewModel.speakerEnrollmentStatusText,
-                        icon: "person.wave.2.fill",
-                        tint: AppColors.secondary
-                    ) {
-                        SettingsRow(label: text.stateLabel, value: text.phase1Placeholder)
-                        SettingsRow(label: text.verificationLabel, value: text.notConnected)
-                    }
-
-                    SettingsCard(
-                        title: text.microphoneTitle,
-                        subtitle: viewModel.microphoneStatusText,
-                        icon: "mic.circle.fill",
-                        tint: AppColors.tertiary
-                    ) {
-                        SettingsRow(label: text.permissionLabel, value: text.microphoneRequestedByPhase3)
-                    }
+                    // MARK: – App Info Card
+                    AppInfoCard(
+                        versionLabel: text.settingsVersionLabel,
+                        version: "1.0.0",
+                        buildLabel: text.settingsBuildLabel,
+                        build: "2026.06"
+                    )
                 }
                 .padding(AppSpacing.screenMargin)
                 .padding(.bottom, AppSpacing.xl)
@@ -70,6 +46,152 @@ struct SettingsView: View {
         }
     }
 }
+
+// MARK: – User Profile Card
+
+struct UserProfileCard: View {
+    var username: String
+    var userID: Int
+    var userLabel: String
+    var idLabel: String
+
+    @State private var avatarPulse: Bool = false
+
+    var body: some View {
+        GlassPanel(cornerRadius: 26, padding: 0) {
+            VStack(spacing: 0) {
+                // Top gradient accent bar
+                LinearGradient(
+                    colors: [AppColors.primary, AppColors.secondaryContainer, AppColors.primary.opacity(0.6)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(height: 72)
+                .overlay(alignment: .bottomLeading) {
+                    // Decorative floating circles
+                    Circle()
+                        .fill(.white.opacity(0.12))
+                        .frame(width: 48, height: 48)
+                        .offset(x: 28, y: 14)
+                    Circle()
+                        .fill(.white.opacity(0.08))
+                        .frame(width: 28, height: 28)
+                        .offset(x: 110, y: -12)
+                }
+                .clipShape(TopRoundedRectangle(radius: 26))
+
+                // Avatar + Info overlay
+                VStack(spacing: AppSpacing.md) {
+                    // Avatar
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [AppColors.primary, AppColors.secondaryContainer],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 72, height: 72)
+                            .shadow(color: AppColors.primary.opacity(0.32), radius: 16, x: 0, y: 8)
+                            .scaleEffect(avatarPulse ? 1.04 : 1.0)
+
+                        Text(String(username.prefix(1)).uppercased())
+                            .font(.system(size: 30, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                    }
+                    .offset(y: -36)
+                    .padding(.bottom, -28)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
+                            avatarPulse = true
+                        }
+                    }
+
+                    // Username
+                    Text(username)
+                        .font(AppTypography.headlineLG)
+                        .foregroundStyle(AppColors.onSurface)
+
+                    // User ID badge
+                    HStack(spacing: AppSpacing.sm) {
+                        Image(systemName: "person.text.rectangle.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(AppColors.primary)
+                        Text("\(idLabel) \(userID)")
+                            .font(AppTypography.label)
+                            .foregroundStyle(AppColors.onSurfaceVariant)
+                    }
+                    .padding(.horizontal, AppSpacing.md)
+                    .padding(.vertical, 6)
+                    .background(AppColors.primaryFixed.opacity(0.55), in: Capsule())
+
+                    // Status indicator
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(AppColors.success)
+                            .frame(width: 8, height: 8)
+                        Text(userLabel)
+                            .font(AppTypography.bodySmall)
+                            .foregroundStyle(AppColors.outline)
+                    }
+                    .padding(.bottom, 4)
+                }
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.bottom, AppSpacing.lg)
+            }
+        }
+    }
+}
+
+// MARK: – App Info Card
+
+struct AppInfoCard: View {
+    var versionLabel: String
+    var version: String
+    var buildLabel: String
+    var build: String
+
+    var body: some View {
+        GlassPanel(cornerRadius: 22, padding: AppSpacing.lg) {
+            VStack(spacing: AppSpacing.md) {
+                HStack(spacing: AppSpacing.md) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [AppColors.primary, AppColors.secondaryContainer],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 48, height: 48)
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundStyle(.white)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Aura Voice")
+                            .font(AppTypography.headlineMobile)
+                            .foregroundStyle(AppColors.onSurface)
+                        Text("AI Assistant")
+                            .font(AppTypography.bodySmall)
+                            .foregroundStyle(AppColors.outline)
+                    }
+                    Spacer()
+                }
+
+                Divider()
+                    .overlay(AppColors.surfaceContainerHigh)
+
+                SettingsRow(label: versionLabel, value: version)
+                SettingsRow(label: buildLabel, value: build)
+            }
+        }
+    }
+}
+
+// MARK: – Language Segmented Control
 
 struct LanguageSegmentedControl: View {
     var selection: AppLanguage
@@ -111,6 +233,8 @@ struct LanguageSegmentedControl: View {
     }
 }
 
+// MARK: – Settings Card
+
 struct SettingsCard<Content: View>: View {
     var title: String
     var subtitle: String
@@ -143,6 +267,8 @@ struct SettingsCard<Content: View>: View {
     }
 }
 
+// MARK: – Settings Row
+
 struct SettingsRow: View {
     var label: String
     var value: String
@@ -160,6 +286,8 @@ struct SettingsRow: View {
         }
     }
 }
+
+// MARK: – Preview
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {

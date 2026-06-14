@@ -23,44 +23,25 @@ targets:
         optional: true
     dependencies:
       - package: VoiceCore
-      - framework: Vendor/SherpaOnnx/sherpa-onnx.xcframework
-        embed: false
-        optional: true
-      - framework: Vendor/SherpaOnnx/onnxruntime.xcframework
-        embed: false
-        optional: true
     configFiles:
       Debug: AuraVoiceAssistant/App/Debug.xcconfig
       Release: AuraVoiceAssistant/App/Release.xcconfig
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.aura.voiceassistant
+        DEVELOPMENT_TEAM: S8J8QUU6XW
+        CODE_SIGN_STYLE: Automatic
         IPHONEOS_DEPLOYMENT_TARGET: "15.0"
         INFOPLIST_FILE: AuraVoiceAssistant/App/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CONFIGURATION_BUILD_DIR: $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
-        SWIFT_INCLUDE_PATHS:
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx
-        OTHER_SWIFT_FLAGS:
-          - $(inherited)
-          - -Xcc
-          - -I$(PROJECT_DIR)/Vendor/SherpaOnnx
-          - -Xcc
-          - -I$(PROJECT_DIR)/Vendor/SherpaOnnx/include
-        FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx
         HEADER_SEARCH_PATHS:
           - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include
           - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx/include
         HEADER_SEARCH_PATHS[sdk=iphoneos*]:
           - $(PROJECT_DIR)/Vendor/AEC/include
           - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/include
           - $(PROJECT_DIR)/Vendor/AEC/SpeexDSP/libspeexdsp
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx
-          - $(PROJECT_DIR)/Vendor/SherpaOnnx/include
         LIBRARY_SEARCH_PATHS[sdk=iphoneos*]: $(PROJECT_DIR)/Vendor/AEC/lib/ios-arm64
         OTHER_LDFLAGS[sdk=iphoneos*]: $(inherited) -laec -lc++
         OTHER_LDFLAGS: $(inherited) -lc++

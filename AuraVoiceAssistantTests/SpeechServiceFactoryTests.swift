@@ -15,7 +15,7 @@ final class SpeechServiceFactoryTests: XCTestCase {
         XCTAssertTrue(bundle.recognizer is MockSpeechRecognizer)
         XCTAssertTrue(bundle.synthesizer is MockSpeechSynthesizer)
         XCTAssertTrue(bundle.audioSession is MockAudioSessionManager)
-        XCTAssertTrue(bundle.submissionGate is SpeakerProfileUserTurnSubmissionGate)
+        XCTAssertTrue(bundle.submissionGate is PlaybackAwareUserTurnSubmissionGate)
     }
 
     func testMockAppConfigUsesDebugPort6007() {
@@ -38,7 +38,7 @@ final class SpeechServiceFactoryTests: XCTestCase {
         XCTAssertEqual(bundle.mode.displayName, "Mock")
         XCTAssertEqual(bundle.mode.statusText, "Simulator default, using mock speech")
         XCTAssertTrue(bundle.recognizer is MockSpeechRecognizer)
-        XCTAssertTrue(bundle.submissionGate is SpeakerProfileUserTurnSubmissionGate)
+        XCTAssertTrue(bundle.submissionGate is PlaybackAwareUserTurnSubmissionGate)
     }
 
     func testSimulatorAzureModeUsesConfiguredAzureTTS() {
@@ -53,7 +53,7 @@ final class SpeechServiceFactoryTests: XCTestCase {
         )
 
         XCTAssertEqual(bundle.mode.displayName, "Azure")
-        XCTAssertTrue(bundle.submissionGate is SpeakerProfileUserTurnSubmissionGate)
+        XCTAssertTrue(bundle.submissionGate is PlaybackAwareUserTurnSubmissionGate)
         #if canImport(MicrosoftCognitiveServicesSpeech)
         XCTAssertTrue(bundle.synthesizer is ControlledAudioSpeechSynthesizer)
         #endif

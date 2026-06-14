@@ -27,7 +27,6 @@ public final class ChatWebSocketClient: ChatClient {
             let task = Task {
                 do {
                     continuation.yield(.started(userChatID: turn.userChatID, botChatID: turn.botChatID))
-                    print("[ChatWebSocketClient] connecting endpoint=\(endpoint.absoluteString)")
                     webSocket.resume()
 
                     let payload = ChatRequestPayload(content: text, turn: turn)
@@ -35,7 +34,6 @@ public final class ChatWebSocketClient: ChatClient {
                     guard let json = String(data: data, encoding: .utf8) else {
                         throw AppError.responseParsingFailed
                     }
-                    print("[ChatWebSocketClient] sending textLength=\(text.count) payloadLength=\(json.count)")
                     try await webSocket.send(.string(json))
 
                     while !Task.isCancelled {
@@ -43,14 +41,11 @@ public final class ChatWebSocketClient: ChatClient {
                         let lines: [String]
                         switch message {
                         case let .string(text):
-                            print("[ChatWebSocketClient] received string length=\(text.count)")
                             lines = text.split(whereSeparator: \.isNewline).map(String.init)
                         case let .data(data):
                             let text = String(data: data, encoding: .utf8) ?? ""
-                            print("[ChatWebSocketClient] received data length=\(data.count)")
                             lines = text.split(whereSeparator: \.isNewline).map(String.init)
                         @unknown default:
-                            print("[ChatWebSocketClient] received unknown message")
                             lines = []
                         }
 

@@ -9,7 +9,8 @@ struct ContentView: View {
     @StateObject private var settingsViewModel = SettingsViewModel(config: AppConfig.load())
     @State private var selectedTab: AppTab = .voice
     @State private var selectedHistoryConversation: Conversation?
-    static let bottomNavigationHeight: CGFloat = 52
+    @State private var messageListViewModel: MessageListViewModel?
+    static let bottomNavigationHeight: CGFloat = 64
 
     var body: some View {
         GeometryReader { proxy in
@@ -24,6 +25,7 @@ struct ContentView: View {
                         switch selectedTab {
                         case .history:
                             HistoryListView(viewModel: historyViewModel) { conversation in
+                                messageListViewModel = historyViewModel.makeMessageListViewModel(for: conversation)
                                 selectedHistoryConversation = conversation
                             }
                         case .voice:
@@ -51,11 +53,12 @@ struct ContentView: View {
                 )
                 .zIndex(2)
 
-                if let selectedHistoryConversation {
+                if selectedHistoryConversation != nil, let messageListViewModel {
                     MessageDetailView(
-                        viewModel: historyViewModel.makeMessageListViewModel(for: selectedHistoryConversation)
+                        viewModel: messageListViewModel
                     ) {
                         self.selectedHistoryConversation = nil
+                        self.messageListViewModel = nil
                     }
                     .environment(\.appTopSafeAreaInset, topInset)
                     .transition(.move(edge: .trailing).combined(with: .opacity))
@@ -159,7 +162,7 @@ private extension UIApplication {
     }
 }
 
-private struct TopRoundedRectangle: Shape {
+struct TopRoundedRectangle: Shape {
     var radius: CGFloat
 
     func path(in rect: CGRect) -> Path {

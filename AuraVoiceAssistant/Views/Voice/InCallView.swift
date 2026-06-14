@@ -25,8 +25,8 @@ struct InCallView: View {
                         .opacity(hasAppeared ? 1 : 0)
                         .offset(y: hasAppeared ? 0 : -8)
 
-                    VoiceWaveView(state: viewModel.state, compact: compact)
-                        .frame(maxWidth: 280)
+                    VoiceWaveView(state: viewModel.state, audioLevel: viewModel.audioLevel, compact: compact)
+                        .frame(maxWidth: 220)
                         .scaleEffect(hasAppeared ? 1 : 0.72)
                         .opacity(hasAppeared ? 1 : 0)
 
@@ -46,6 +46,17 @@ struct InCallView: View {
                     .offset(y: hasAppeared ? 0 : 24)
 
                 Spacer(minLength: 0)
+
+                Text("实际输出: \(viewModel.actualOutputDescription)")
+                    .font(AppTypography.label)
+                    .foregroundStyle(AppColors.onSurfaceVariant)
+                    .opacity(hasAppeared ? 1 : 0)
+
+                Text(viewModel.audioDiagnostic.isEmpty ? "诊断: —" : viewModel.audioDiagnostic)
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(AppColors.onSurfaceVariant)
+                    .padding(.bottom, AppSpacing.xs)
+                    .opacity(hasAppeared ? 1 : 0)
 
                 InCallControls(viewModel: viewModel, text: text, compact: compact)
                     .padding(.bottom, compact ? AppSpacing.xs : AppSpacing.sm)
@@ -67,10 +78,10 @@ struct InCallView: View {
     }
 
     static func transcriptHeight(for availableHeight: CGFloat, topPadding: CGFloat = AppSpacing.lg, compact: Bool) -> CGFloat {
-        let reservedHeight: CGFloat = compact ? 330 : 380
+        let reservedHeight: CGFloat = compact ? 190 : 232
         let baseTopPadding = compact ? AppSpacing.md : AppSpacing.lg
         let flexibleHeight = availableHeight - reservedHeight - max(0, topPadding - baseTopPadding)
-        return max(compact ? 118 : 150, min(240, flexibleHeight))
+        return max(compact ? 220 : 280, min(560, flexibleHeight))
     }
 
     private var statusIcon: String {
@@ -113,6 +124,10 @@ struct TranscriptPanel: View {
                     VStack(spacing: AppSpacing.md) {
                         ForEach(viewModel.messages) { message in
                             MessageBubble(message: message, text: text)
+                        }
+
+                        if viewModel.state == .thinking && viewModel.activeAssistantText.isEmpty {
+                            ThinkingBubble()
                         }
 
                         if !viewModel.activeUserPartialText.isEmpty {
@@ -179,10 +194,21 @@ struct MessageBubble: View {
                 Text(roleLabel)
                     .font(AppTypography.label)
                     .foregroundStyle(roleTint.opacity(0.72))
-                Text(message.displayText)
-                    .font(message.role == .assistant ? AppTypography.aiResponse : AppTypography.body)
-                    .foregroundStyle(message.role == .assistant ? AppColors.primary : AppColors.onSurface)
-                    .fixedSize(horizontal: false, vertical: true)
+                if message.role == .assistant {
+                    if message.deliveryState == .streaming {
+                        TypewriterText(text: message.displayText)
+                    } else {
+                        Text(message.displayText)
+                            .font(AppTypography.aiResponse)
+                            .foregroundStyle(AppColors.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } else {
+                    Text(message.displayText)
+                        .font(AppTypography.body)
+                        .foregroundStyle(AppColors.onSurface)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .padding(AppSpacing.md)
             .background(background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -229,9 +255,13 @@ struct ActiveLine: View {
             Text("\(label):")
                 .font(AppTypography.label)
                 .foregroundStyle(tint.opacity(0.7))
-            Text(text)
-                .font(label == "Aura" ? AppTypography.aiResponse : AppTypography.body)
-                .foregroundStyle(tint)
+            if label == "Aura" {
+                TypewriterText(text: text)
+            } else {
+                Text(text)
+                    .font(AppTypography.body)
+                    .foregroundStyle(tint)
+            }
             Spacer(minLength: 0)
         }
         .padding(.horizontal, AppSpacing.sm)
@@ -270,13 +300,32 @@ struct InCallControls: View {
             }
             .buttonStyle(.plain)
 
-            ControlButton(
-                icon: viewModel.isSpeakerEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill",
-                label: text.speaker,
-                tint: viewModel.isSpeakerEnabled ? AppColors.primary : AppColors.onSurface,
-                size: compact ? 52 : 58
-            ) {
-                viewModel.toggleSpeaker()
+            Menu {
+                ForEach(viewModel.availableSpeakerRoutes, id: \.self) { route in
+                    Button(action: {
+                        viewModel.setSpeakerRoute(route)
+                    }) {
+                        HStack {
+                            Text(route.displayName)
+                            if viewModel.currentSpeakerRoute == route {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "speaker.wave.2.fill")
+                        .font(.system(size: 22, weight: .semibold))
+                        .frame(width: compact ? 52 : 58, height: compact ? 52 : 58)
+                        .foregroundStyle(AppColors.primary)
+                        .background(.white.opacity(0.66), in: Circle())
+                        .background(.ultraThinMaterial, in: Circle())
+                        .overlay(Circle().stroke(.white.opacity(0.58), lineWidth: 1))
+                    Text(text.speaker)
+                        .font(AppTypography.label)
+                        .foregroundStyle(AppColors.outline)
+                }
             }
         }
     }
@@ -305,5 +354,111 @@ struct ControlButton: View {
             }
         }
         .buttonStyle(.plain)
+    }
+}
+
+struct TypewriterText: View {
+    let text: String
+    var speed: Double = 0.015
+    @State private var displayedText: String = ""
+    @State private var animationTask: Task<Void, Never>? = nil
+
+    var body: some View {
+        Text(displayedText)
+            .font(AppTypography.aiResponse)
+            .foregroundStyle(AppColors.primary)
+            .fixedSize(horizontal: false, vertical: true)
+            .onAppear {
+                startTypewriter(to: text)
+            }
+            .onChange(of: text) { newValue in
+                startTypewriter(to: newValue)
+            }
+            .onDisappear {
+                animationTask?.cancel()
+            }
+    }
+
+    private func startTypewriter(to targetText: String) {
+        animationTask?.cancel()
+        
+        guard !targetText.isEmpty else {
+            displayedText = ""
+            return
+        }
+
+        if targetText.hasPrefix(displayedText) {
+            let startCount = displayedText.count
+            let charactersToType = Array(targetText.dropFirst(startCount))
+            
+            animationTask = Task {
+                for char in charactersToType {
+                    if Task.isCancelled { break }
+                    displayedText.append(char)
+                    try? await Task.sleep(nanoseconds: UInt64(speed * 1_000_000_000))
+                }
+            }
+        } else {
+            displayedText = ""
+            let charactersToType = Array(targetText)
+            
+            animationTask = Task {
+                for char in charactersToType {
+                    if Task.isCancelled { break }
+                    displayedText.append(char)
+                    try? await Task.sleep(nanoseconds: UInt64(speed * 1_000_000_000))
+                }
+            }
+        }
+    }
+}
+
+struct ThinkingBubble: View {
+    @State private var dotOffset1: CGFloat = 0
+    @State private var dotOffset2: CGFloat = 0
+    @State private var dotOffset3: CGFloat = 0
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Aura")
+                    .font(AppTypography.label)
+                    .foregroundStyle(AppColors.primary.opacity(0.72))
+                
+                HStack(spacing: 6) {
+                    Circle()
+                        .fill(AppColors.primary)
+                        .frame(width: 8, height: 8)
+                        .offset(y: dotOffset1)
+                    Circle()
+                        .fill(AppColors.primary)
+                        .frame(width: 8, height: 8)
+                        .offset(y: dotOffset2)
+                    Circle()
+                        .fill(AppColors.primary)
+                        .frame(width: 8, height: 8)
+                        .offset(y: dotOffset3)
+                }
+                .frame(width: 44, height: 16)
+                .onAppear {
+                    animateDots()
+                }
+            }
+            .padding(AppSpacing.md)
+            .background(.white.opacity(0.78), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            Spacer(minLength: 44)
+        }
+    }
+
+    private func animateDots() {
+        withAnimation(Animation.easeInOut(duration: 0.5).repeatForever().delay(0)) {
+            dotOffset1 = -6
+        }
+        withAnimation(Animation.easeInOut(duration: 0.5).repeatForever().delay(0.15)) {
+            dotOffset2 = -6
+        }
+        withAnimation(Animation.easeInOut(duration: 0.5).repeatForever().delay(0.3)) {
+            dotOffset3 = -6
+        }
     }
 }

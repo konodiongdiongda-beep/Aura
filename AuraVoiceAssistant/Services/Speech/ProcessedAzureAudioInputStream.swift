@@ -5,7 +5,8 @@ import MicrosoftCognitiveServicesSpeech
 import VoiceCore
 
 final class ProcessedAzureAudioInputStream: @unchecked Sendable {
-    private let engine = AVAudioEngine()
+    private let sharedEngine: SharedVoiceAudioEngine
+    private var engine: AVAudioEngine { sharedEngine.engine }
     private let pushStream: SPXPushAudioInputStream
     private let targetFormat: AVAudioFormat
     private let onVoiceActivity: @Sendable (VoiceActivityEvent) -> Void
@@ -16,11 +17,13 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
     private var converter: AVAudioConverter?
     private var inputFormat: AVAudioFormat?
     private var isRunning = false
+    private let isPlaybackActive: @Sendable () -> Bool
 
     let audioConfiguration: SPXAudioConfiguration
     private(set) var voiceProcessingEnabled = false
 
     init(
+        sharedEngine: SharedVoiceAudioEngine,
         onVoiceActivity: @escaping @Sendable (VoiceActivityEvent) -> Void = { _ in },
         acousticEchoCanceller: (any AcousticEchoCancelling)? = nil,
         isPlaybackActive: @escaping @Sendable () -> Bool = { false }
@@ -48,11 +51,13 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
             throw VoiceCore.AppError.speechRecognitionFailed("Unable to create Azure stream audio configuration.")
         }
 
+        self.sharedEngine = sharedEngine
         self.pushStream = pushStream
         self.audioConfiguration = audioConfiguration
         self.targetFormat = targetFormat
         self.onVoiceActivity = onVoiceActivity
         self.acousticEchoCanceller = acousticEchoCanceller
+        self.isPlaybackActive = isPlaybackActive
         self.voiceActivityEmitter = SustainedVoiceActivityEmitter(isPlaybackActive: isPlaybackActive)
         self.audioEvidenceBuffer = MicrophoneAudioEvidenceBuffer(
             sampleRate: 16_000,
@@ -63,39 +68,16 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
     func start() throws {
         guard !isRunning else { return }
 
-        let inputNode = engine.inputNode
-        do {
-            try inputNode.setVoiceProcessingEnabled(true)
-            voiceProcessingEnabled = true
-        } catch {
-            voiceProcessingEnabled = false
-            NSLog("[ProcessedAzureAudioInputStream] voice processing unavailable: \(error.localizedDescription)")
-        }
+        // The shared engine owns VPIO. Configure it (attaches the player node and
+        // enables voice processing) before reading the input format — VPIO changes
+        // the input node's reported format.
+        try sharedEngine.configure()
+        voiceProcessingEnabled = sharedEngine.voiceProcessingEnabled
 
-        // Prepare the engine BEFORE reading the input format. The input node only
-        // reports a valid hardware format once the engine has configured it; read
-        // too early (notably on the iOS Simulator) and it returns 0 Hz, which then
-        // makes installTap raise an uncatchable Objective-C NSException → SIGABRT.
+        let inputNode = engine.inputNode
         engine.prepare()
 
-        var sourceFormat = resolveValidInputFormat(on: inputNode)
-
-        // Enabling voice processing (AEC/VPIO) can also leave the input node with
-        // an invalid sample rate on hosts without proper microphone routing. If
-        // that happened, fall back to a plain (non-voice-processed) input node,
-        // which the Simulator supports, and re-resolve the format.
-        if sourceFormat == nil, voiceProcessingEnabled {
-            NSLog("[ProcessedAzureAudioInputStream] invalid input format with voice processing; retrying without it")
-            try? inputNode.setVoiceProcessingEnabled(false)
-            voiceProcessingEnabled = false
-            engine.prepare()
-            sourceFormat = resolveValidInputFormat(on: inputNode)
-        }
-
-        // If the format is still invalid there is genuinely no usable microphone
-        // input. Surface a clean Swift error so the coordinator can fail
-        // gracefully instead of letting AVFAudio abort the whole process.
-        guard let sourceFormat else {
+        guard let sourceFormat = resolveValidInputFormat(on: inputNode) else {
             let reported = inputNode.outputFormat(forBus: 0)
             converter = nil
             inputFormat = nil
@@ -111,11 +93,10 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
             self?.handle(buffer)
         }
 
-        engine.prepare()
         do {
-            try engine.start()
+            try sharedEngine.start()
             isRunning = true
-            NSLog("[ProcessedAzureAudioInputStream] started app-owned PCM input voiceProcessing=\(voiceProcessingEnabled) sourceRate=\(sourceFormat.sampleRate)")
+            NSLog("[ProcessedAzureAudioInputStream] started shared-engine PCM input voiceProcessing=\(voiceProcessingEnabled) sourceRate=\(sourceFormat.sampleRate)")
         } catch {
             inputNode.removeTap(onBus: 0)
             converter = nil
@@ -147,13 +128,13 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
         }
 
         engine.inputNode.removeTap(onBus: 0)
-        engine.stop()
+        // Do NOT stop the shared engine here: TTS playback shares it and the
+        // engine lifecycle is owned by the session, not by mic capture alone.
         converter = nil
         inputFormat = nil
         isRunning = false
         pushStream.close()
-        print("[ProcessedAzureAudioInputStream] stopped app-owned PCM input")
-        NSLog("[ProcessedAzureAudioInputStream] stopped app-owned PCM input")
+        NSLog("[ProcessedAzureAudioInputStream] stopped shared-engine PCM input")
     }
 
     private func handle(_ buffer: AVAudioPCMBuffer) {
@@ -182,12 +163,20 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
         }
 
         guard status == .haveData || status == .inputRanDry else { return }
+
         write(converted)
-        emitVoiceActivityIfNeeded(
-            bufferDuration: TimeInterval(buffer.frameLength) / max(buffer.format.sampleRate, 1),
-            inputLevel: inputLevel,
-            audioEvidence: recentAudioEvidence(maxDuration: 1.2)
-        )
+
+        writeQueue.async { [weak self] in
+            guard let self else { return }
+            if !self.isPlaybackActive() {
+                AudioLevelMonitor.shared.currentLevel = inputLevel
+            }
+            self.emitVoiceActivityIfNeeded(
+                bufferDuration: TimeInterval(buffer.frameLength) / max(buffer.format.sampleRate, 1),
+                inputLevel: inputLevel,
+                audioEvidence: self.recentAudioEvidence(maxDuration: 1.2)
+            )
+        }
     }
 
     private func write(_ buffer: AVAudioPCMBuffer) {
@@ -195,10 +184,18 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
 
         let byteCount = Int(buffer.frameLength) * Int(buffer.format.streamDescription.pointee.mBytesPerFrame)
         let microphoneData = Data(bytes: channelData[0], count: byteCount)
-        let data = acousticEchoCanceller?.processMicrophonePCM16(
-            microphoneData,
-            sampleRate: Int(buffer.format.sampleRate)
-        ) ?? microphoneData
+        // When VPIO is active the hardware already cancels the assistant's voice.
+        // Running the software Speex canceller on top would double-subtract and
+        // distort speech, so only apply it as a fallback when VPIO is unavailable.
+        let data: Data
+        if voiceProcessingEnabled {
+            data = microphoneData
+        } else {
+            data = acousticEchoCanceller?.processMicrophonePCM16(
+                microphoneData,
+                sampleRate: Int(buffer.format.sampleRate)
+            ) ?? microphoneData
+        }
         audioEvidenceBuffer.appendPCM16Mono(data)
         writeQueue.async { [pushStream] in
             pushStream.write(data)
@@ -228,29 +225,27 @@ final class ProcessedAzureAudioInputStream: @unchecked Sendable {
 
         if let channelData = buffer.floatChannelData {
             var sum: Float = 0
-            let channelCount = max(1, Int(buffer.format.channelCount))
-            for channel in 0..<channelCount {
-                let samples = channelData[channel]
-                for frame in 0..<frameLength {
-                    let sample = samples[frame]
-                    sum += sample * sample
-                }
+            let stride = max(1, frameLength / 256)
+            var i = 0
+            while i < frameLength {
+                let sample = channelData[0][i]
+                sum += sample * sample
+                i += stride
             }
-            let mean = sum / Float(frameLength * channelCount)
+            let mean = sum / Float(i / stride)
             return min(1, Double(sqrt(mean)))
         }
 
         if let channelData = buffer.int16ChannelData {
             var sum: Double = 0
-            let channelCount = max(1, Int(buffer.format.channelCount))
-            for channel in 0..<channelCount {
-                let samples = channelData[channel]
-                for frame in 0..<frameLength {
-                    let sample = Double(samples[frame]) / Double(Int16.max)
-                    sum += sample * sample
-                }
+            let stride = max(1, frameLength / 256)
+            var i = 0
+            while i < frameLength {
+                let sample = Double(channelData[0][i]) / Double(Int16.max)
+                sum += sample * sample
+                i += stride
             }
-            let mean = sum / Double(frameLength * channelCount)
+            let mean = sum / Double(i / stride)
             return min(1, sqrt(mean))
         }
 
