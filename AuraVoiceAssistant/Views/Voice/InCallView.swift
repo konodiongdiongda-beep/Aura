@@ -47,17 +47,6 @@ struct InCallView: View {
 
                 Spacer(minLength: 0)
 
-                Text("实际输出: \(viewModel.actualOutputDescription)")
-                    .font(AppTypography.label)
-                    .foregroundStyle(AppColors.onSurfaceVariant)
-                    .opacity(hasAppeared ? 1 : 0)
-
-                Text(viewModel.audioDiagnostic.isEmpty ? "诊断: —" : viewModel.audioDiagnostic)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(AppColors.onSurfaceVariant)
-                    .padding(.bottom, AppSpacing.xs)
-                    .opacity(hasAppeared ? 1 : 0)
-
                 InCallControls(viewModel: viewModel, text: text, compact: compact)
                     .padding(.bottom, compact ? AppSpacing.xs : AppSpacing.sm)
                     .opacity(hasAppeared ? 1 : 0)

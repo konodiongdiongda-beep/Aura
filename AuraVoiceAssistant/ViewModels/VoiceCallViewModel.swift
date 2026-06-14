@@ -20,7 +20,6 @@ final class VoiceCallViewModel: ObservableObject {
     @Published private(set) var currentSpeakerRoute: SpeakerRoute = .speaker
     @Published private(set) var availableSpeakerRoutes: [SpeakerRoute] = [.speaker, .receiver]
     @Published private(set) var actualOutputDescription: String = "—"
-    @Published private(set) var audioDiagnostic: String = ""
     private(set) var audioLevel: Double = 0.0
 
     private let coordinator: VoiceCallCoordinator?
@@ -654,10 +653,6 @@ final class VoiceCallViewModel: ObservableObject {
             var next = self.audioLevel + (target - self.audioLevel) * smoothing
             if next < 0.015 { next = 0.0 }
             self.audioLevel = next
-            let diag = AudioLevelMonitor.shared.diagnostic
-            if diag != self.audioDiagnostic {
-                self.audioDiagnostic = diag
-            }
         }
     }
 
