@@ -65,11 +65,11 @@ public final class VoiceCallCoordinator: ObservableObject {
     // for background voices. Tune from the on-device [VCC-BARGE] onset= logs.
     private let playbackBargeInOnsetFloorLevel: Double = 0.07
     private let playbackBargeInOnsetRate: Double = 0.05
-    // Near-field submit gate (listening state). Deliberately LOW to start: missing
-    // a bit of background noise is far better than dropping the user's real speech
-    // (which would reintroduce the "I talk but nothing sends" bug). Raise toward
-    // the gap between user vs. background once [VCC-SUBMIT] rms= logs are in hand.
-    private let nearFieldSubmissionLevel: Double = 0.04
+    // Near-field submit gate (listening state). Set LOW to ensure user's real speech
+    // is never dropped. Lowered from 0.04 to 0.015 to fix "Capturing stuck" issue
+    // where quiet speech wasn't reaching the threshold. Can be tuned higher later
+    // once [VCC-SUBMIT] rms= logs show the actual range of user speech.
+    private let nearFieldSubmissionLevel: Double = 0.015
 
     private var recognitionTask: Task<Void, Never>?
     private var recognizerResetTask: Task<Void, Never>?
