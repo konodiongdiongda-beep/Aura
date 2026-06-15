@@ -15,6 +15,8 @@ actor AzureSpeechRecognizer: SpeechRecognizing {
     /// Set while we are intentionally tearing the session down (stop/cancel), so a
     /// resulting cancellation is NOT mistaken for a transient failure to retry.
     private var isStopping = false
+    /// Set while paused (e.g., app backgrounded) but still in an active call.
+    private var isPaused = false
     /// Cold-start connections to Azure occasionally fail on the very first launch
     /// ("Connection failed (no connection to the service)"). That is transient, so
     /// we rebuild the session a few times before surfacing a fatal error.
@@ -208,6 +210,21 @@ actor AzureSpeechRecognizer: SpeechRecognizing {
         tearDownSession()
         sharedEngine.reset()
         continuation?.finish(throwing: CancellationError())
+    }
+
+    func pauseRecognition() async {
+        guard isRunning && !isPaused else { return }
+        isPaused = true
+        tearDownSession()
+        // Don't reset the engine or finish continuation — we're just paused, not stopping.
+    }
+
+    func resumeRecognition() async throws {
+        guard isPaused else { return }
+        isPaused = false
+        isStopping = false
+        restartAttempts = 0
+        try establishSession()
     }
 
     private func emitFinal(_ text: String, audioEvidence: SpeechAudioEvidence?) async {

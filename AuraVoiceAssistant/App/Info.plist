@@ -42,6 +42,12 @@
 	<string>Aura uses the microphone to capture your voice during assistant calls.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Aura uses speech recognition to transcribe your voice during assistant calls.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Aura uses local network access to connect to the voice assistant service.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>

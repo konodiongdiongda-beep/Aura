@@ -80,6 +80,8 @@ public protocol SpeechRecognizing: Sendable {
     func start() async throws
     func stop() async
     func cancel() async
+    func pauseRecognition() async
+    func resumeRecognition() async throws
     /// Called by the coordinator whenever AI playback starts or stops.
     /// Implementations can use this to tag outgoing VAD events accurately.
     /// Default implementation is a no-op so existing conformances need no changes.
@@ -87,6 +89,8 @@ public protocol SpeechRecognizing: Sendable {
 }
 
 public extension SpeechRecognizing {
+    func pauseRecognition() async {}
+    func resumeRecognition() async throws {}
     func notifyPlaybackStateChanged(_ isActive: Bool) async {}
 }
 

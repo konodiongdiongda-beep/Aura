@@ -379,11 +379,11 @@ public final class VoiceCallCoordinator: ObservableObject {
     }
 
     public func pauseRecognition() async {
-        await recognizer.stop()
+        await recognizer.pauseRecognition()
     }
 
     public func resumeRecognition() async throws {
-        try await recognizer.start()
+        try await recognizer.resumeRecognition()
     }
 
     private func startRecognitionEvents(_ stream: AsyncThrowingStream<SpeechRecognitionEvent, Error>) {
