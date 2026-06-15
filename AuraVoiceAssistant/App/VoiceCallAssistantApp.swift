@@ -3,22 +3,28 @@ import AVFoundation
 
 @main
 struct VoiceCallAssistantApp: App {
-    init() {
-        #if os(iOS)
-        requestMicrophonePermissionIfNeeded()
-        #endif
-    }
+    @State private var appReady = false
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if appReady {
+                ContentView()
+            } else {
+                Color.clear
+                    .onAppear {
+                        requestMicrophonePermissionIfNeeded()
+                        appReady = true
+                    }
+            }
         }
     }
 
     private func requestMicrophonePermissionIfNeeded() {
         let status = AVAudioSession.sharedInstance().recordPermission
         if status == .undetermined {
-            AVAudioSession.sharedInstance().requestRecordPermission { _ in }
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                NSLog("[VoiceCallAssistantApp] Microphone permission: \(granted)")
+            }
         }
     }
 }
