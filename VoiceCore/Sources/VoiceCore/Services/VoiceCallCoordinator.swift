@@ -46,24 +46,15 @@ public final class VoiceCallCoordinator: ObservableObject {
     private let playbackSpeakerCheckDuration: TimeInterval = 0.05
     private let minimumStablePartialCharacterCount = 4
     private let backgroundRejectionMemoryWindow: TimeInterval = 1.2
-    // Barge-in during playback triggers on sustained microphone ENERGY rather
-    // than voiceprint. On-device measurement showed residual AI echo (the AEC
-    // can't fully cancel it) drags the user's live voiceprint score into the same
-    // range as pure echo (~0.13–0.33), so voiceprint cannot reliably decide "is
-    // this the user" mid-playback. Instead we stop the assistant on sustained
-    // energy above this raised threshold — the user's louder, closer voice trips
-    // it while low-level residual echo doesn't — and leave the "keep the
-    // sentence?" decision to the voiceprint-backed submission gate, which runs on
-    // the clean (post-interrupt, non-playback) audio. Tune from the on-device
-    // [VCC-BARGE] level logs.
-    private let playbackBargeInInputLevel: Double = 0.08
-    // Second barge-in dimension (LiveKit-style onset detection, local heuristic).
-    // A sharp energy jump at speech onset signals a near-field user speaking up,
-    // even at moderate volume — so we allow barge-in at a LOWER energy floor when
-    // the onset is steep. Diffuse far-field chatter ramps in slowly and won't
-    // clear onsetRate, so this loosens responsiveness WITHOUT loosening the bar
-    // for background voices. Tune from the on-device [VCC-BARGE] onset= logs.
-    private let playbackBargeInOnsetFloorLevel: Double = 0.06
+    // Barge-in during playback: unified threshold with submission gate (0.015).
+    // If speech is loud enough to submit text, it's loud enough to interrupt.
+    // This fixes the bug where barge-in was failing despite lowering submission threshold.
+    private let playbackBargeInInputLevel: Double = 0.015
+    // Second barge-in dimension (onset detection): sharp energy ramps signal near-field
+    // user speaking up, even at moderate volume. Allows barge-in at LOWER energy floor
+    // when onset is steep. Diffuse far-field chatter ramps slowly and won't trigger.
+    // This is KEY for distinguishing human speech from environmental noise.
+    private let playbackBargeInOnsetFloorLevel: Double = 0.015
     private let playbackBargeInOnsetRate: Double = 0.04
     // Near-field submit gate (listening state). Set LOW to ensure user's real speech
     // is never dropped. Lowered from 0.04 to 0.015 to fix "Capturing stuck" issue
