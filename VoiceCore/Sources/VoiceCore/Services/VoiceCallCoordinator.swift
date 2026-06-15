@@ -43,7 +43,7 @@ public final class VoiceCallCoordinator: ObservableObject {
     private let assistantTailEchoMemoryWindow: TimeInterval = 120
     private let currentUserBargeInInputLevel = 0.08
     private let currentUserBargeInDuration: TimeInterval = 0.10
-    private let playbackSpeakerCheckDuration: TimeInterval = 0.12
+    private let playbackSpeakerCheckDuration: TimeInterval = 0.05
     private let minimumStablePartialCharacterCount = 4
     private let backgroundRejectionMemoryWindow: TimeInterval = 1.2
     // Barge-in during playback triggers on sustained microphone ENERGY rather
@@ -56,15 +56,15 @@ public final class VoiceCallCoordinator: ObservableObject {
     // sentence?" decision to the voiceprint-backed submission gate, which runs on
     // the clean (post-interrupt, non-playback) audio. Tune from the on-device
     // [VCC-BARGE] level logs.
-    private let playbackBargeInInputLevel: Double = 0.10
+    private let playbackBargeInInputLevel: Double = 0.08
     // Second barge-in dimension (LiveKit-style onset detection, local heuristic).
     // A sharp energy jump at speech onset signals a near-field user speaking up,
     // even at moderate volume — so we allow barge-in at a LOWER energy floor when
     // the onset is steep. Diffuse far-field chatter ramps in slowly and won't
     // clear onsetRate, so this loosens responsiveness WITHOUT loosening the bar
     // for background voices. Tune from the on-device [VCC-BARGE] onset= logs.
-    private let playbackBargeInOnsetFloorLevel: Double = 0.07
-    private let playbackBargeInOnsetRate: Double = 0.05
+    private let playbackBargeInOnsetFloorLevel: Double = 0.06
+    private let playbackBargeInOnsetRate: Double = 0.04
     // Near-field submit gate (listening state). Set LOW to ensure user's real speech
     // is never dropped. Lowered from 0.04 to 0.015 to fix "Capturing stuck" issue
     // where quiet speech wasn't reaching the threshold. Can be tuned higher later
